@@ -1,9 +1,9 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:xtream/util/colors.dart';
 import 'package:xtream/view/mainContainers/calls.dart';
 import 'package:xtream/view/mainContainers/config.dart';
-import 'package:xtream/view/mainContainers/home.dart';
+import 'package:xtream/view/mainContainers/home/home.dart';
 import 'package:xtream/view/mainContainers/profile.dart';
 
 void main() {
@@ -39,15 +39,52 @@ class RunApp extends StatefulWidget {
 
 class _RunAppState extends State<RunApp> {
 
-  Color black = Color.fromRGBO(0, 0, 20, 0.5);
-  Color red = Color.fromRGBO(130, 0, 0, 0.75);
   late Widget _container;
+  bool modalDown = true;
 
   void setContainer(Widget newContainer) {
     setState(() {
       _container = newContainer;
     });
     Navigator.pop(context);
+  }
+
+  Future showMenuModal() {
+    return showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+              color: PersonalizedColor.red,
+              height: 80,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+
+                  IconButton(
+                    icon: Icon(Icons.home, color: PersonalizedColor.black,),
+                    onPressed:() => setContainer(Home()),
+                  ),
+
+                  IconButton(
+                    icon: Icon(Icons.call, color: PersonalizedColor.black,),
+                    onPressed:() => setContainer(Calls()),
+                  ),
+
+                  IconButton(
+                    icon: Icon(Icons.person, color: PersonalizedColor.black,),
+                    onPressed:() => setContainer(Profile()),
+                  ),
+
+                  IconButton(
+                    icon: Icon(Icons.settings, color: PersonalizedColor.black,),
+                    onPressed:() => setContainer(Config()),
+                  ),
+
+                ],
+              )
+          );
+        }
+    );
   }
 
   @override
@@ -60,9 +97,8 @@ class _RunAppState extends State<RunApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: black,
-        alignment: Alignment.center,
+      body: GestureDetector(
+        onPanUpdate: (details) => {if (details.delta.dx > 0) showMenuModal()},
         child: _container,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
@@ -70,47 +106,12 @@ class _RunAppState extends State<RunApp> {
         builder: (context) => Padding(
             padding: const EdgeInsets.only(top: 10),
             child: FloatingActionButton(
-              // elevation: 0,
+              mini: true,
+              elevation: 10,
               // foregroundColor: Colors.red,
-              backgroundColor: Colors.black,
-              child: Icon(Icons.menu, color: red, size: 25,),
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return Container(
-                          color: red,
-                          height: 80,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-
-                              IconButton(
-                                icon: Icon(Icons.home, color: black,),
-                                onPressed:() => setContainer(Home()),
-                              ),
-
-                              IconButton(
-                                icon: Icon(Icons.call, color: black,),
-                                onPressed:() => setContainer(Calls()),
-                              ),
-
-                              IconButton(
-                                icon: Icon(Icons.person, color: black,),
-                                onPressed:() => setContainer(Profile()),
-                              ),
-
-                              IconButton(
-                                icon: Icon(Icons.settings, color: black,),
-                                onPressed:() => setContainer(Config()),
-                              ),
-
-                            ],
-                          )
-                      );
-                    }
-                );
-              },
+              backgroundColor: PersonalizedColor.red,
+              child: Icon(Icons.menu, color: PersonalizedColor.black, size: 22),
+              onPressed: showMenuModal,
             )
         ),
       ),

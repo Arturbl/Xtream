@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:xtream/model/user.dart';
+import 'package:xtream/util/colors.dart';
+import 'package:xtream/view/mainContainers/home/profile.dart';
 
 class Calls extends StatefulWidget {
   const Calls({Key? key}) : super(key: key);
@@ -8,10 +11,16 @@ class Calls extends StatefulWidget {
 }
 
 class _CallsState extends State<Calls> {
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("Calls")
+    return SafeArea(
+      child: Container(
+        color: PersonalizedColor.black,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Text("Calls"),
+      )
     );
   }
 }

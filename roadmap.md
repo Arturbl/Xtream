@@ -11,11 +11,12 @@
 
 
 ## How they do it:
-    1. Free plan:
+    1. Free plan: (no need for an account)
         .random people will appear in chats. 
         .Config options:
             .Sex
-    2. Payed plan:
+
+    2. Payed plan: (need for an account)
         .the better the evaluation, people will apper more precisely
         .Config options:
             .Country
