@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:xtream/model/filter.dart';
 import 'package:xtream/util/colors.dart';
+import 'package:xtream/view/main/filterWidget.dart';
 import 'package:xtream/view/mainContainers/calls.dart';
 import 'package:xtream/view/mainContainers/config.dart';
 import 'package:xtream/view/mainContainers/home/home.dart';
@@ -40,7 +42,8 @@ class RunApp extends StatefulWidget {
 class _RunAppState extends State<RunApp> {
 
   late Widget _container;
-  bool modalDown = true;
+  final Filter _filter = Filter();
+  late final Widget home ;
 
   void setContainer(Widget newContainer) {
     setState(() {
@@ -62,7 +65,7 @@ class _RunAppState extends State<RunApp> {
 
                   IconButton(
                     icon: Icon(Icons.home, color: PersonalizedColor.black,),
-                    onPressed:() => setContainer(Home()),
+                    onPressed:() => setContainer(home),
                   ),
 
                   IconButton(
@@ -87,11 +90,24 @@ class _RunAppState extends State<RunApp> {
     );
   }
 
+  Future filterUsers() {
+    return showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0)
+        ),
+        builder: (context) {
+          return FilterWidget(filter: _filter);
+        }
+    );
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _container = Home();
+    home = Home(filter: _filter);
+    _container = home;
   }
 
   @override
@@ -105,13 +121,12 @@ class _RunAppState extends State<RunApp> {
       floatingActionButton: Builder(
         builder: (context) => Padding(
             padding: const EdgeInsets.only(top: 10),
-            child: FloatingActionButton(
-              mini: true,
+            child: FloatingActionButton.extended(
               elevation: 10,
-              // foregroundColor: Colors.red,
               backgroundColor: PersonalizedColor.red,
-              child: Icon(Icons.menu, color: PersonalizedColor.black, size: 22),
-              onPressed: showMenuModal,
+              label: const Text("Filter"),
+              icon: const Icon(Icons.menu, size: 22),
+              onPressed: filterUsers,
             )
         ),
       ),

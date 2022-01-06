@@ -140,21 +140,21 @@ class _ProfileState extends State<Profile> {
                   color: PersonalizedColor.red,
                   textColor: Colors.white,
                   shape: const CircleBorder(),
-                  child: const Icon(Icons.call),
+                  child: const Icon(Icons.messenger_rounded),
                   padding: const EdgeInsets.all(17),
                   onPressed: () {
-                    print("calling " + widget.user.name);
+                    print("messaging: " + widget.user.name);
                   },
                 ),
 
                 MaterialButton(
-                  color: PersonalizedColor.red,
+                  color: Colors.green,
                   textColor: Colors.white,
                   shape: const CircleBorder(),
-                  child: const Icon(Icons.messenger_rounded),
+                  child: const Icon(Icons.call),
                   padding: const EdgeInsets.all(25),
                   onPressed: () {
-                    print("messaging: " + widget.user.name);
+                    print("calling " + widget.user.name);
                   },
                 ),
 

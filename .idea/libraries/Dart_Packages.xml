@@ -44,10 +44,10 @@
             </list>
           </value>
         </entry>
-        <entry key="crypto">
+        <entry key="country_picker">
           <value>
             <list>
-              <option value="$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-3.0.1/lib" />
+              <option value="$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/country_picker-2.0.9/lib" />
             </list>
           </value>
         </entry>
@@ -177,13 +177,6 @@
             </list>
           </value>
         </entry>
-        <entry key="web_socket_channel">
-          <value>
-            <list>
-              <option value="$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/web_socket_channel-2.1.0/lib" />
-            </list>
-          </value>
-        </entry>
       </option>
     </properties>
     <CLASSES>
@@ -193,7 +186,7 @@
       <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/charcode-1.3.1/lib" />
       <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/clock-1.1.0/lib" />
       <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.15.0/lib" />
-      <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-3.0.1/lib" />
+      <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/country_picker-2.0.9/lib" />
       <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.4/lib" />
       <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/lib" />
       <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-1.0.4/lib" />
@@ -209,7 +202,6 @@
       <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/test_api-0.4.3/lib" />
       <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/typed_data-1.3.0/lib" />
       <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.1/lib" />
-      <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/.pub-cache/hosted/pub.dartlang.org/web_socket_channel-2.1.0/lib" />
       <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/bin/cache/pkg/sky_engine/lib" />
       <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/packages/flutter/lib" />
       <root url="file://$USER_HOME$/flutter/flutter_windows_2.8.1-stable/flutter/packages/flutter_test/lib" />

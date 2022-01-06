@@ -8,6 +8,7 @@ class User{
   late double _evaluation;
   late int _numOfCalls;
   late String _country;
+  late String _profileImageUrl;
 
   User(this._id, this._name);
 
@@ -17,6 +18,12 @@ class User{
     _numOfCalls = value;
   }
 
+
+  String get profileImageUrl => _profileImageUrl;
+
+  set profileImageUrl(String value) {
+    _profileImageUrl = value;
+  }
 
   int get age => _age;
 

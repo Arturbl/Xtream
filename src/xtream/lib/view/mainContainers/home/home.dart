@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
 import 'package:xtream/view/mainContainers/home/profile.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({Key? key, required this.filter}) : super(key: key);
+
+  final Filter filter;
 
   @override
   _HomeState createState() => _HomeState();
