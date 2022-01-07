@@ -42,9 +42,10 @@ class _ProfileState extends State<Profile> {
                       ),
                     ],
                     image: const DecorationImage(
-                        image: NetworkImage(
-                            "https://cdn.vidas.pt/images/2020-10/img_975x650\$2020_10_10_19_14_32_155118.jpg"
-                        ),
+                      image: AssetImage('assets/images/julia.jpg'),
+                        // image: NetworkImage(
+                        //     "https://cdn.vidas.pt/images/2020-10/img_975x650\$2020_10_10_19_14_32_155118.jpg"
+                        // ),
                         fit: BoxFit.cover
                     )
                 ),

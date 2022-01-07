@@ -1,8 +1,9 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:xtream/main.dart';
 import 'package:xtream/model/filter.dart';
-import 'package:country_picker/country_picker.dart';
 import 'package:xtream/util/colors.dart';
+import 'package:xtream/view/mainContainers/home/home.dart';
 
 
 class FilterWidget extends StatefulWidget {
@@ -33,11 +34,7 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   void setGender(String value) {
     String gender;
-    if(_gender.isEmpty) {
-      value == 'male' ? gender = 'male' : gender = 'female';
-    } else {
-      gender = '';
-    }
+    value == 'male' ? gender = 'male' : gender = 'female';
     setState(() {
       _gender = gender;
     });
@@ -162,10 +159,12 @@ class _FilterWidgetState extends State<FilterWidget> {
                     context: context,
                     position: RelativeRect.fromLTRB(1000, 600, 0, 0),
                     items: [
-                      const PopupMenuItem(child: Text("White"), value: "white",),
-                      const PopupMenuItem(child: Text("Black"), value: "black",)
-                      const PopupMenuItem(child: Text("Latin"), value: "latin",)
-                      const PopupMenuItem(child: Text("Asian"), value: "asian",)
+                      const PopupMenuItem(child: Text("Blonde"), value: "Blonde",),
+                      const PopupMenuItem(child: Text("Brunette"), value: "Brunette",),
+                      const PopupMenuItem(child: Text("Red-haired"), value: "Red-haired",)
+                      const PopupMenuItem(child: Text("Black"), value: "Black",)
+                      const PopupMenuItem(child: Text("Latin"), value: "Latin",)
+                      const PopupMenuItem(child: Text("Asian"), value: "Asian",)
                     ],
                     elevation: 8.0,
                   );
@@ -177,16 +176,46 @@ class _FilterWidgetState extends State<FilterWidget> {
             ),
 
 
-            Align(
-              alignment: Alignment.centerRight,
-              child: ElevatedButton(
-                child: const Text("Apply filters"),
-                onPressed: () {
-                  const RunApp().;
-                },
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+
+                  ElevatedButton(
+                    child: const Text("Reset"),
+                    onPressed: () {
+                      widget.filter.has_changed = false;
+                      widget.filter.ageRange.min = 18;
+                      widget.filter.ageRange.max = 80;
+                      widget.filter.country = "Country";
+                      widget.filter.ethnicity = "Ethnicity";
+                      widget.filter.gender = "Gender";
+                      //widget.filter.price
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => RunApp(filter: widget.filter))
+                      );
+                    },
+                  ),
+
+                  ElevatedButton(
+                    child: const Text("Apply filters"),
+                    onPressed: () {
+                      widget.filter.has_changed = true;
+                      widget.filter.ageRange.min = _ageRange.start.toInt();
+                      widget.filter.ageRange.max = _ageRange.end.toInt();
+                      widget.filter.country = _country;
+                      widget.filter.ethnicity = _ethnicity;
+                      widget.filter.gender = _gender;
+                      //widget.filter.price
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => RunApp(filter: widget.filter))
+                      );
+                    },
+                  )
+
+                ],
               ),
             )
-
 
           ],
         )

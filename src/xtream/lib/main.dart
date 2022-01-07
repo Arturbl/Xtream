@@ -26,14 +26,16 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const RunApp()
+      home: RunApp(filter: Filter(),)
     );
   }
 }
 
 
 class RunApp extends StatefulWidget {
-  const RunApp({Key? key}) : super(key: key);
+  const RunApp({Key? key, required this.filter}) : super(key: key);
+
+  final Filter filter;
 
   @override
   _RunAppState createState() => _RunAppState();
@@ -42,8 +44,7 @@ class RunApp extends StatefulWidget {
 class _RunAppState extends State<RunApp> {
 
   late Widget _container;
-  final Filter _filter = Filter();
-  late final Widget home ;
+  late Home home;
 
   void setContainer(Widget newContainer) {
     setState(() {
@@ -90,24 +91,29 @@ class _RunAppState extends State<RunApp> {
     );
   }
 
-  Future filterUsers() {
-    return showModalBottomSheet(
+  Future filterUsers() async {
+    await showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0)
         ),
         builder: (context) {
-          return FilterWidget(filter: _filter);
+          return FilterWidget(filter: widget.filter);
         }
     );
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    home = Home(filter: _filter);
+    home = Home(filter: widget.filter);
     _container = home;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _container;
   }
 
   @override
