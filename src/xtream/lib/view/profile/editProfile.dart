@@ -40,7 +40,7 @@ class _EditProfileState extends State<EditProfile> {
         ),
         titleSpacing: 0,
         backgroundColor: PersonalizedColor.red,
-        title: const Text("Edit profile"),
+        title: Text("Edit profile", style: TextStyle(color: PersonalizedColor.black),),
         actions: [
 
           Padding(

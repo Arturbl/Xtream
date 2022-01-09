@@ -14,7 +14,7 @@ class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
   bool checkUserSession() {
-    return false;
+    return true;
   }
 
   @override

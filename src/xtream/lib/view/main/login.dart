@@ -16,7 +16,7 @@ class _LoginState extends State<Login> {
 
 
 
-  _validadeEmailAndPassword() {
+  void _validadeEmailAndPassword() {
     setState(() {
       _loading = true;
     });
@@ -34,7 +34,7 @@ class _LoginState extends State<Login> {
   }
 
 
-  _setError(String error) {
+  void _setError(String error) {
     setState(() {
       _error1 = error;
       _loading = false;
@@ -120,7 +120,7 @@ class _LoginState extends State<Login> {
                     child: RaisedButton(
                       child:
                       _loading == false
-                          ? Text('Login')
+                          ? Text('Login', style: TextStyle(color: PersonalizedColor.black),)
                           : CircularProgressIndicator(color: PersonalizedColor.black,),
                       padding: const EdgeInsets.all(14),
                       textColor: Colors.white,
@@ -141,7 +141,8 @@ class _LoginState extends State<Login> {
                     padding: EdgeInsets.only(top: 8),
                     child: GestureDetector(
                       onTap: (){
-                        Navigator.pushNamed(context, '/account');
+                        String email = _emailController.text;
+                        Navigator.of(context).pushNamed('/createAccount', arguments: email);
                       },
                       child: const Center(
                         child: Text('Create new account', style: TextStyle(

@@ -40,7 +40,7 @@ class _RunAppState extends State<RunApp> {
               padding: const EdgeInsets.only(top: 10),
               child: FloatingActionButton(
                 elevation: 10,
-                backgroundColor: Colors.transparent,
+                backgroundColor: PersonalizedColor.black1,
                 // label: const Text(""), // Filter
                 child: const Icon(Icons.menu, size: 22),
                 onPressed: filterUsers,

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
+import 'package:xtream/view/main/createAccount.dart';
 import 'package:xtream/view/messages/chat.dart';
 import 'package:xtream/view/profile/editProfile.dart';
 
@@ -21,6 +22,9 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (context) => Chat(toUser(args)));
       case '/editProfile':
         return MaterialPageRoute(builder: (context) => EditProfile(user: toUser(args)));
+      case '/createAccount':
+        String email = args.toString();
+        return MaterialPageRoute(builder: (context) => CreateAccount(email));
       default:
         return _errorRoute();
     }
