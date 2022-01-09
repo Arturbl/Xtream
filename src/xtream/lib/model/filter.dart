@@ -7,7 +7,7 @@ class Filter {
   bool _has_changed = false; // control atribute to check if user has changed the filter
 
   String _country = 'Country';
-  final Tuple _ageRange = Tuple(18,80);
+  final Tuple _ageRange = Tuple<int, int>(18,80);
   String _ethnicity = 'Ethnicity';
   String _gender = 'Gender';
   double _price = 0;

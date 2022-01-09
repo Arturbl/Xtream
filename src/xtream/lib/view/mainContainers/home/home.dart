@@ -34,7 +34,6 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     profiles = displayProfiles(["Júlia Palha", "Margot Hobbie"]);
     print("Country: " + widget.filter.country);
@@ -57,9 +56,7 @@ class _HomeState extends State<Home> {
                 color: PersonalizedColor.black,
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
-                child: PageView(
-                  children: profiles,
-                )
+                child: profiles[index]
             );
           },
         )

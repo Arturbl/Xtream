@@ -1,24 +1,24 @@
 
 
-class Tuple {
+class Tuple<T1, T2> {
 
-  late int _min;
-  late int _max;
+  late T1 _min;
+  late T2 _max;
 
-  Tuple(int min, int max) {
+  Tuple(T1 min, T2 max) {
     _min = min;
     _max = max;
   }
 
-  int get max => _max;
+  T2 get max => _max;
 
-  set max(int value) {
+  set max(T2 value) {
     _max = value;
   }
 
-  int get min => _min;
+  T1 get min => _min;
 
-  set min(int value) {
+  set min(T1 value) {
     _min = value;
   }
 }

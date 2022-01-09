@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/util/colors.dart';
 import 'package:xtream/view/main/filterWidget.dart';
-import 'package:xtream/view/mainContainers/calls.dart';
+import 'package:xtream/view/mainContainers/messages/messages.dart';
 import 'package:xtream/view/mainContainers/config.dart';
 import 'package:xtream/view/mainContainers/home/home.dart';
 import 'package:xtream/view/mainContainers/profile.dart';
@@ -43,13 +43,18 @@ class RunApp extends StatefulWidget {
 
 class _RunAppState extends State<RunApp> {
 
+  late Widget currentPage;
+  int currentPageIndex = 0;
+
   late Widget _container;
   late Home home;
+
 
   void setContainer(Widget newContainer) {
     setState(() {
       _container = newContainer;
     });
+    currentPage = newContainer;
     Navigator.pop(context);
   }
 
@@ -59,7 +64,7 @@ class _RunAppState extends State<RunApp> {
         builder: (context) {
           return Container(
               color: PersonalizedColor.red,
-              height: 80,
+              height: 60,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -70,8 +75,8 @@ class _RunAppState extends State<RunApp> {
                   ),
 
                   IconButton(
-                    icon: Icon(Icons.call, color: PersonalizedColor.black,),
-                    onPressed:() => setContainer(Calls()),
+                    icon: Icon(Icons.messenger_rounded, color: PersonalizedColor.black,),
+                    onPressed:() => setContainer(Messages()),
                   ),
 
                   IconButton(
@@ -79,10 +84,10 @@ class _RunAppState extends State<RunApp> {
                     onPressed:() => setContainer(Profile()),
                   ),
 
-                  IconButton(
-                    icon: Icon(Icons.settings, color: PersonalizedColor.black,),
-                    onPressed:() => setContainer(Config()),
-                  ),
+                  // IconButton(
+                  //   icon: Icon(Icons.settings, color: PersonalizedColor.black,),
+                  //   onPressed:() => setContainer(Config()),
+                  // ),
 
                 ],
               )
@@ -107,6 +112,7 @@ class _RunAppState extends State<RunApp> {
   void initState() {
     super.initState();
     home = Home(filter: widget.filter);
+    currentPage = home;
     _container = home;
   }
 
@@ -124,18 +130,37 @@ class _RunAppState extends State<RunApp> {
         child: _container,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: Builder(
+      floatingActionButton: currentPage == home ? Builder(
         builder: (context) => Padding(
             padding: const EdgeInsets.only(top: 10),
-            child: FloatingActionButton.extended(
+            child: FloatingActionButton(
               elevation: 10,
               backgroundColor: PersonalizedColor.red,
-              label: const Text("Filter"),
-              icon: const Icon(Icons.menu, size: 22),
+              // label: const Text(""), // Filter
+              child: const Icon(Icons.menu, size: 22),
               onPressed: filterUsers,
             )
         ),
-      ),
+      ) : null,
+      bottomNavigationBar: GestureDetector(
+        onTap: showMenuModal,
+        child: Container(
+          height: 25,
+          color: PersonalizedColor.black,
+          child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.grey
+                ),
+                padding: const EdgeInsets.only(bottom: 2),
+                width: 60,
+                height: 5,
+                child: null,
+              )
+          ),
+        ),
+      )
     );
   }
 }
