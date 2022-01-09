@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:xtream/main.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/util/colors.dart';
+import 'package:xtream/view/main/runApp.dart';
 
 
 class FilterWidget extends StatefulWidget {
