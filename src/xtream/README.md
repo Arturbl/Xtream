@@ -1,16 +1,31 @@
-# xtream
 
-A new Flutter project.
+# Main goal:
+    Allow users to interact with each other in an intimate way
+    Users will be inserted in charts with a random person. Once the call or chat is done,
+    both users will be asked to evaluate theis companion.
+    This evaluation will be used to connect more precisely people with same interests.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+# How to use the app:
+    Download it via play store or access it via browser
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## How they do it:
+    1. Free plan: (no need for an account)
+        .random people will appear in chats. 
+        .Config options:
+            .Sex
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+    2. Payed plan: (need for an account)
+        .the better the evaluation, people will apper more precisely
+        .Config options:
+            .Country
+            .Sex
+            .ethnicity
+            .age
+
+# How does the app make money?
+    1. Payed plans
+    2. Ads
+    
+            
