@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/util/colors.dart';
 import 'package:xtream/view/main/filterWidget.dart';
-import 'package:xtream/view/mainContainers/messages/messages.dart';
-import 'package:xtream/view/mainContainers/config.dart';
 import 'package:xtream/view/mainContainers/home/home.dart';
+import 'package:xtream/view/mainContainers/messages/messages.dart';
 import 'package:xtream/view/mainContainers/profile.dart';
 
 void main() {
@@ -55,46 +54,8 @@ class _RunAppState extends State<RunApp> {
       _container = newContainer;
     });
     currentPage = newContainer;
-    Navigator.pop(context);
   }
 
-  Future showMenuModal() {
-    return showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Container(
-              color: PersonalizedColor.red,
-              height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-
-                  IconButton(
-                    icon: Icon(Icons.home, color: PersonalizedColor.black,),
-                    onPressed:() => setContainer(home),
-                  ),
-
-                  IconButton(
-                    icon: Icon(Icons.messenger_rounded, color: PersonalizedColor.black,),
-                    onPressed:() => setContainer(Messages()),
-                  ),
-
-                  IconButton(
-                    icon: Icon(Icons.person, color: PersonalizedColor.black,),
-                    onPressed:() => setContainer(Profile()),
-                  ),
-
-                  // IconButton(
-                  //   icon: Icon(Icons.settings, color: PersonalizedColor.black,),
-                  //   onPressed:() => setContainer(Config()),
-                  // ),
-
-                ],
-              )
-          );
-        }
-    );
-  }
 
   Future filterUsers() async {
     await showModalBottomSheet(
@@ -125,10 +86,7 @@ class _RunAppState extends State<RunApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        onPanUpdate: (details) => {if (details.delta.dx > 0) showMenuModal()},
-        child: _container,
-      ),
+      body: _container,
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       floatingActionButton: currentPage == home ? Builder(
         builder: (context) => Padding(
@@ -142,24 +100,30 @@ class _RunAppState extends State<RunApp> {
             )
         ),
       ) : null,
-      bottomNavigationBar: GestureDetector(
-        onTap: showMenuModal,
-        child: Container(
-          height: 25,
-          color: PersonalizedColor.black,
-          child: Center(
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Colors.grey
-                ),
-                padding: const EdgeInsets.only(bottom: 2),
-                width: 60,
-                height: 5,
-                child: null,
-              )
-          ),
-        ),
+      bottomNavigationBar: Container(
+          color: PersonalizedColor.red,
+          height: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+
+              IconButton(
+                icon: Icon(Icons.home, color: PersonalizedColor.black,),
+                onPressed:() => setContainer(home),
+              ),
+
+              IconButton(
+                icon: Icon(Icons.messenger_rounded, color: PersonalizedColor.black,),
+                onPressed:() => setContainer(Messages()),
+              ),
+
+              IconButton(
+                icon: Icon(Icons.person, color: PersonalizedColor.black,),
+                onPressed:() => setContainer(Profile()),
+              ),
+
+            ],
+          )
       )
     );
   }

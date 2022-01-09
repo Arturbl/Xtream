@@ -98,26 +98,6 @@ class _ProfileState extends State<Profile> {
                         ),
 
 
-                        // Container(
-                        //   padding: const EdgeInsets.only(top: 2),
-                        //   child: Row(
-                        //     children: [
-                        //
-                        //       Text(widget.user.numOfCalls.toString() + " ", style: const TextStyle(
-                        //         color: Colors.white,
-                        //         fontSize: 14,
-                        //       ),),
-                        //
-                        //       const Icon(
-                        //         Icons.call,
-                        //         color: Colors.green,
-                        //         size: 15,
-                        //       )
-                        //
-                        //     ],
-                        //   ),
-                        // ),
-
                       ],
                     )
                   ),
@@ -147,31 +127,6 @@ class _ProfileState extends State<Profile> {
                     print("calling " + widget.user.name);
                   },
                 ),
-
-                // MaterialButton(
-                //   color: Colors.green,
-                //   textColor: Colors.white,
-                //   shape: const CircleBorder(),
-                //   child: const Icon(Icons.call),
-                //   padding: const EdgeInsets.all(25),
-                //   onPressed: () {
-                //     print("calling " + widget.user.name);
-                //   },
-                // ),
-
-
-                // MaterialButton(
-                //   color: PersonalizedColor.red,
-                //   textColor: Colors.white,
-                //   shape: const CircleBorder(),
-                //   child: const Icon(Icons.info),
-                //   padding: const EdgeInsets.all(17),
-                //   onPressed: () {
-                //     print("more info about: " + widget.user.name);
-                //   },
-                // ),
-
-
 
               ],
             )

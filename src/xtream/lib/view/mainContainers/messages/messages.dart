@@ -14,7 +14,7 @@ class Messages extends StatefulWidget {
 class _MessagesState extends State<Messages> {
 
   List<Widget> getMessages() {
-    List<String> names = ["Julia Palha", "Margot Robbie", "Gabi","Julia Palha", "Margot Robbie", "Gabi","Julia Palha", "Margot Robbie", "Gabi"];
+    List<String> names = ["Julia Palha", "Margot Robbie", "Gabi"];
     List<Widget> widgets = [];
     for(String name in names) {
       MessageData data = MessageData();
@@ -35,7 +35,7 @@ class _MessagesState extends State<Messages> {
           color: PersonalizedColor.black,
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.fromLTRB(10, 2,10,2),
+          padding: const EdgeInsets.fromLTRB(10, 2,10,85),
           child: ListView(
             scrollDirection: Axis.vertical,
             children: getMessages(),

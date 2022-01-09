@@ -56,7 +56,9 @@ class _HomeState extends State<Home> {
                 color: PersonalizedColor.black,
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
-                child: profiles[index]
+                child: Center(
+                  child: profiles[index]
+                )
             );
           },
         )
