@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:xtream/main.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/util/colors.dart';
-import 'package:xtream/view/mainContainers/home/home.dart';
 
 
 class FilterWidget extends StatefulWidget {
@@ -56,7 +55,7 @@ class _FilterWidgetState extends State<FilterWidget> {
           color: PersonalizedColor.black
         ),
         padding: const EdgeInsets.all(10),
-        height: 280,
+        height: 350,
         child: Column(
           children: [
 
@@ -100,7 +99,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
 
-                    const Text("Age: ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                    Text("Age: (" + _ageRange.start.toInt().toString() + " - " + _ageRange.end.toInt().toString() +  ")", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
 
 
                     RangeSlider(
@@ -126,6 +125,8 @@ class _FilterWidgetState extends State<FilterWidget> {
 
 
             Container(
+                padding: const EdgeInsets.only(top: 15),
+                width: MediaQuery.of(context).size.width,
               child: OutlinedButton(
                 child: Text(_country, style: TextStyle(color: Colors.white),),
                 style: OutlinedButton.styleFrom(
@@ -149,6 +150,8 @@ class _FilterWidgetState extends State<FilterWidget> {
             ),
 
             Container(
+              padding: const EdgeInsets.only(top: 15),
+              width: MediaQuery.of(context).size.width,
               child: OutlinedButton(
                 child: Text(_ethnicity, style: TextStyle(color: Colors.white),),
                 style: OutlinedButton.styleFrom(
@@ -177,6 +180,8 @@ class _FilterWidgetState extends State<FilterWidget> {
 
 
             Container(
+              padding: const EdgeInsets.only(top: 15),
+              width: MediaQuery.of(context).size.width,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

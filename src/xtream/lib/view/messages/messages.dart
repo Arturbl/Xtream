@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:xtream/model/messageData.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
-import 'package:xtream/view/mainContainers/messages/messageWidget.dart';
+
+import 'messageWidget.dart';
 
 class Messages extends StatefulWidget {
   const Messages({Key? key}) : super(key: key);

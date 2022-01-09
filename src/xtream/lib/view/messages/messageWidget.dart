@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:xtream/model/messageData.dart';
-import 'package:xtream/util/colors.dart';
 
 
 class MessageWidget extends StatefulWidget {
@@ -15,12 +14,17 @@ class MessageWidget extends StatefulWidget {
 class _MessageWidgetState extends State<MessageWidget> {
 
   void openChat() {
-    print("Opening chat with " + widget.messageData.user.name);
+    Navigator.of(context).pushNamed('/chat', arguments: widget.messageData.user);
+  }
+
+  void showConversationOptions() {
+    print("open " + widget.messageData.user.name + " chat options");
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onLongPress: showConversationOptions,
       onTap: openChat,
       child: Container(
           margin: const EdgeInsets.only(top: 15),
@@ -28,7 +32,7 @@ class _MessageWidgetState extends State<MessageWidget> {
           height: 80,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Colors.white
+              color: Colors.white70
           ),
           child: Row(
             children: [
@@ -80,9 +84,9 @@ class _MessageWidgetState extends State<MessageWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Text(widget.messageData.lastMessageDate, style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: FontWeight.bold))
-              )
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Text(widget.messageData.lastMessageDate, style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: FontWeight.bold))
+              ),
             ],
           )
       ),

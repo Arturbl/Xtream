@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
-import 'package:xtream/view/mainContainers/home/profile.dart';
+import 'package:xtream/view/home/profile.dart';
+
 
 class Home extends StatefulWidget {
   Home({Key? key, required this.filter}) : super(key: key);
@@ -35,7 +36,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    profiles = displayProfiles(["Júlia Palha", "Margot Hobbie"]);
+    profiles = displayProfiles(["Júlia Palha", "Margot Hobbie", "Jennifer Lawrence", "Gabi"]);
     print("Country: " + widget.filter.country);
     print("age: (min)" + widget.filter.ageRange.min.toString());
     print("age: (max)" + widget.filter.ageRange.max.toString());
@@ -49,7 +50,8 @@ class _HomeState extends State<Home> {
       child: Container(
         child: ListView.builder(
           physics: const PageScrollPhysics(),
-          itemCount: 2,
+          // physics: const BouncingScrollPhysics(),
+          itemCount: 4,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             return Container(

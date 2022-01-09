@@ -9,6 +9,8 @@ class User{
   late int _numOfCalls;
   late String _country;
   late String _profileImageUrl;
+  late String _ethnicity;
+  late String _gender;
 
   User(this._id, this._name);
 
@@ -18,6 +20,17 @@ class User{
     _numOfCalls = value;
   }
 
+  String get gender => _gender;
+
+  set gender(String value) {
+    _gender = value;
+  }
+
+  String get ethnicity => _ethnicity;
+
+  set ethnicity(String value) {
+    _ethnicity = value;
+  }
 
   String get profileImageUrl => _profileImageUrl;
 
