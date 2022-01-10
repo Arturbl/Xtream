@@ -30,19 +30,17 @@ class _MessagesState extends State<Messages> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        child:  Container(
-          color: PersonalizedColor.black,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.fromLTRB(10, 2,10,85),
-          child: ListView(
-            scrollDirection: Axis.vertical,
-            children: getMessages(),
-          ),
+    return SingleChildScrollView(
+      child:  Container(
+        color: PersonalizedColor.black,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        padding: const EdgeInsets.fromLTRB(10, 2,10,85),
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: getMessages(),
         ),
-      )
+      ),
     );
   }
 }

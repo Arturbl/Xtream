@@ -46,8 +46,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
+    return Container(
+        color: PersonalizedColor.black,
         child: ListView.builder(
           physics: const PageScrollPhysics(),
           // physics: const BouncingScrollPhysics(),
@@ -55,16 +55,14 @@ class _HomeState extends State<Home> {
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             return Container(
-                color: PersonalizedColor.black,
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: Center(
-                  child: profiles[index]
+                    child: profiles[index]
                 )
             );
           },
         )
-      ),
     );
   }
 }

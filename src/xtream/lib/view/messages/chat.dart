@@ -82,7 +82,7 @@ class _ChatState extends State<Chat> {
           child: Container(
               decoration: BoxDecoration(
                   // image: DecorationImage(
-                  //     image: AssetImage('assets/images/julia.jpg'),
+                  //     image: AssetImage('assets/images/eu.jpeg'),
                   //     fit: BoxFit.cover
                   // )
                 color: PersonalizedColor.black
