@@ -8,11 +8,21 @@
 
 # How to use the app:
     Download it via play store or access it via browser
+    
+    * with an account:
+        -> Cans:
+            -> Visualizer Profiles:
+            -> Speak and donate to other people
+        -> Cannot:
+            -> Receive donations
+            -> be visualized by others
+    
 
 
 ## How they do it:
     1. Free plan: (no need for an account)
         .random people will appear in chats. 
+        .if the user reload the page not having an account, all chats will be lost
         .Config options:
             .Sex
 

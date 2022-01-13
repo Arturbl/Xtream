@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/util/RouteGenerator.dart';
-import 'package:xtream/view/main/login.dart';
 import 'package:xtream/view/main/runApp.dart';
 
 void main() {
@@ -25,7 +24,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: checkUserSession() ? RunApp(filter: Filter()) : Login(),
+      home: RunApp(filter: Filter()),
       initialRoute: '/',
       onGenerateRoute: RouteGenerator.generateRoute,
     );

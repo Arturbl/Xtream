@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
 import 'package:xtream/view/main/createAccount.dart';
+import 'package:xtream/view/main/login.dart';
 import 'package:xtream/view/messages/chat.dart';
 import 'package:xtream/view/profile/editProfile.dart';
 
@@ -25,6 +26,8 @@ class RouteGenerator{
       case '/createAccount':
         String email = args.toString();
         return MaterialPageRoute(builder: (context) => CreateAccount(email));
+      case '/login':
+        return MaterialPageRoute(builder: (context) => Login());
       default:
         return _errorRoute();
     }

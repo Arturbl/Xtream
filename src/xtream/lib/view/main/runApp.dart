@@ -17,6 +17,8 @@ class RunApp extends StatefulWidget {
 
 class _RunAppState extends State<RunApp> {
 
+  bool userAuthenticated = true; // check if user is authenticated
+
   late Widget currentPage;
   int currentPageIndex = 0;
 
@@ -122,7 +124,13 @@ class _RunAppState extends State<RunApp> {
 
                 IconButton(
                   icon: Icon(Icons.person, color: PersonalizedColor.black,),
-                  onPressed:() => setContainer(Profile()),
+                  onPressed:() {
+                    if(userAuthenticated) {
+                      setContainer(Profile());
+                    } else{
+                      Navigator.of(context).pushNamed('/login');
+                    }
+                  },
                 ),
 
               ],
