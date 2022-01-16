@@ -19,7 +19,7 @@ class _MessagesState extends State<Messages> {
     List<Widget> widgets = [];
     for(String name in names) {
       MessageData data = MessageData();
-      data.user = User('123', name);
+      data.user = User();
       data.lastMessage = "me: Hello $name";
       data.lastMessageDate = "1h";
       data.messageRead = true;

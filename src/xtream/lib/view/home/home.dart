@@ -22,9 +22,9 @@ class _HomeState extends State<Home> {
   List<Widget> displayProfiles(List<String> recvNames) {
     List<Widget> profiles = [];
     for(String name in recvNames) {
-      User user = User('123', name);
+      User user = User();
+      user.name = name;
       user.evaluation = 96.0;
-      user.numOfCalls = 26;
       user.country = "Portugal";
       user.age = 21;
       Widget profile = Profile(user: user);

@@ -25,11 +25,11 @@ class _LoginState extends State<Login> {
     String password = _passwordController.text;
     if(email.isNotEmpty && password.isNotEmpty) {
       if(email.contains('@')) {
-        bool response = await Auth.signIn(email, password);
-        if(response) {
+        String response = await Auth.signIn(email, password);
+        if(response == "done") {
           Navigator.pop(context);
         } else {
-          _setError('Something went wrong, try again');
+          _setError(response);
         }
       } else {
         _setError('Enter a valid email');

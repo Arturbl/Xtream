@@ -2,22 +2,36 @@
 
 class User{
 
-  late String _name;
-  late int _age;
-  late String _id;
-  late double _evaluation;
-  late int _numOfCalls;
-  late String _country;
-  late String _profileImageUrl;
-  late String _ethnicity;
-  late String _gender;
+  String _name = '';
+  int _age = 0;
+  String _uid = '';
+  double _evaluation = 0.0;
+  String _country = '';
+  Map<String, dynamic> imagesUrls = {'profile': '', 'other': []};
+  String _ethnicity = '';
+  String _gender = '';
+  String _email = '';
 
-  User(this._id, this._name);
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'age': age,
+      'uid': uid,
+      'evaluation': evaluation,
+      'country': country,
+      'images': imagesUrls,
+      'ethnicity': ethnicity,
+      'gender': gender,
+      'email': email
+    };
+  }
 
-  int get numOfCalls => _numOfCalls;
+  void setProfileImage(String url) {
+    imagesUrls['profile'] = url;
+  }
 
-  set numOfCalls(int value) {
-    _numOfCalls = value;
+  void addImage(String url) {
+    imagesUrls['other'].add(url);
   }
 
   String get gender => _gender;
@@ -26,17 +40,20 @@ class User{
     _gender = value;
   }
 
+
+  String get email => _email;
+
+  set email(String value) {
+    _email = value;
+  }
+
+
   String get ethnicity => _ethnicity;
 
   set ethnicity(String value) {
     _ethnicity = value;
   }
 
-  String get profileImageUrl => _profileImageUrl;
-
-  set profileImageUrl(String value) {
-    _profileImageUrl = value;
-  }
 
   int get age => _age;
 
@@ -56,10 +73,10 @@ class User{
     _evaluation = value;
   }
 
-  String get id => _id;
+  String get uid => _uid;
 
-  set id(String value) {
-    _id = value;
+  set uid(String value) {
+    _uid = value;
   }
 
   String get name => _name;

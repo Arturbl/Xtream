@@ -21,7 +21,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
       alignment: Alignment.center,
       child: GestureDetector(
         onTap: () {
-          User user = User('12234', "Artur");
+          User user = User();
           Navigator.pushNamed(context, '/editProfile', arguments: user);
         },
         child: Stack(

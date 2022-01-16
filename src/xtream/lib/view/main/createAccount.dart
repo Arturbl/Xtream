@@ -68,18 +68,18 @@ class _CreateAccountState extends State<CreateAccount> {
     setState(() {
       _loading = true;
     });
-    String nome = _nomeController.text;
+    String name = _nomeController.text;
     String email = _emailController.text;
     String pass = _senhaController.text;
     String confirmPass = _senhaConfirmController.text;
     if(pass.isNotEmpty && confirmPass.isNotEmpty) {
       if(pass.trim() == confirmPass.trim()) {
         if(pass.length >= 6) {
-          bool response = await Auth.registerNewUser(email, pass);
-          if(response) {
+          String response = await Auth.registerNewUser(email, pass, name);
+          if(response == "done") {
             Navigator.pop(context);
           } else {
-            _setError('Something went wrong, try again');
+            _setError(response);
           }
         } else {
           _setError('Password must have at least 6 characters');
