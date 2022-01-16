@@ -75,6 +75,7 @@ class _RunAppState extends State<RunApp> {
                 child: const Icon(Icons.exit_to_app, size: 22),
                 onPressed: () async {
                   await Auth.signOut();
+                  setContainer(home);
                 },
               )
           ),

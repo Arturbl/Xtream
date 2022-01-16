@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:xtream/controller/main/auth.dart';
 import 'package:xtream/util/colors.dart';
 
 class Login extends StatefulWidget {
@@ -10,13 +11,13 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
 
   TextEditingController _emailController = new TextEditingController(text: 'arturesmavc@gmail.com');
-  TextEditingController _passwordController = new TextEditingController(text: '123456');
+  TextEditingController _passwordController = new TextEditingController(text: '1234567956526');
   String _error1 = '';
   bool _loading = false;
 
 
 
-  void _validadeEmailAndPassword() {
+  void _validadeEmailAndPassword() async {
     setState(() {
       _loading = true;
     });
@@ -24,7 +25,12 @@ class _LoginState extends State<Login> {
     String password = _passwordController.text;
     if(email.isNotEmpty && password.isNotEmpty) {
       if(email.contains('@')) {
-        print("Starting login");
+        bool response = await Auth.signIn(email, password);
+        if(response) {
+          Navigator.pop(context);
+        } else {
+          _setError('Something went wrong, try again');
+        }
       } else {
         _setError('Enter a valid email');
       }
