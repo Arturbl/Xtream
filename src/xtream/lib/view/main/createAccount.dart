@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:xtream/controller/main/account.dart';
 import 'package:xtream/util/colors.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -16,6 +17,7 @@ class CreateAccount extends StatefulWidget {
 
 class _CreateAccountState extends State<CreateAccount> {
 
+
   //control ui
   bool _visible = false;
   String _visibleText = 'Continue';
@@ -25,8 +27,9 @@ class _CreateAccountState extends State<CreateAccount> {
 
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _nomeController = new TextEditingController();
-  TextEditingController _senhaController = new TextEditingController();
-  TextEditingController _senhaConfirmController = new TextEditingController();
+  TextEditingController _senhaController = new TextEditingController(text: "1234567956526");
+  TextEditingController _senhaConfirmController = new TextEditingController(text: "1234567956526");
+
 
   void _checkNameAndEmail() {
     String nome = _nomeController.text;
@@ -61,7 +64,7 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
-  void _verifyPasswordsMatch() {
+  void _verifyPasswordsMatch() async {
     setState(() {
       _loading = true;
     });
@@ -72,7 +75,12 @@ class _CreateAccountState extends State<CreateAccount> {
     if(pass.isNotEmpty && confirmPass.isNotEmpty) {
       if(pass.trim() == confirmPass.trim()) {
         if(pass.length >= 6) {
-          print("Everything looks good");
+          bool response = await Account.registerNewUser(email, pass);
+          if(response) {
+            Navigator.pop(context);
+          } else {
+            _setError('Something went wrong, try again');
+          }
         } else {
           _setError('Password must have at least 6 characters');
         }

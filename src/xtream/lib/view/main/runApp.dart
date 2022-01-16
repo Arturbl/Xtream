@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/util/colors.dart';
@@ -17,7 +18,7 @@ class RunApp extends StatefulWidget {
 
 class _RunAppState extends State<RunApp> {
 
-  bool userAuthenticated = true; // check if user is authenticated
+  bool userAuthenticated = false; // check if user is authenticated
 
   late Widget currentPage;
   int currentPageIndex = 0;
@@ -25,6 +26,21 @@ class _RunAppState extends State<RunApp> {
   late Widget _container;
   late Home home;
 
+  void checkUserSession() {
+    FirebaseAuth.instance
+        .authStateChanges()
+        .listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+      }
+    });
+  }
+
+  void logout() {
+    print("logging out");
+  }
 
   void setContainer(Widget newContainer) {
     setState(() {
@@ -79,16 +95,13 @@ class _RunAppState extends State<RunApp> {
     );
   }
 
-  void logout() {
-    print("logging out");
-  }
-
   @override
   void initState() {
     super.initState();
     home = Home(filter: widget.filter);
     currentPage = home;
     _container = home;
+    checkUserSession();
   }
 
   @override

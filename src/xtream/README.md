@@ -27,5 +27,26 @@
 # How does the app make money?
     1. Payed plans
     2. Ads
+
+
+
+
+# external modules:
+
+    * Client without account:
+        -> JWT tokens
+
+    * Cloud messaging:
+        -> Background and foreground notifications  (https://www.youtube.com/watch?v=4Cwp1iA8BaQ)
+    
+    * Login with third parties:
+        -> OAuth 2.0 (https://auth0.com/blog/get-started-with-flutter-authentication/)
+
+    * Chat:
+        -> Push notifications ( Firebase Messaging)
+        -> Firebase Messaging (https://pub.dev/packages/firebase_messaging)
+
+    * Donations:
+        -> Paypal api (https://www.youtube.com/watch?v=E05uXmUh9t4)
     
             
