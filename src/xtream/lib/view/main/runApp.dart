@@ -6,6 +6,7 @@ import 'package:xtream/view/home/filterWidget.dart';
 import 'package:xtream/view/home/home.dart';
 import 'package:xtream/view/messages/messages.dart';
 import 'package:xtream/view/profile/profile.dart';
+import 'package:xtream/controller/main/auth.dart';
 
 class RunApp extends StatefulWidget {
   const RunApp({Key? key, required this.filter}) : super(key: key);
@@ -32,14 +33,12 @@ class _RunAppState extends State<RunApp> {
         .listen((User? user) {
       if (user == null) {
         print('User is currently signed out!');
+        userAuthenticated = false;
       } else {
         print('User is signed in!');
+        userAuthenticated = true;
       }
     });
-  }
-
-  void logout() {
-    print("logging out");
   }
 
   void setContainer(Widget newContainer) {
@@ -74,7 +73,9 @@ class _RunAppState extends State<RunApp> {
                 backgroundColor: Colors.transparent,
                 // label: const Text(""), // Filter
                 child: const Icon(Icons.exit_to_app, size: 22),
-                onPressed: logout,
+                onPressed: () async {
+                  await Auth.signOut();
+                },
               )
           ),
         );

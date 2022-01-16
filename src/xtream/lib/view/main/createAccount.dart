@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:xtream/controller/main/account.dart';
+import 'package:xtream/controller/main/auth.dart';
 import 'package:xtream/util/colors.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -75,7 +75,7 @@ class _CreateAccountState extends State<CreateAccount> {
     if(pass.isNotEmpty && confirmPass.isNotEmpty) {
       if(pass.trim() == confirmPass.trim()) {
         if(pass.length >= 6) {
-          bool response = await Account.registerNewUser(email, pass);
+          bool response = await Auth.registerNewUser(email, pass);
           if(response) {
             Navigator.pop(context);
           } else {
