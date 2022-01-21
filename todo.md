@@ -1,11 +1,4 @@
 
-#Widgets
 
-    Containers:
-        Home:
-            Card:
-                Info: 
-                    Name
-                    Evaluation (percentage)
-                    Number of calls
-                    Country
+# Profile:
+    depois de selecionar uma das opcoes, o utilizador tem de ser redirecionado para a pagina principal;

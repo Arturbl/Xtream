@@ -34,6 +34,11 @@ class _SettingsState extends State<Settings> {
     print('_userIsAnonymous: $_userIsAnonymous');
   }
 
+  void closeSettingsWidget(dynamic action) async {
+    await action;
+    Navigator.pop(context);
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -67,8 +72,8 @@ class _SettingsState extends State<Settings> {
               children: [
 
                 _userIsAnonymous ?
-                SettingsCard(text: 'Login', action: () => Navigator.pushNamed(context, '/login')) :
-                SettingsCard(text: 'Sign Out', action: () => Auth.signOut()),
+                  SettingsCard(text: 'Login', action: () => closeSettingsWidget(Navigator.pushNamed(context, '/login'))) :
+                  SettingsCard(text: 'Sign Out', action: () => closeSettingsWidget(Auth.signOut())),
 
                 SettingsCard(text: 'Notifications', action: () => Navigator.pushNamed(context, '/notifications')),
 
