@@ -19,7 +19,6 @@ class RunApp extends StatefulWidget {
 
 class _RunAppState extends State<RunApp> {
 
-  bool userAuthenticated = false; // check if user is authenticated
   late User? currentUser;
 
   int currentPageIndex = 0;
@@ -27,18 +26,18 @@ class _RunAppState extends State<RunApp> {
   late Widget _container;
   late Home home;
 
-  void isUserLogged() {
+  void initUserSession() {
     FirebaseAuth.instance
         .authStateChanges()
         .listen((User? user) async {
       if (user == null) {
-        print('User is currently signed out!');
+        print('User is currently signed out, Creating new anonymous session.');
         UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
         currentUser = userCredential.user;
       } else {
         print('User is signed in!');
         print('anonymous: ' + user.isAnonymous.toString());
-        print('email: ' + user.email.toString());
+        print('uid: ' + user.uid.toString());
         currentUser = user;
       }
     });
@@ -103,7 +102,7 @@ class _RunAppState extends State<RunApp> {
     super.initState();
     home = Home(filter: widget.filter);
     _container = home;
-    isUserLogged();
+    initUserSession();
   }
 
   @override

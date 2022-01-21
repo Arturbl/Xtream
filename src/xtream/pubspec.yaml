@@ -70,6 +70,7 @@ flutter:
     - assets/images/julia.jpg
     - assets/images/eu.jpeg
     - assets/images/futebol.jpeg
+    - assets/images/profile_avatar.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

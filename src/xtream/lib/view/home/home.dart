@@ -37,11 +37,11 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     profiles = displayProfiles(["Júlia Palha", "Margot Hobbie", "Jennifer Lawrence", "Gabi"]);
-    print("Country: " + widget.filter.country);
-    print("age: (min)" + widget.filter.ageRange.min.toString());
-    print("age: (max)" + widget.filter.ageRange.max.toString());
-    print("gender: " + widget.filter.gender);
-    print("ethnicity: " + widget.filter.ethnicity);
+    // print("Country: " + widget.filter.country);
+    // print("age: (min)" + widget.filter.ageRange.min.toString());
+    // print("age: (max)" + widget.filter.ageRange.max.toString());
+    // print("gender: " + widget.filter.gender);
+    // print("ethnicity: " + widget.filter.ethnicity);
   }
 
   @override

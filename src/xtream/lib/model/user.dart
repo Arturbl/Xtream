@@ -2,13 +2,13 @@
 
 class User{
 
-  late bool _isAnonymous;
+  late bool _isAnonymous = true;
   String _name = '';
   int _age = 0;
   String _uid = '';
   double _evaluation = 0.0;
   String _country = '';
-  Map<String, dynamic> imagesUrls = {'profile': '', 'other': []};
+  Map<String, dynamic> imagesUrls = {'profile': '', 'other': List<dynamic>};
   String _ethnicity = '';
   String _gender = '';
   String _email = '';
@@ -39,6 +39,10 @@ class User{
 
   void addImage(String url) {
     imagesUrls['other'].add(url);
+  }
+
+  set images(List<dynamic> images) {
+    imagesUrls['other'] = images;
   }
 
   String get gender => _gender;

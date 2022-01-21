@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:xtream/controller/main/auth.dart';
+import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
 import 'package:xtream/view/main/settings/card.dart';
 
@@ -13,6 +13,7 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
 
+  late User user;
   bool _userIsAnonymous = false;
 
 
@@ -22,17 +23,6 @@ class _SettingsState extends State<Settings> {
     });
   }
 
-  void isUserAnonymous() async {
-    User? currentFirebaseUser = await Auth.getCurrentUser();
-    if(currentFirebaseUser != null) {
-      if(currentFirebaseUser.isAnonymous) {
-        userIsAnonymous = true;
-      } else {
-        userIsAnonymous = false;
-      }
-    }
-    print('_userIsAnonymous: $_userIsAnonymous');
-  }
 
   void closeSettingsWidget(dynamic action) async {
     await action;
@@ -43,7 +33,8 @@ class _SettingsState extends State<Settings> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    isUserAnonymous();
+    user = Auth.getCurrentUser();
+    userIsAnonymous = user.isAnonymous;
   }
 
   @override

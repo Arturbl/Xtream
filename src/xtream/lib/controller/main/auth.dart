@@ -44,8 +44,18 @@ class Auth {
     await FirebaseAuth.instance.signOut();
   }
 
-  static Future<User?> getCurrentUser() async {
-    return FirebaseAuth.instance.currentUser;
+  static userClass.User getCurrentUser() {
+    userClass.User user = userClass.User();
+    User? firebaseUser =  FirebaseAuth.instance.currentUser;
+    if(firebaseUser != null) {
+      if(firebaseUser.isAnonymous) {
+        user.isAnonymous = true;
+      } else {
+        user =  FirestoreController.getUserData(firebaseUser.uid);
+        user.isAnonymous = false;
+      }
+    }
+    return user;
   }
 
 
