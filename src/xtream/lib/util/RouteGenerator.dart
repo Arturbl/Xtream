@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
-import 'package:xtream/view/main/createAccount.dart';
-import 'package:xtream/view/main/login.dart';
+import 'package:xtream/view/main/auth/createAccount.dart';
+import 'package:xtream/view/main/auth/login.dart';
+import 'package:xtream/view/main/settings/settings.dart';
 import 'package:xtream/view/messages/chat.dart';
 import 'package:xtream/view/profile/editProfile.dart';
 
@@ -28,6 +29,8 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (context) => CreateAccount(email));
       case '/login':
         return MaterialPageRoute(builder: (context) => Login());
+      case '/settings':
+        return MaterialPageRoute(builder: (context) => Settings());
       default:
         return _errorRoute();
     }
@@ -36,6 +39,9 @@ class RouteGenerator{
   static Route<dynamic> _errorRoute() {
     return MaterialPageRoute(builder: (context){
       return Scaffold(
+        appBar: AppBar(
+          title: const Text('Route not found.'),
+        ),
         backgroundColor: PersonalizedColor.black,
         body: Center(
           child: Text("Route not found", style: TextStyle(color: PersonalizedColor.red))

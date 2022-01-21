@@ -2,6 +2,7 @@
 
 class User{
 
+  late bool _isAnonymous;
   String _name = '';
   int _age = 0;
   String _uid = '';
@@ -24,6 +25,12 @@ class User{
       'gender': gender,
       'email': email
     };
+  }
+
+  bool get isAnonymous => _isAnonymous;
+
+  set isAnonymous(bool value) {
+    _isAnonymous = value;
   }
 
   void setProfileImage(String url) {

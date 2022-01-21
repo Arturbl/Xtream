@@ -44,4 +44,9 @@ class Auth {
     await FirebaseAuth.instance.signOut();
   }
 
+  static Future<User?> getCurrentUser() async {
+    return FirebaseAuth.instance.currentUser;
+  }
+
+
 }

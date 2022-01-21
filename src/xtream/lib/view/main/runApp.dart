@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:xtream/controller/main/auth.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/util/colors.dart';
 import 'package:xtream/view/home/filterWidget.dart';
 import 'package:xtream/view/home/home.dart';
 import 'package:xtream/view/messages/messages.dart';
 import 'package:xtream/view/profile/profile.dart';
-import 'package:xtream/controller/main/auth.dart';
 
 class RunApp extends StatefulWidget {
   const RunApp({Key? key, required this.filter}) : super(key: key);
@@ -20,23 +20,26 @@ class RunApp extends StatefulWidget {
 class _RunAppState extends State<RunApp> {
 
   bool userAuthenticated = false; // check if user is authenticated
+  late User? currentUser;
 
-  late Widget currentPage;
   int currentPageIndex = 0;
 
   late Widget _container;
   late Home home;
 
-  void checkUserSession() {
+  void isUserLogged() {
     FirebaseAuth.instance
         .authStateChanges()
-        .listen((User? user) {
+        .listen((User? user) async {
       if (user == null) {
         print('User is currently signed out!');
-        userAuthenticated = false;
+        UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
+        currentUser = userCredential.user;
       } else {
         print('User is signed in!');
-        userAuthenticated = true;
+        print('anonymous: ' + user.isAnonymous.toString());
+        print('email: ' + user.email.toString());
+        currentUser = user;
       }
     });
   }
@@ -45,7 +48,6 @@ class _RunAppState extends State<RunApp> {
     setState(() {
       _container = newContainer;
     });
-    currentPage = newContainer;
   }
 
 
@@ -60,7 +62,9 @@ class _RunAppState extends State<RunApp> {
                 backgroundColor: PersonalizedColor.black1,
                 // label: const Text(""), // Filter
                 child: const Icon(Icons.menu, size: 22),
-                onPressed: filterUsers,
+                onPressed: () async {
+                  await showModal(FilterWidget(filter: widget.filter));
+                },
               )
           ),
         );
@@ -70,13 +74,11 @@ class _RunAppState extends State<RunApp> {
               padding: const EdgeInsets.only(top: 10),
               child: FloatingActionButton(
                 elevation: 10,
-                backgroundColor: Colors.transparent,
+                  backgroundColor: PersonalizedColor.black1,
+                  // backgroundColor: Colors.transparent,
                 // label: const Text(""), // Filter
-                child: const Icon(Icons.exit_to_app, size: 22),
-                onPressed: () async {
-                  await Auth.signOut();
-                  setContainer(home);
-                },
+                child:  const Icon(Icons.settings, size: 22),
+                onPressed: () =>  Navigator.of(context).pushNamed('/settings')
               )
           ),
         );
@@ -84,15 +86,14 @@ class _RunAppState extends State<RunApp> {
     return Container();
   }
 
-
-  Future filterUsers() async {
+  Future showModal(Widget widget) async {
     await showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15.0)
         ),
         builder: (context) {
-          return FilterWidget(filter: widget.filter);
+          return widget;
         }
     );
   }
@@ -101,9 +102,8 @@ class _RunAppState extends State<RunApp> {
   void initState() {
     super.initState();
     home = Home(filter: widget.filter);
-    currentPage = home;
     _container = home;
-    checkUserSession();
+    isUserLogged();
   }
 
   @override
@@ -134,18 +134,12 @@ class _RunAppState extends State<RunApp> {
 
                 IconButton(
                   icon: Icon(Icons.messenger_rounded, color: PersonalizedColor.black,),
-                  onPressed:() => setContainer(Messages()),
+                  onPressed:() => setContainer(const Messages()),
                 ),
 
                 IconButton(
                   icon: Icon(Icons.person, color: PersonalizedColor.black,),
-                  onPressed:() {
-                    if(userAuthenticated) {
-                      setContainer(Profile());
-                    } else{
-                      Navigator.of(context).pushNamed('/login');
-                    }
-                  },
+                  onPressed:() => setContainer(Profile()),
                 ),
 
               ],

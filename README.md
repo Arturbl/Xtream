@@ -8,21 +8,11 @@
 
 # How to use the app:
     Download it via play store or access it via browser
-    
-    * with an account:
-        -> Cans:
-            -> Visualizer Profiles:
-            -> Speak and donate to other people
-        -> Cannot:
-            -> Receive donations
-            -> be visualized by others
-    
 
 
 ## How they do it:
     1. Free plan: (no need for an account)
         .random people will appear in chats. 
-        .if the user reload the page not having an account, all chats will be lost
         .Config options:
             .Sex
 
@@ -37,5 +27,26 @@
 # How does the app make money?
     1. Payed plans
     2. Ads
+
+
+
+
+# external modules:
+
+    * Client without account:
+        -> Shared preferences -> https://youtu.be/kLJ43S9vBv4
+
+    * Cloud messaging:
+        -> Background and foreground notifications  (https://www.youtube.com/watch?v=4Cwp1iA8BaQ)
+    
+    * Login with third parties:
+        -> OAuth 2.0 (https://auth0.com/blog/get-started-with-flutter-authentication/)
+
+    * Chat:
+        -> Push notifications ( Firebase Messaging)
+        -> Firebase Messaging (https://pub.dev/packages/firebase_messaging)
+
+    * Donations:
+        -> Paypal api (https://www.youtube.com/watch?v=E05uXmUh9t4)
     
             

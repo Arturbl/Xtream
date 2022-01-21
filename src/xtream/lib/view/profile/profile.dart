@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
-import 'package:xtream/view/profile/editProfile.dart';
 
 class Profile extends StatefulWidget {
+  // const Profile({Key? key, required this.user}) : super(key: key);
   const Profile({Key? key}) : super(key: key);
+
+  // final User? user;
 
   @override
   _ProfileState createState() => _ProfileState();
