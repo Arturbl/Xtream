@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:xtream/controller/main/auth.dart';
 import 'package:xtream/model/filter.dart';
+import 'package:xtream/model/user.dart' as userClass;
 import 'package:xtream/util/colors.dart';
 import 'package:xtream/view/home/filterWidget.dart';
 import 'package:xtream/view/home/home.dart';
@@ -26,7 +27,7 @@ class _RunAppState extends State<RunApp> {
   late Widget _container;
   late Home home;
 
-  void initUserSession() {
+  void initUserSession() async{
     FirebaseAuth.instance
         .authStateChanges()
         .listen((User? user) async {

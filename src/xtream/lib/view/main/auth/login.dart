@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:xtream/controller/main/auth.dart';
+import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
 
 class Login extends StatefulWidget {
@@ -25,6 +26,8 @@ class _LoginState extends State<Login> {
     String password = _passwordController.text;
     if(email.isNotEmpty && password.isNotEmpty) {
       if(email.contains('@')) {
+        // delete current anonymous session
+        Auth.deleteCurrentAnonymousSession();
         String response = await Auth.signIn(email, password);
         if(response == "done") {
           Navigator.pop(context);
@@ -54,8 +57,6 @@ class _LoginState extends State<Login> {
         }
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {

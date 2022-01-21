@@ -27,6 +27,13 @@ class Auth {
     return "done";
   }
 
+  static void deleteCurrentAnonymousSession() async {
+    User? firebaseUser =  FirebaseAuth.instance.currentUser;
+    if(firebaseUser != null) {
+      await firebaseUser.delete();
+    }
+  }
+
 
   static Future<String> signIn(String email, String password) async {
     try {
@@ -50,6 +57,7 @@ class Auth {
     if(firebaseUser != null) {
       if(firebaseUser.isAnonymous) {
         user.isAnonymous = true;
+        user.uid = firebaseUser.uid;
       } else {
         user =  FirestoreController.getUserData(firebaseUser.uid);
         user.isAnonymous = false;
