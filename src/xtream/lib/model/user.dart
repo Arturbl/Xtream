@@ -8,7 +8,7 @@ class User{
   String _uid = '';
   double _evaluation = 0.0;
   String _country = '';
-  Map<String, dynamic> imagesUrls = {'profile': '', 'other': List<dynamic>};
+  Map<String, dynamic> imagesUrls = {'profile': '', 'other': []};
   String _ethnicity = '';
   String _gender = '';
   String _email = '';

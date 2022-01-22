@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:xtream/controller/main/auth.dart';
+import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
 import 'package:xtream/view/main/settings/card.dart';
+
+import '../runApp.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -23,18 +26,21 @@ class _SettingsState extends State<Settings> {
     });
   }
 
+  void initUser() async {
+    user = await Auth.getCurrentUser();
+    userIsAnonymous = user.isAnonymous;
+  }
 
   void closeSettingsWidget(dynamic action) async {
     await action;
-    Navigator.pop(context);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RunApp(filter: Filter())));
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    user = Auth.getCurrentUser();
-    userIsAnonymous = user.isAnonymous;
+    initUser();
   }
 
   @override

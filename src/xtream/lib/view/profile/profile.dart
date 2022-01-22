@@ -1,20 +1,59 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:xtream/controller/main/auth.dart';
+import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
+import 'package:xtream/view/main/runApp.dart';
 
 class Profile extends StatefulWidget {
-  // const Profile({Key? key, required this.user}) : super(key: key);
   const Profile({Key? key}) : super(key: key);
-
-  // final User? user;
-
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> with TickerProviderStateMixin{
+
+  User user = User();
+  String name = '';
+  int age = 18;
+  double evaluation = 50.0;
+  String country = '';
+
+  void setData(User u) {
+    setState(() {
+      if(u.isAnonymous) {
+        name = u.uid;
+        return;
+      }
+      name = u.name;
+      age = u.age;
+      evaluation = u.evaluation;
+      country = u.country;
+    });
+  }
+
+  void getCurrentUser() async {
+    user = await Auth.getCurrentUser();
+    setData(user);
+  }
+
+  void editProfile() async {
+    if(user.isAnonymous) {
+      await Navigator.pushNamed(context, '/login', arguments: user);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RunApp(filter: Filter())));
+      return;
+    }
+    Navigator.pushNamed(context, '/editProfile', arguments: user);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +61,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
       color: PersonalizedColor.black,
       alignment: Alignment.center,
       child: GestureDetector(
-        onTap: () {
-          User user = User();
-          Navigator.pushNamed(context, '/editProfile', arguments: user);
-        },
+        onTap: editProfile,
         child: Stack(
           children: <Widget>[
 
@@ -46,8 +82,8 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
                       offset: Offset(0, 3), // changes position of shadow
                     ),
                   ],
-                  image: const DecorationImage(
-                      image: AssetImage('assets/images/futebol.jpeg'),
+                  image: DecorationImage(
+                      image: user.isAnonymous ? AssetImage('assets/images/profile_avatar.png') : AssetImage('assets/images/futebol.jpeg'),
                       fit: BoxFit.cover
                   )
               ),
@@ -74,15 +110,15 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
+                          children: [
 
-                            Text("Artur" + ", " + "20", style: TextStyle(
+                            Text(name + ", " + age.toString(), style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),),
 
-                            Text("Brasil", style: TextStyle(
+                            Text(country, style: const TextStyle(
                                 color: Colors.white
                             ),)
 
@@ -93,7 +129,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
                         Container(
                           alignment: Alignment.centerLeft,
                           padding: const EdgeInsets.only(top: 2),
-                          child: Text("100" + "%", style: const TextStyle(
+                          child: Text(evaluation.toInt().toString() + "%", style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
                           ),),

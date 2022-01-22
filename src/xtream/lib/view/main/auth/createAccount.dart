@@ -55,7 +55,7 @@ class _CreateAccountState extends State<CreateAccount> {
       _loading = false;
     });
     Timer(
-        Duration(seconds: 5),
+        const Duration(seconds: 5),
             (){
           setState(() {
             _erro1 = '';

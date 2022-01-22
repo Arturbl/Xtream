@@ -4,8 +4,8 @@ import 'package:xtream/controller/main/auth.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart' as userClass;
 import 'package:xtream/util/colors.dart';
-import 'package:xtream/view/home/filterWidget.dart';
-import 'package:xtream/view/home/home.dart';
+import 'package:xtream/view/menu/filterWidget.dart';
+import 'package:xtream/view/menu/home.dart';
 import 'package:xtream/view/messages/messages.dart';
 import 'package:xtream/view/profile/profile.dart';
 
@@ -20,28 +20,24 @@ class RunApp extends StatefulWidget {
 
 class _RunAppState extends State<RunApp> {
 
-  late User? currentUser;
-
-  int currentPageIndex = 0;
+  late userClass.User currentUser;
 
   late Widget _container;
   late Home home;
 
-  void initUserSession() async{
-    FirebaseAuth.instance
-        .authStateChanges()
-        .listen((User? user) async {
-      if (user == null) {
+  void initUserSession() async {
+    userClass.User user = await Auth.getCurrentUser();
+    if(user.isAnonymous) {
         print('User is currently signed out, Creating new anonymous session.');
-        UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
-        currentUser = userCredential.user;
-      } else {
-        print('User is signed in!');
-        print('anonymous: ' + user.isAnonymous.toString());
-        print('uid: ' + user.uid.toString());
-        currentUser = user;
-      }
-    });
+        await FirebaseAuth.instance.signInAnonymously();
+        currentUser = await Auth.getCurrentUser();
+        print("Anonymous session generated with uid: " + currentUser.uid);
+        return;
+    }
+      print('User is signed in!');
+      print('anonymous: ' + user.isAnonymous.toString());
+      print('uid: ' + user.uid.toString());
+      currentUser = user;
   }
 
   void setContainer(Widget newContainer) {
