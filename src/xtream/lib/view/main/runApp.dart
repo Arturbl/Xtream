@@ -110,7 +110,17 @@ class _RunAppState extends State<RunApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _container,
+        body: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            color: PersonalizedColor.black,
+            child: Center(
+            child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.65,
+                child:  _container
+            )
+          )
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
         floatingActionButton: _container.runtimeType == Home ?
         setFloatingActionButton("Home") : _container.runtimeType == Profile ?

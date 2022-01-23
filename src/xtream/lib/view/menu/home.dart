@@ -46,23 +46,20 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: PersonalizedColor.black,
-        child: ListView.builder(
-          physics: const PageScrollPhysics(),
-          // physics: const BouncingScrollPhysics(),
-          itemCount: 4,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            return Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: Center(
-                    child: profiles[index]
-                )
-            );
-          },
-        )
+    return ListView.builder(
+      // physics: const PageScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
+      itemCount: 4,
+      scrollDirection: Axis.vertical,
+      itemBuilder: (context, index) {
+        return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Center(
+                child: profiles[index]
+            )
+        );
+      },
     );
   }
 }

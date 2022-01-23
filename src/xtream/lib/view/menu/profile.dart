@@ -20,8 +20,8 @@ class _ProfileState extends State<Profile> {
       children: <Widget>[
 
         Container(
-          height: MediaQuery.of(context).size.height * 0.50,
-          width: MediaQuery.of(context).size.width * 0.80,
+          width: MediaQuery.of(context).size.width * 0.50,
+          height: MediaQuery.of(context).size.height * 0.70,
           margin: const EdgeInsets.all(15),
           padding: const EdgeInsets.all(3),
           decoration: BoxDecoration(
@@ -56,7 +56,7 @@ class _ProfileState extends State<Profile> {
                   bottomLeft: Radius.circular(10)
               ),
             ),
-            width: MediaQuery.of(context).size.width * 0.80,
+            width: MediaQuery.of(context).size.width * 0.50,
             margin: const EdgeInsets.all(15),
             child: Container(
                 alignment: Alignment.centerLeft,

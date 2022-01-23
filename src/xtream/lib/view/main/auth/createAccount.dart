@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xtream/controller/main/auth.dart';
 import 'package:xtream/util/colors.dart';
+import 'package:xtream/util/sizing.dart';
 
 class CreateAccount extends StatefulWidget {
 
@@ -31,22 +32,19 @@ class _CreateAccountState extends State<CreateAccount> {
   TextEditingController _senhaConfirmController = new TextEditingController(text: "1234567956526");
 
 
-  void _checkNameAndEmail() {
+  bool _checkNameAndEmail() {
     String nome = _nomeController.text;
     String email = _emailController.text;
     if(nome.isNotEmpty && email.trim().isNotEmpty){
       if(email.contains('@')) {
-        setState(() {
-          _visible = true;
-          _visibleText = 'Create';
-          _align = CrossAxisAlignment.stretch;
-        });
+        return true;
       } else {
         _setError('Enter a valid email');
       }
     } else {
       _setError('Check for missing fields');
     }
+    return false;
   }
 
   _setError(String error) {
@@ -75,11 +73,13 @@ class _CreateAccountState extends State<CreateAccount> {
     if(pass.isNotEmpty && confirmPass.isNotEmpty) {
       if(pass.trim() == confirmPass.trim()) {
         if(pass.length >= 6) {
-          String response = await Auth.registerNewUser(email, pass, name);
-          if(response == "done") {
-            Navigator.pop(context);
-          } else {
-            _setError(response);
+          if(_checkNameAndEmail()) {
+            String response = await Auth.registerNewUser(email, pass, name);
+            if(response == "done") {
+              Navigator.pop(context);
+            } else {
+              _setError(response);
+            }
           }
         } else {
           _setError('Password must have at least 6 characters');
@@ -126,44 +126,27 @@ class _CreateAccountState extends State<CreateAccount> {
           backgroundColor: PersonalizedColor.red,
         ),
         body: Container(
+          width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
               color: PersonalizedColor.black,
           ),
-          padding: EdgeInsets.fromLTRB(30, 5, 30, 0),
+          padding: const EdgeInsets.fromLTRB(30, 5, 30, 0),
           child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: _align,
-                children: [
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.65,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: _align,
+                  children: [
 
-                  TextField(
-                    controller: _nomeController,
-                    autofocus: true,
-                    keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintText: 'Username',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(color: Colors.grey)
-                        ),
-                        prefixIcon: Icon(Icons.person, color: PersonalizedColor.black,)
-                    ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.only(top: 10),
-                    child: TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      controller: _emailController,
+                    TextField(
+                      controller: _nomeController,
+                      autofocus: true,
+                      keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: 'Email',
+                          hintText: 'Username',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -171,122 +154,149 @@ class _CreateAccountState extends State<CreateAccount> {
                               borderRadius: BorderRadius.circular(30),
                               borderSide: BorderSide(color: Colors.grey)
                           ),
-                          prefixIcon: Icon(Icons.email, color: PersonalizedColor.black,)
+                          prefixIcon: Icon(Icons.person, color: PersonalizedColor.black,)
                       ),
                     ),
-                  ),
 
-
-                  Visibility(
-                    visible: _visible,
-                    child: Padding(
+                    Padding(
                       padding: EdgeInsets.only(top: 10),
                       child: TextField(
-                        obscureText: true,
-                        controller: _senhaController,
+                        keyboardType: TextInputType.emailAddress,
+                        controller: _emailController,
                         decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
-                            hintText: 'Password',
+                            hintText: 'Email',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
                                 borderSide: BorderSide(color: Colors.grey)
                             ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            prefixIcon: Icon(Icons.vpn_key,color: PersonalizedColor.black)
+                            prefixIcon: Icon(Icons.email, color: PersonalizedColor.black,)
                         ),
                       ),
                     ),
-                  ),
 
-                  Visibility(
-                    visible: _visible,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 10),
-                      child: TextField(
-                        obscureText: true,
-                        controller: _senhaConfirmController,
-                        decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.white,
-                            hintText: 'Confirm password',
-                            focusedBorder: OutlineInputBorder(
+
+                    Visibility(
+                      visible: _visible,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: TextField(
+                          obscureText: true,
+                          controller: _senhaController,
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintText: 'Password',
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide: BorderSide(color: Colors.grey)
+                              ),
+                              border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(color: Colors.grey)
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            prefixIcon: Icon(Icons.vpn_key, color: PersonalizedColor.black)
+                              ),
+                              prefixIcon: Icon(Icons.vpn_key,color: PersonalizedColor.black)
+                          ),
                         ),
                       ),
                     ),
-                  ),
 
-                  _visible == true
-                      ? Padding(
-                      padding: EdgeInsets.only(top: 10, left: 10, right: 10),
-                      child: GestureDetector(
-                        onTap: (){
-                          Navigator.pushNamed(context, '/terms');
-                        },
-                        child: RichText(
-                            text: const TextSpan(
-                                text: 'By clicking on create, you accept our ',
-                                style: TextStyle(
-                                    color: Colors.black
-                                ),
-                                children: [
-                                  TextSpan(
-                                      text: 'terms and conditions', style: TextStyle(
-                                    color: Colors.blue,
-                                    decoration: TextDecoration.underline,
-                                  )
+                    Visibility(
+                      visible: _visible,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: TextField(
+                          obscureText: true,
+                          controller: _senhaConfirmController,
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              hintText: 'Confirm password',
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                  borderSide: BorderSide(color: Colors.grey)
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              prefixIcon: Icon(Icons.vpn_key, color: PersonalizedColor.black)
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    _visible == true
+                        ? Padding(
+                        padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.pushNamed(context, '/terms');
+                          },
+                          child: RichText(
+                              text: const TextSpan(
+                                  text: 'By clicking on create, you accept our ',
+                                  style: TextStyle(
+                                      color: Colors.black
                                   ),
-                                ]
+                                  children: [
+                                    TextSpan(
+                                        text: 'terms and conditions', style: TextStyle(
+                                      color: Colors.blue,
+                                      decoration: TextDecoration.underline,
+                                    )
+                                    ),
+                                  ]
+                              )
+                          ),
+                        )
+                    )
+                        : Container(),
+
+                    Padding(
+                      padding: EdgeInsets.only(top: 15),
+                      child: RaisedButton(
+                        child:
+                        _loading == false
+                            ? Text(_visibleText, style: TextStyle(color: PersonalizedColor.black, fontSize: Sizing.fontSize),)
+                            : const CupertinoActivityIndicator(),
+                        padding: const EdgeInsets.all(20),
+                        textColor: Colors.white,
+                        color: Colors.red,
+                        shape: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: const BorderSide(
+                                color: Colors.red
                             )
                         ),
-                      )
-                  )
-                      : Container(),
-
-                  Padding(
-                    padding: EdgeInsets.only(top: 15),
-                    child: RaisedButton(
-                      child:
-                      _loading == false
-                          ? Text(_visibleText, style: TextStyle(color: PersonalizedColor.black),)
-                          : CupertinoActivityIndicator(),
-                      padding: EdgeInsets.all(14),
-                      textColor: Colors.white,
-                      color: Colors.red,
-                      shape: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          borderSide: const BorderSide(
-                              color: Colors.red
-                          )
+                        onPressed: (){
+                          if(_visible == false) {
+                            if(_checkNameAndEmail()) {
+                              setState(() {
+                                _visible = true;
+                                _visibleText = 'Create';
+                                _align = CrossAxisAlignment.stretch;
+                              });
+                            }
+                          } else {
+                            _verifyPasswordsMatch();
+                          }
+                        },
                       ),
-                      onPressed: (){
-                        if(_visible == false) {
-                          _checkNameAndEmail();
-                        } else {
-                          _verifyPasswordsMatch();
-                        }
-                      },
                     ),
-                  ),
 
-                  _erro1 != null
-                      ? Center(
-                        child: Text(_erro1, style: TextStyle(color: Colors.red, fontSize: 14)),
-                      )
-                      : Container(),
+                    _erro1 != null
+                        ? Center(
+                      child: Text(_erro1, style: TextStyle(color: Colors.red, fontSize: Sizing.fontSize)),
+                    )
+                        : Container(),
 
-                ],
+                  ],
+                ),
               ),
-            ),
+            )
           ),
         )
     );

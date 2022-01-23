@@ -56,7 +56,7 @@ class _EditProfileState extends State<EditProfile> {
 
   Future<void> selectProfileImage() async {
     final file = await ImagePicker().pickImage(source: ImageSource.gallery);
-    await FirebaseStorageApi.uploadFile(file!, "images/profile", currentUser).then((url) => setProfileImage(url));
+    FirebaseStorageApi.uploadFile(file!, "images/profile", currentUser).then((url) => setProfileImage(url));
   }
   
 
