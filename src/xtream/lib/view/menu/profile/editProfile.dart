@@ -7,6 +7,7 @@ import 'package:xtream/controller/main/firebaseStorageApi.dart';
 import 'package:xtream/controller/main/firestoreApi.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
+import 'package:xtream/util/sizing.dart';
 
 
 
@@ -122,172 +123,180 @@ class _EditProfileState extends State<EditProfile> {
 
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-            padding: const EdgeInsets.all(35),
-            height: MediaQuery.of(context).size.height,
-            color: PersonalizedColor.black,
-            child: Column(
-              children: [
+      body: Container(
+          width: MediaQuery.of(context).size.width,
+          color: PersonalizedColor.black,
+          child: Center(
+          child: SingleChildScrollView(
+            child: Container(
+                width: Sizing.getScreenWidth(context),
+                padding: const EdgeInsets.all(35),
+                height: MediaQuery.of(context).size.height * 0.75,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
 
 
-                GestureDetector(
-                  onTap: selectProfileImage,
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 15),
-                    width: double.infinity,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: CircleAvatar(
-                          radius: 35,
-                          backgroundColor: Colors.grey,
-                          backgroundImage: _profileImageUrl.isNotEmpty ?
-                          NetworkImage(_profileImageUrl) :
-                          null,
-                          child: const Center(
-                              child: Icon(Icons.camera_alt, color: Colors.white,)
-                          )
+                    GestureDetector(
+                      onTap: selectProfileImage,
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 15),
+                        width: double.infinity,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: CircleAvatar(
+                              radius: 35,
+                              backgroundColor: Colors.grey,
+                              backgroundImage: _profileImageUrl.isNotEmpty ?
+                              NetworkImage(_profileImageUrl) :
+                              null,
+                              child: const Center(
+                                  child: Icon(Icons.camera_alt, color: Colors.white,)
+                              )
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
 
-                Container(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: TextField(
-                    controller: _nameController,
-                    autofocus: false,
-                    style: TextStyle(color: PersonalizedColor.white),
-                    decoration: InputDecoration(
-                      hintText: currentUser.name,
-                      hintStyle: TextStyle(color: PersonalizedColor.white),
-                      filled: false,
-                      fillColor: Colors.white,
-                      prefixIcon: Icon(Icons.person, color: PersonalizedColor.white,),
+                    Container(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: TextField(
+                        controller: _nameController,
+                        autofocus: false,
+                        style: TextStyle(color: PersonalizedColor.white),
+                        decoration: InputDecoration(
+                          hintText: currentUser.name,
+                          hintStyle: TextStyle(color: PersonalizedColor.white),
+                          filled: false,
+                          fillColor: Colors.white,
+                          prefixIcon: Icon(Icons.person, color: PersonalizedColor.white,),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
 
-                Container(
-                    padding: const EdgeInsets.only(top: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
+                    Container(
+                        padding: const EdgeInsets.only(top: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
 
-                        Text("Age: (" + currentUser.age.toInt().toString() + ")", style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),),
+                            Text("Age: (" + currentUser.age.toInt().toString() + ")", style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),),
 
-                        Slider(
-                          label: currentUser.age.toInt().toString(),
-                          divisions: 100,
-                          min: 18,
-                          max: 100,
-                          value: currentUser.age.toDouble(),
-                          onChanged: (value) {
-                            setState(() {
-                              currentUser.age = value.toInt();
-                            });
+                            Slider(
+                              label: currentUser.age.toInt().toString(),
+                              divisions: 100,
+                              min: 18,
+                              max: 100,
+                              value: currentUser.age.toDouble(),
+                              onChanged: (value) {
+                                setState(() {
+                                  currentUser.age = value.toInt();
+                                });
+                              },
+                            )
+
+                          ],
+                        )
+                    ),
+
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+
+                          const Text("Gender: ", style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),),
+
+                          GestureDetector(
+                            child: Chip(
+                              backgroundColor: Colors.black.withOpacity(0.15),
+                              label: const Text("Male"),
+                              avatar: currentUser.gender == "male" ? CircleAvatar(
+                                backgroundColor: PersonalizedColor.red,
+                                child:const Icon(Icons.done, color: Colors.white,),
+                              ) : null,
+                            ),
+                            onTap: () => setGender("male"),
+                          ),
+
+                          GestureDetector(
+                            child: Chip(
+                              backgroundColor: Colors.black.withOpacity(0.15),
+                              label: const Text("Female"),
+                              avatar: currentUser.gender == "female" ? CircleAvatar(
+                                backgroundColor: PersonalizedColor.red,
+                                child:const Icon(Icons.done, color: Colors.white,),
+                              ) : null,
+                            ),
+                            onTap: () => setGender("female"),
+                          ),
+
+                        ],
+                      ),
+                    ),
+
+
+                    Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.all(10),
+                        child: OutlinedButton(
+                          child: Text(_ethnicity, style: const TextStyle(color: Colors.white),),
+                          style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.white60)
+                          ),
+                          onPressed: () async {
+                            String? value = await showMenu(
+                              context: context,
+                              position: const RelativeRect.fromLTRB(200, 200, 120, 100),
+                              items: [
+                                const PopupMenuItem(child: Text("Blonde"), value: "Blonde",),
+                                const PopupMenuItem(child: Text("Brunette"), value: "Brunette",),
+                                const PopupMenuItem(child: Text("Red-haired"), value: "Red-haired",)
+                                const PopupMenuItem(child: Text("Black"), value: "Black",)
+                                const PopupMenuItem(child: Text("Latin"), value: "Latin",)
+                                const PopupMenuItem(child: Text("Asian"), value: "Asian",)
+                              ],
+                              elevation: 8.0,
+                            );
+                            if( value != null ) {
+                              setState(() {
+                                _ethnicity = value;
+                              });
+                            }
                           },
                         )
+                    ),
 
-                      ],
-                    )
-                ),
+                    Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.all(10),
+                        child: OutlinedButton(
+                          child: Text(_country, style: const TextStyle(color: Colors.white),),
+                          style: OutlinedButton.styleFrom(
+                              side: const BorderSide(color: Colors.white60)
+                          ),
+                          onPressed: () {
+                            showCountryPicker(
+                                showPhoneCode: false,
+                                context: context,
+                                onSelect: (Country country) {
+                                  String countryName = country.displayName.split('[')[0];
+                                  if(countryName.isNotEmpty) {
+                                    setState(() {
+                                      _country = countryName;
+                                    });
+                                  }
+                                }
+                            );
+                          },
+                        )
+                    ),
 
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-
-                      const Text("Gender: ", style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),),
-
-                      GestureDetector(
-                        child: Chip(
-                          backgroundColor: Colors.black.withOpacity(0.15),
-                          label: const Text("Male"),
-                          avatar: currentUser.gender == "male" ? CircleAvatar(
-                            backgroundColor: PersonalizedColor.red,
-                            child:const Icon(Icons.done, color: Colors.white,),
-                          ) : null,
-                        ),
-                        onTap: () => setGender("male"),
-                      ),
-
-                      GestureDetector(
-                        child: Chip(
-                          backgroundColor: Colors.black.withOpacity(0.15),
-                          label: const Text("Female"),
-                          avatar: currentUser.gender == "female" ? CircleAvatar(
-                            backgroundColor: PersonalizedColor.red,
-                            child:const Icon(Icons.done, color: Colors.white,),
-                          ) : null,
-                        ),
-                        onTap: () => setGender("female"),
-                      ),
-
-                    ],
-                  ),
-                ),
-
-
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.all(10),
-                    child: OutlinedButton(
-                      child: Text(_ethnicity, style: const TextStyle(color: Colors.white),),
-                      style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Colors.white60)
-                      ),
-                      onPressed: () async {
-                        String? value = await showMenu(
-                          context: context,
-                          position: const RelativeRect.fromLTRB(350, 200, 0, 0),
-                          items: [
-                            const PopupMenuItem(child: Text("Blonde"), value: "Blonde",),
-                            const PopupMenuItem(child: Text("Brunette"), value: "Brunette",),
-                            const PopupMenuItem(child: Text("Red-haired"), value: "Red-haired",)
-                            const PopupMenuItem(child: Text("Black"), value: "Black",)
-                            const PopupMenuItem(child: Text("Latin"), value: "Latin",)
-                            const PopupMenuItem(child: Text("Asian"), value: "Asian",)
-                          ],
-                          elevation: 8.0,
-                        );
-                        if( value != null ) {
-                          setState(() {
-                            _ethnicity = value;
-                          });
-                        }
-                      },
-                    )
-                ),
-
-                Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.all(10),
-                    child: OutlinedButton(
-                      child: Text(_country, style: const TextStyle(color: Colors.white),),
-                      style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Colors.white60)
-                      ),
-                      onPressed: () {
-                        showCountryPicker(
-                            showPhoneCode: false,
-                            context: context,
-                            onSelect: (Country country) {
-                              String countryName = country.displayName.split('[')[0];
-                              if(countryName.isNotEmpty) {
-                                setState(() {
-                                  _country = countryName;
-                                });
-                              }
-                            }
-                        );
-                      },
-                    )
-                ),
-
-              ],
-            )
-        ),
+                  ],
+                )
+            ),
+          )
+        )
       )
     );
   }

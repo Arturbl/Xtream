@@ -117,7 +117,7 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
                       bottomLeft: Radius.circular(10)
                   ),
                 ),
-                width: MediaQuery.of(context).size.width * 0.50,
+                width: Sizing.getScreenWidth(context), // MediaQuery.of(context).size.width * 0.50,
                 margin: const EdgeInsets.all(15),
                 child: Container(
                     alignment: Alignment.centerLeft,

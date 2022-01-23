@@ -9,7 +9,6 @@
 
 
 # TODO:
-    - Alterar responsive width de filter e settings.
     - Colocar menu no topo e floating buttons em baixo.
 
 

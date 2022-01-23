@@ -3,6 +3,7 @@ import 'package:xtream/controller/main/auth.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
+import 'package:xtream/util/sizing.dart';
 import 'package:xtream/view/runApp.dart';
 
 import 'card.dart';
@@ -58,31 +59,36 @@ class _SettingsState extends State<Settings> {
         ),),
         backgroundColor: PersonalizedColor.red,
         ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: PersonalizedColor.black,
-            padding: const EdgeInsets.all(15),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
+      body: Container(
+        padding: const EdgeInsets.only(top: 25, bottom: 25),
+        color: PersonalizedColor.black,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Center(
+          child: SingleChildScrollView(
+            child: Container(
+                width: Sizing.getScreenWidth(context),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
 
-                _userIsAnonymous ?
-                  SettingsCard(text: 'Login', action: () => closeSettingsWidget(Navigator.pushNamed(context, '/login'))) :
-                  SettingsCard(text: 'Sign Out', action: () => closeSettingsWidget(Auth.signOut())),
+                    _userIsAnonymous ?
+                    SettingsCard(text: 'Login', action: () => closeSettingsWidget(Navigator.pushNamed(context, '/login'))) :
+                    SettingsCard(text: 'Sign Out', action: () => closeSettingsWidget(Auth.signOut())),
 
-                SettingsCard(text: 'Notifications', action: () => Navigator.pushNamed(context, '/notifications')),
+                    SettingsCard(text: 'Notifications', action: () => Navigator.pushNamed(context, '/notifications')),
 
-                SettingsCard(text: 'Help', action: () => Navigator.pushNamed(context, '/notifications')),
+                    SettingsCard(text: 'Help', action: () => Navigator.pushNamed(context, '/notifications')),
 
-                SettingsCard(text: 'Terms and conditions', action: () => Navigator.pushNamed(context, '/termsAndConditions')),
+                    SettingsCard(text: 'Terms and conditions', action: () => Navigator.pushNamed(context, '/termsAndConditions')),
 
 
-              ],
-            )
-        ),
+                  ],
+                )
+            ),
+          )
+        )
       ),
     );
   }

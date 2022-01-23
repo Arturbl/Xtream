@@ -79,12 +79,12 @@ class _RunAppState extends State<RunApp> {
       case "Home":
         return Builder(
           builder: (context) => Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: FloatingActionButton(
+              padding: const EdgeInsets.only(bottom: 10, right: 10),
+              child: FloatingActionButton.extended(
                 elevation: 10,
                 backgroundColor: PersonalizedColor.black1,
-                // label: const Text(""), // Filter
-                child: const Icon(Icons.menu, size: 22),
+                icon: const Icon(Icons.menu, size: 22),
+                label: const Text("Filters"),
                 onPressed: () async {
                   await showModal(FilterWidget(filter: widget.filter));
                 },
@@ -94,13 +94,12 @@ class _RunAppState extends State<RunApp> {
       case "Profile":
         return Builder(
           builder: (context) => Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: FloatingActionButton(
+              padding: const EdgeInsets.only(bottom: 10, right: 10),
+              child: FloatingActionButton.extended(
                   elevation: 10,
                   backgroundColor: PersonalizedColor.black1,
-                  // backgroundColor: Colors.transparent,
-                  // label: const Text(""), // Filter
-                  child:  const Icon(Icons.settings, size: 22),
+                  label: const Text("Settings"), // Filter
+                  icon:  const Icon(Icons.settings, size: 22),
                   onPressed: () =>  Navigator.of(context).pushNamed('/settings')
               )
           ),
@@ -112,29 +111,20 @@ class _RunAppState extends State<RunApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
+        appBar: AppBar(
+          backgroundColor: PersonalizedColor.red,
+          automaticallyImplyLeading: false,
+          title: SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: PersonalizedColor.black,
-            child: Center(
-            child: _container
-          )
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-        floatingActionButton: _container.runtimeType == Home ?
-        setFloatingActionButton("Home") : _container.runtimeType == Profile ?
-        setFloatingActionButton("Profile") : null,
-        bottomNavigationBar: Container(
-            color: PersonalizedColor.red,
-            height: 50,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
 
                 IconButton(
-                  icon: Icon(Icons.home, color: PersonalizedColor.black,),
+                  icon: Icon(Icons.home, color: PersonalizedColor.black, semanticLabel: 'teste',),
                   onPressed:() => setContainer(home),
                 ),
+
 
                 IconButton(
                   icon: Icon(Icons.messenger_rounded, color: PersonalizedColor.black,),
@@ -147,8 +137,21 @@ class _RunAppState extends State<RunApp> {
                 ),
 
               ],
-            )
-        )
+            ),
+          ),
+        ),
+        body: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            color: PersonalizedColor.black,
+            child: Center(
+            child: _container
+          )
+        ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+        floatingActionButton: _container.runtimeType == Home ?
+        setFloatingActionButton("Home") : _container.runtimeType == Profile ?
+        setFloatingActionButton("Profile") : null,
     );
   }
 }
