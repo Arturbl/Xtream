@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:xtream/controller/main/firestore.dart';
+import 'package:xtream/controller/main/firestoreApi.dart';
 import 'package:xtream/model/user.dart' as userClass;
 
 class Auth {
@@ -10,7 +10,7 @@ class Auth {
     newUser.uid = firebaseUser.uid;
     newUser.name = name;
     newUser.email = firebaseUser.email!;
-    FirestoreController.addUser(newUser);
+    FirestoreControllerApi.addUser(newUser);
   }
 
   static Future<String> registerNewUser(String email, String password, String name) async {
@@ -37,7 +37,7 @@ class Auth {
 
   static Future<String> signIn(String email, String password) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
           password: password
       );
@@ -59,7 +59,7 @@ class Auth {
         user.isAnonymous = true;
         user.uid = firebaseUser.uid;
       } else {
-        user =  await FirestoreController.getUserData(firebaseUser.uid);
+        user =  await FirestoreControllerApi.getUserData(firebaseUser.uid);
         user.isAnonymous = false;
       }
     }

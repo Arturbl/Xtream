@@ -1,7 +1,14 @@
+import 'dart:io' as io;
+
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:xtream/controller/main/firebaseStorageApi.dart';
+import 'package:xtream/controller/main/firestoreApi.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart';
+
 
 
 class EditProfile extends StatefulWidget {
@@ -15,20 +22,61 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
 
-  String _ethnicity = 'Ethnicity';
-  double _age = 18;
-  String _gender = '';
+  final TextEditingController _nameController = TextEditingController();
+  String _ethnicity = 'Ethicity';
   String _country = 'Country';
-  List<String> _images = [];
+
+
+  late User currentUser;
+  bool _loading = false;
+
+  void updateLoading(bool value) {
+    setState(() {
+      _loading = value;
+    });
+  }
+
+
+  void selectProfileImage() async {
+    final file = await ImagePicker().pickImage(source: ImageSource.gallery);
+    await FirebaseStorageApi.uploadFile(file!, currentUser);
+  }
 
   void setGender(String value) {
     String gender;
     value == 'male' ? gender = 'male' : gender = 'female';
     setState(() {
-      _gender = gender;
+      currentUser.gender = gender;
     });
   }
 
+  void initUserData() {
+    setState(() {
+      currentUser = widget.user;
+      _ethnicity = currentUser.ethnicity.isNotEmpty ? currentUser.ethnicity : _ethnicity;
+      _country = currentUser.country.isNotEmpty ? currentUser.country : _country;
+    });
+    setGender(currentUser.gender);
+  }
+
+  void saveData() async {
+    updateLoading(true);
+    currentUser.ethnicity = _ethnicity;
+    currentUser.country = _country;
+    currentUser.name = _nameController.text.isNotEmpty ? _nameController.text : currentUser.name;
+    bool updated = await FirestoreControllerApi.updateUser(currentUser);
+    if(updated) {
+      Navigator.pop(context);
+    }
+    updateLoading(false);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +94,8 @@ class _EditProfileState extends State<EditProfile> {
           Padding(
             padding: const EdgeInsets.all(10),
             child: ElevatedButton(
-              child: Text("Save"),
-              onPressed: () {
-
-              },
+              child: _loading ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5) : const Text("Save"),
+              onPressed: saveData,
             ),
           )
 
@@ -65,9 +111,7 @@ class _EditProfileState extends State<EditProfile> {
 
 
                 GestureDetector(
-                  onTap: () {
-                    print("Opening camera");
-                  },
+                  onTap: selectProfileImage,
                   child: Container(
                     padding: const EdgeInsets.only(left: 15),
                     width: double.infinity,
@@ -75,6 +119,9 @@ class _EditProfileState extends State<EditProfile> {
                       alignment: Alignment.centerLeft,
                       child: CircleAvatar(
                           radius: 35,
+                          // backgroundImage: _profileImageAvatar.isEmpty ?
+                          // const AssetImage('assets/images/profile_avatar.png') :
+                          // Image.memory(_profileImageAvatar) as ImageProvider,
                           backgroundColor: Colors.grey,
                           child: Center(
                               child: Icon(Icons.camera_alt, color: Colors.white,)
@@ -87,11 +134,11 @@ class _EditProfileState extends State<EditProfile> {
                 Container(
                   padding: const EdgeInsets.only(top: 15),
                   child: TextField(
-                    // controller: _controllerMensagem,
+                    controller: _nameController,
                     autofocus: false,
                     style: TextStyle(color: PersonalizedColor.white),
                     decoration: InputDecoration(
-                      hintText: 'Name...',
+                      hintText: currentUser.name,
                       hintStyle: TextStyle(color: PersonalizedColor.white),
                       filled: false,
                       fillColor: Colors.white,
@@ -106,17 +153,17 @@ class _EditProfileState extends State<EditProfile> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
 
-                        Text("Age: (" + _age.toInt().toString() + ")", style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),),
+                        Text("Age: (" + currentUser.age.toInt().toString() + ")", style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),),
 
                         Slider(
-                          label: _age.toInt().toString(),
+                          label: currentUser.age.toInt().toString(),
                           divisions: 100,
                           min: 18,
                           max: 100,
-                          value: _age,
+                          value: currentUser.age.toDouble(),
                           onChanged: (value) {
                             setState(() {
-                              _age = value;
+                              currentUser.age = value.toInt();
                             });
                           },
                         )
@@ -136,7 +183,7 @@ class _EditProfileState extends State<EditProfile> {
                         child: Chip(
                           backgroundColor: Colors.black.withOpacity(0.15),
                           label: const Text("Male"),
-                          avatar: _gender == "male" ? CircleAvatar(
+                          avatar: currentUser.gender == "male" ? CircleAvatar(
                             backgroundColor: PersonalizedColor.red,
                             child:const Icon(Icons.done, color: Colors.white,),
                           ) : null,
@@ -148,7 +195,7 @@ class _EditProfileState extends State<EditProfile> {
                         child: Chip(
                           backgroundColor: Colors.black.withOpacity(0.15),
                           label: const Text("Female"),
-                          avatar: _gender == "female" ? CircleAvatar(
+                          avatar: currentUser.gender == "female" ? CircleAvatar(
                             backgroundColor: PersonalizedColor.red,
                             child:const Icon(Icons.done, color: Colors.white,),
                           ) : null,
@@ -172,7 +219,7 @@ class _EditProfileState extends State<EditProfile> {
                       onPressed: () async {
                         String? value = await showMenu(
                           context: context,
-                          position: RelativeRect.fromLTRB(350, 200, 0, 0),
+                          position: const RelativeRect.fromLTRB(350, 200, 0, 0),
                           items: [
                             const PopupMenuItem(child: Text("Blonde"), value: "Blonde",),
                             const PopupMenuItem(child: Text("Brunette"), value: "Brunette",),
@@ -183,9 +230,11 @@ class _EditProfileState extends State<EditProfile> {
                           ],
                           elevation: 8.0,
                         );
-                        setState(() {
-                          _ethnicity = value!;
-                        });
+                        if( value != null ) {
+                          setState(() {
+                            _ethnicity = value;
+                          });
+                        }
                       },
                     )
                 ),
@@ -194,9 +243,9 @@ class _EditProfileState extends State<EditProfile> {
                     width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.all(10),
                     child: OutlinedButton(
-                      child: Text(_country, style: TextStyle(color: Colors.white),),
+                      child: Text(_country, style: const TextStyle(color: Colors.white),),
                       style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: Colors.white60)
+                          side: const BorderSide(color: Colors.white60)
                       ),
                       onPressed: () {
                         showCountryPicker(

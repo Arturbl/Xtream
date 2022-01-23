@@ -29,6 +29,7 @@ class App extends StatelessWidget {
         appId: "1:172635378345:web:58d966b7641839a1cbcfb8",
         messagingSenderId: "172635378345",
         projectId: "xtream-7cb96",
+        storageBucket: "gs://xtream-7cb96.appspot.com/"
       )
   );
 

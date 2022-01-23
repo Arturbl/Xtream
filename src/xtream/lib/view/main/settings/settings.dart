@@ -3,9 +3,10 @@ import 'package:xtream/controller/main/auth.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
-import 'package:xtream/view/main/settings/card.dart';
+import 'package:xtream/view/main/runApp.dart';
 
-import '../runApp.dart';
+import 'card.dart';
+
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);

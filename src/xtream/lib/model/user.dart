@@ -4,11 +4,11 @@ class User{
 
   late bool _isAnonymous = true;
   String _name = '';
-  int _age = 0;
+  int _age = 18;
   String _uid = '';
   double _evaluation = 0.0;
   String _country = '';
-  Map<String, dynamic> imagesUrls = {'profile': '', 'other': []};
+  final Map<String, dynamic> _imagesUrls = {'profile': '', 'other': []};
   String _ethnicity = '';
   String _gender = '';
   String _email = '';
@@ -44,6 +44,8 @@ class User{
   set images(List<dynamic> images) {
     imagesUrls['other'] = images;
   }
+
+  dynamic get imagesUrls => _imagesUrls;
 
   String get gender => _gender;
 

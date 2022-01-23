@@ -28,15 +28,13 @@ class _RunAppState extends State<RunApp> {
   void initUserSession() async {
     userClass.User user = await Auth.getCurrentUser();
     if(user.isAnonymous) {
-        print('User is currently signed out, Creating new anonymous session.');
         await FirebaseAuth.instance.signInAnonymously();
         currentUser = await Auth.getCurrentUser();
         print("Anonymous session generated with uid: " + currentUser.uid);
         return;
     }
-      print('User is signed in!');
       print('anonymous: ' + user.isAnonymous.toString());
-      print('uid: ' + user.uid.toString());
+      print('Real account with uid: ' + user.uid.toString());
       currentUser = user;
   }
 
@@ -46,41 +44,6 @@ class _RunAppState extends State<RunApp> {
     });
   }
 
-
-  Widget setFloatingActionButton(String widgetType) {
-    switch(widgetType) {
-      case "Home":
-        return Builder(
-          builder: (context) => Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: FloatingActionButton(
-                elevation: 10,
-                backgroundColor: PersonalizedColor.black1,
-                // label: const Text(""), // Filter
-                child: const Icon(Icons.menu, size: 22),
-                onPressed: () async {
-                  await showModal(FilterWidget(filter: widget.filter));
-                },
-              )
-          ),
-        );
-      case "Profile":
-        return Builder(
-          builder: (context) => Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: FloatingActionButton(
-                elevation: 10,
-                  backgroundColor: PersonalizedColor.black1,
-                  // backgroundColor: Colors.transparent,
-                // label: const Text(""), // Filter
-                child:  const Icon(Icons.settings, size: 22),
-                onPressed: () =>  Navigator.of(context).pushNamed('/settings')
-              )
-          ),
-        );
-    }
-    return Container();
-  }
 
   Future showModal(Widget widget) async {
     await showModalBottomSheet(
@@ -106,6 +69,42 @@ class _RunAppState extends State<RunApp> {
   void dispose() {
     super.dispose();
     _container;
+    Auth.deleteCurrentAnonymousSession();
+  }
+
+  Widget setFloatingActionButton(String widgetType) {
+    switch(widgetType) {
+      case "Home":
+        return Builder(
+          builder: (context) => Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: FloatingActionButton(
+                elevation: 10,
+                backgroundColor: PersonalizedColor.black1,
+                // label: const Text(""), // Filter
+                child: const Icon(Icons.menu, size: 22),
+                onPressed: () async {
+                  await showModal(FilterWidget(filter: widget.filter));
+                },
+              )
+          ),
+        );
+      case "Profile":
+        return Builder(
+          builder: (context) => Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: FloatingActionButton(
+                  elevation: 10,
+                  backgroundColor: PersonalizedColor.black1,
+                  // backgroundColor: Colors.transparent,
+                  // label: const Text(""), // Filter
+                  child:  const Icon(Icons.settings, size: 22),
+                  onPressed: () =>  Navigator.of(context).pushNamed('/settings')
+              )
+          ),
+        );
+    }
+    return Container();
   }
 
   @override
