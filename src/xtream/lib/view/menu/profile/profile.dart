@@ -129,14 +129,16 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
 
-                            Text(name + ", " + age.toString(), style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                            Text(name + ", " + age.toString(), style: TextStyle(
+                              fontSize: Sizing.fontSize + 2,
                               color: Colors.white,
+                              fontWeight: FontWeight.bold
                             ),),
 
-                            Text(country, style: const TextStyle(
-                                color: Colors.white
+                            Text(country, style: TextStyle(
+                                color: Colors.white,
+                                fontSize: Sizing.fontSize + 2,
+                                fontWeight: FontWeight.bold
                             ),)
 
                           ],
@@ -146,9 +148,10 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
                         Container(
                           alignment: Alignment.centerLeft,
                           padding: const EdgeInsets.only(top: 2),
-                          child: Text(evaluation.toInt().toString() + "%", style: const TextStyle(
+                          child: Text(evaluation.toInt().toString() + "%", style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: Sizing.fontSize + 2,
+                            fontWeight: FontWeight.bold
                           ),),
                         ),
 

@@ -49,7 +49,7 @@ class _ProfileState extends State<Profile> {
         Positioned(
           bottom: 0,
           child: Container(
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.fromLTRB(5,5,5,0),
             decoration: const BoxDecoration(
               color: Colors.black38,
               borderRadius: BorderRadius.only(
@@ -69,16 +69,17 @@ class _ProfileState extends State<Profile> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
 
-                        Text(widget.user.name + ", " + widget.user.age.toString(), style: const TextStyle(
-                          fontSize: 16,
+                        Text(widget.user.name + ", " + widget.user.age.toString(), style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontSize: Sizing.fontSize + 2,
                           color: Colors.white,
                         ),),
 
-                        Text(widget.user.country, style: const TextStyle(
-                            color: Colors.white
+                        Text(widget.user.country, style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: Sizing.fontSize
                         ),)
-
                       ],
                     ),
 
@@ -86,9 +87,10 @@ class _ProfileState extends State<Profile> {
                     Container(
                       alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.only(top: 2),
-                      child: Text(widget.user.evaluation.toString() + "%", style: const TextStyle(
+                      child: Text(widget.user.evaluation.toString() + "%", style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        fontSize: Sizing.fontSize
                       ),),
                     ),
 
