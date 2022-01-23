@@ -20,18 +20,22 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
   int age = 18;
   double evaluation = 50.0;
   String country = '';
+  String profileImageUrl = '';
 
   void setData(User u) {
-    setState(() {
-      if(u.isAnonymous) {
-        name = u.uid;
-        return;
-      }
-      name = u.name;
-      age = u.age;
-      evaluation = u.evaluation;
-      country = u.country;
-    });
+    if(mounted) {
+      setState(() {
+        if(u.isAnonymous) {
+          name = u.uid;
+          return;
+        }
+        name = u.name;
+        age = u.age;
+        evaluation = u.evaluation;
+        country = u.country;
+        profileImageUrl = u.imagesUrls['profile'];
+      });
+    }
   }
 
   void getCurrentUser() async {
@@ -54,6 +58,13 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
     super.initState();
     getCurrentUser();
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -79,15 +90,23 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
                       color: PersonalizedColor.black,
                       spreadRadius: 5,
                       blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
+                      offset: const Offset(0, 3), // changes position of shadow
                     ),
                   ],
-                  image: DecorationImage(
-                      image: user.isAnonymous ? AssetImage('assets/images/profile_avatar.png') : AssetImage('assets/images/futebol.jpeg'),
+                  image: (user.isAnonymous || profileImageUrl.isEmpty) ?
+
+                    const DecorationImage(
+                        image: AssetImage('assets/images/profile_avatar.png'),
+                        fit: BoxFit.cover
+                    ) :
+                    DecorationImage(
+                        image: NetworkImage(profileImageUrl),
                       fit: BoxFit.cover
-                  )
+                    )
+
               ),
             ),
+
 
             Positioned(
               bottom: 0,

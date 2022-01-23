@@ -2,6 +2,7 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:xtream/controller/main/auth.dart';
 import 'package:xtream/controller/main/firebaseStorageApi.dart';
 import 'package:xtream/controller/main/firestoreApi.dart';
 import 'package:xtream/model/user.dart';
@@ -30,9 +31,11 @@ class _EditProfileState extends State<EditProfile> {
   bool _loading = false;
 
   void updateLoading(bool value) {
-    setState(() {
-      _loading = value;
-    });
+    if(mounted) {
+      setState(() {
+        _loading = value;
+      });
+    }
   }
 
   void setGender(String value) {
@@ -44,7 +47,7 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   void setProfileImage(String url) {
-    if(url.isNotEmpty) {
+    if(url.isNotEmpty && mounted) {
       setState(() {
         _profileImageUrl = url;
       });
@@ -57,14 +60,16 @@ class _EditProfileState extends State<EditProfile> {
   }
   
 
-  void initUserData() async {
+  void initUserData() {
     setState(()  {
       currentUser = widget.user;
       _ethnicity = currentUser.ethnicity.isNotEmpty ? currentUser.ethnicity : _ethnicity;
       _country = currentUser.country.isNotEmpty ? currentUser.country : _country;
+      _profileImageUrl = currentUser.imagesUrls['profile'];
     });
     setGender(currentUser.gender);
-    setProfileImage(await FirebaseStorageApi.getUserProfileImageUrl(currentUser));
+    // setProfileImage(await FirebaseStorageApi.getUserProfileImageUrl(currentUser));
+    setProfileImage(_profileImageUrl);
   }
 
   void saveData() async {
@@ -72,6 +77,7 @@ class _EditProfileState extends State<EditProfile> {
     currentUser.ethnicity = _ethnicity;
     currentUser.country = _country;
     currentUser.name = _nameController.text.isNotEmpty ? _nameController.text : currentUser.name;
+    currentUser.imagesUrls['profile'] = _profileImageUrl.isNotEmpty ? _profileImageUrl : currentUser.imagesUrls['profile'];
     bool updated = await FirestoreControllerApi.updateUser(currentUser);
     if(updated) {
       Navigator.pop(context);
@@ -84,6 +90,13 @@ class _EditProfileState extends State<EditProfile> {
     // TODO: implement initState
     super.initState();
     initUserData();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
   }
 
   @override
