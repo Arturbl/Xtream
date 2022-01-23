@@ -12,14 +12,12 @@ class FirebaseStorageApi {
   static const String _defaultPath = 'gs://xtream-7cb96.appspot.com/';
 
 
-  static Future<void> uploadFile(XFile? file, User user) async {
-      if (file == null) return;
+  static Future<String> uploadFile(XFile? file, String path, User user) async {
+      if (file == null) return '';
 
       Reference ref = FirebaseStorage.instance.ref(_defaultPath)
-          .child("images")
-          .child("profile")
-          .child(user.uid)
-          .child(file.name);
+          .child(path)
+          .child(user.uid);
 
       final metadata = SettableMetadata(
           contentType: 'image/jpeg',
@@ -30,11 +28,17 @@ class FirebaseStorageApi {
       } else {
         await ref.putFile(io.File(file.path), metadata);
       }
+      return getUserProfileImageUrl(user);
+  }
+
+  static Future<String> getUserProfileImageUrl(User user) async {
+    Reference ref = FirebaseStorage.instance.ref(_defaultPath)
+        .child('images/profile')
+        .child(user.uid);
+    return await ref.getDownloadURL();
 
   }
 
-  static Future<String> viewImages() {
-    return FirebaseStorage.instance.refFromURL('gs://xtream-7cb96.appspot.com/').child('2016-Lamborghini-Aventador-LP750-4-SV-012-2000.jpg').getDownloadURL();
-  }
+
 
 }

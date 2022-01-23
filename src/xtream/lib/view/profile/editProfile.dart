@@ -1,13 +1,11 @@
-import 'dart:io' as io;
 
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:xtream/controller/main/firebaseStorageApi.dart';
 import 'package:xtream/controller/main/firestoreApi.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:flutter/foundation.dart';
 
 
 
@@ -23,8 +21,9 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
 
   final TextEditingController _nameController = TextEditingController();
-  String _ethnicity = 'Ethicity';
+  String _ethnicity = 'Ethnicity';
   String _country = 'Country';
+  String _profileImageUrl = '';
 
 
   late User currentUser;
@@ -36,12 +35,6 @@ class _EditProfileState extends State<EditProfile> {
     });
   }
 
-
-  void selectProfileImage() async {
-    final file = await ImagePicker().pickImage(source: ImageSource.gallery);
-    await FirebaseStorageApi.uploadFile(file!, currentUser);
-  }
-
   void setGender(String value) {
     String gender;
     value == 'male' ? gender = 'male' : gender = 'female';
@@ -50,13 +43,28 @@ class _EditProfileState extends State<EditProfile> {
     });
   }
 
-  void initUserData() {
-    setState(() {
+  void setProfileImage(String url) {
+    if(url.isNotEmpty) {
+      setState(() {
+        _profileImageUrl = url;
+      });
+    }
+  }
+
+  Future<void> selectProfileImage() async {
+    final file = await ImagePicker().pickImage(source: ImageSource.gallery);
+    await FirebaseStorageApi.uploadFile(file!, "images/profile", currentUser).then((url) => setProfileImage(url));
+  }
+  
+
+  void initUserData() async {
+    setState(()  {
       currentUser = widget.user;
       _ethnicity = currentUser.ethnicity.isNotEmpty ? currentUser.ethnicity : _ethnicity;
       _country = currentUser.country.isNotEmpty ? currentUser.country : _country;
     });
     setGender(currentUser.gender);
+    setProfileImage(await FirebaseStorageApi.getUserProfileImageUrl(currentUser));
   }
 
   void saveData() async {
@@ -115,15 +123,15 @@ class _EditProfileState extends State<EditProfile> {
                   child: Container(
                     padding: const EdgeInsets.only(left: 15),
                     width: double.infinity,
-                    child: const Align(
+                    child: Align(
                       alignment: Alignment.centerLeft,
                       child: CircleAvatar(
                           radius: 35,
-                          // backgroundImage: _profileImageAvatar.isEmpty ?
-                          // const AssetImage('assets/images/profile_avatar.png') :
-                          // Image.memory(_profileImageAvatar) as ImageProvider,
                           backgroundColor: Colors.grey,
-                          child: Center(
+                          backgroundImage: _profileImageUrl.isNotEmpty ?
+                          NetworkImage(_profileImageUrl) :
+                          null,
+                          child: const Center(
                               child: Icon(Icons.camera_alt, color: Colors.white,)
                           )
                       ),
