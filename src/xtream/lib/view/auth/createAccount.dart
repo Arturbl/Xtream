@@ -133,7 +133,7 @@ class _CreateAccountState extends State<CreateAccount> {
           padding: const EdgeInsets.fromLTRB(30, 5, 30, 0),
           child: Center(
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.65,
+              width: Sizing.getScreenWidth(context), // MediaQuery.of(context).size.width * 0.65,
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: _align,

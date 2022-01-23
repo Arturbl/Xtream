@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:xtream/model/messageData.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
+import 'package:xtream/util/sizing.dart';
 
 import 'messageWidget.dart';
 
@@ -32,8 +33,7 @@ class _MessagesState extends State<Messages> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child:  Container(
-        color: PersonalizedColor.black,
-        width: MediaQuery.of(context).size.width,
+        width: Sizing.getScreenWidth(context),// MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.fromLTRB(10, 2,10,85),
         child: ListView(

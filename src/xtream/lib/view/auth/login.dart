@@ -81,7 +81,7 @@ class _LoginState extends State<Login> {
         padding: const EdgeInsets.all(30),
         child: Center(
           child: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.65,
+            width:  Sizing.getScreenWidth(context),// MediaQuery.of(context).size.width * 0.65,
             child: SingleChildScrollView(
                 child: Column(
                   // crossAxisAlignment: CrossAxisAlignment.stretch,

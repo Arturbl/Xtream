@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart';
-import 'package:xtream/util/colors.dart';
-import 'package:xtream/view/menu/profile.dart';
+import 'package:xtream/view/menu/home/profile.dart';
 
 
 class Home extends StatefulWidget {

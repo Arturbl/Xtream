@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/util/RouteGenerator.dart';
-import 'package:xtream/view/main/runApp.dart';
+import 'package:xtream/view/runApp.dart';
 
 
 void main() {

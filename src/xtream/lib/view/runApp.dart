@@ -4,10 +4,11 @@ import 'package:xtream/controller/main/auth.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart' as userClass;
 import 'package:xtream/util/colors.dart';
-import 'package:xtream/view/menu/filterWidget.dart';
-import 'package:xtream/view/menu/home.dart';
-import 'package:xtream/view/messages/messages.dart';
-import 'package:xtream/view/profile/profile.dart';
+
+import 'menu/home/filterWidget.dart';
+import 'menu/home/home.dart';
+import 'menu/messages/messages.dart';
+import 'menu/profile/profile.dart';
 
 class RunApp extends StatefulWidget {
   const RunApp({Key? key, required this.filter}) : super(key: key);
@@ -25,6 +26,13 @@ class _RunAppState extends State<RunApp> {
   late Widget _container;
   late Home home;
 
+
+  void setContainer(Widget newContainer) {
+    setState(() {
+      _container = newContainer;
+    });
+  }
+
   void initUserSession() async {
     userClass.User user = await Auth.getCurrentUser();
     if(user.isAnonymous) {
@@ -36,12 +44,6 @@ class _RunAppState extends State<RunApp> {
       print('anonymous: ' + user.isAnonymous.toString());
       print('Real account with uid: ' + user.uid.toString());
       currentUser = user;
-  }
-
-  void setContainer(Widget newContainer) {
-    setState(() {
-      _container = newContainer;
-    });
   }
 
 
@@ -115,10 +117,7 @@ class _RunAppState extends State<RunApp> {
             height: MediaQuery.of(context).size.height,
             color: PersonalizedColor.black,
             child: Center(
-            child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.65,
-                child:  _container
-            )
+            child: _container
           )
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
@@ -139,7 +138,7 @@ class _RunAppState extends State<RunApp> {
 
                 IconButton(
                   icon: Icon(Icons.messenger_rounded, color: PersonalizedColor.black,),
-                  onPressed:() => setContainer(const Messages()),
+                  onPressed:() => setContainer(Messages()),
                 ),
 
                 IconButton(

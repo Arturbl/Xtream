@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
+import 'package:xtream/util/sizing.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key, required this.user}) : super(key: key);
@@ -20,7 +21,7 @@ class _ProfileState extends State<Profile> {
       children: <Widget>[
 
         Container(
-          width: MediaQuery.of(context).size.width * 0.50,
+          width: Sizing.getScreenWidth(context), // MediaQuery.of(context).size.width * 0.50,
           height: MediaQuery.of(context).size.height * 0.70,
           margin: const EdgeInsets.all(15),
           padding: const EdgeInsets.all(3),

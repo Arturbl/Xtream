@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
-import 'package:xtream/view/main/auth/createAccount.dart';
-import 'package:xtream/view/main/auth/login.dart';
-import 'package:xtream/view/main/settings/settings.dart';
-import 'package:xtream/view/messages/chat.dart';
-import 'package:xtream/view/profile/editProfile.dart';
+import 'package:xtream/view/auth/createAccount.dart';
+import 'package:xtream/view/auth/login.dart';
+import 'package:xtream/view/menu/messages/chat.dart';
+import 'package:xtream/view/menu/profile/editProfile.dart';
+import 'package:xtream/view/menu/settings/settings.dart';
 
 
 class RouteGenerator{

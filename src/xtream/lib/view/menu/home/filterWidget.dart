@@ -1,9 +1,8 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:xtream/main.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/util/colors.dart';
-import 'package:xtream/view/main/runApp.dart';
+import 'package:xtream/view/runApp.dart';
 
 
 class FilterWidget extends StatefulWidget {
