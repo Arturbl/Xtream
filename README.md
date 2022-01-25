@@ -46,6 +46,9 @@
         -> Push notifications ( Firebase Messaging)
         -> Firebase Messaging (https://pub.dev/packages/firebase_messaging)
 
+    * Video call:
+        -> agora_rtc_engine (https://pub.dev/packages/agora_rtc_engine/versions/4.1.0-alpha.2)
+
     * Donations:
         -> Paypal api (https://www.youtube.com/watch?v=E05uXmUh9t4)
     

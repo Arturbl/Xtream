@@ -18,9 +18,9 @@ class _HomeState extends State<Home> {
   late List<Widget> profiles;
 
 
-  List<Widget> displayProfiles(List<String> recvNames) {
+  List<Widget> displayProfiles(List<String> names) {
     List<Widget> profiles = [];
-    for(String name in recvNames) {
+    for(String name in names) {
       User user = User();
       user.name = name;
       user.evaluation = 96.0;
@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    profiles = displayProfiles(["Júlia Palha", "Margot Hobbie", "Jennifer Lawrence", "Gabi"]);
+    profiles = displayProfiles(['Julia', 'Laura', 'ana', 'Larissa']);
     // print("Country: " + widget.filter.country);
     // print("age: (min)" + widget.filter.ageRange.min.toString());
     // print("age: (max)" + widget.filter.ageRange.max.toString());

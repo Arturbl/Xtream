@@ -13,12 +13,32 @@ class MessageWidget extends StatefulWidget {
 
 class _MessageWidgetState extends State<MessageWidget> {
 
+  late DateTime date;
+
+
+  void initToUserData() async  {
+    // User toUserObject = await FirestoreControllerApi.getUserData(widget.toUserUid);;
+    if(mounted){
+      setState(() {
+        // toUser = toUserObject;
+        date = widget.messageData.date.toDate();
+      });
+    }
+  }
+
   void openChat() {
-    Navigator.of(context).pushNamed('/chat', arguments: widget.messageData.user);
+    // Navigator.of(context).pushNamed('/chat', arguments: widget.toUser);
   }
 
   void showConversationOptions() {
-    print("open " + widget.messageData.user.name + " chat options");
+    // print("open " + widget.toUser.name + " chat options");
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initToUserData();
   }
 
   @override
@@ -57,7 +77,7 @@ class _MessageWidgetState extends State<MessageWidget> {
                             Row(
                               children: [
 
-                                Text(widget.messageData.user.name, style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                                Text(widget.messageData.toUserName, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
 
                                 const Padding(
                                   padding: EdgeInsets.only(left: 5),
@@ -71,7 +91,7 @@ class _MessageWidgetState extends State<MessageWidget> {
                             ),
                             const SizedBox(height: 10,),
 
-                            Text(widget.messageData.lastMessage,style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: FontWeight.bold))
+                            Text(widget.messageData.message,style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: FontWeight.bold))
 
                           ],
                         ),
@@ -85,7 +105,7 @@ class _MessageWidgetState extends State<MessageWidget> {
               ),
               Padding(
                   padding: const EdgeInsets.only(top: 15),
-                  child: Text(widget.messageData.lastMessageDate, style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: FontWeight.bold))
+                  child: Text(date.toString().toString(), style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: FontWeight.bold))
               ),
             ],
           )

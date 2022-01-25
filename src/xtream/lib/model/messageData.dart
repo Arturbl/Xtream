@@ -1,36 +1,47 @@
 
 
 // this class will be used to display data from conversation in Messages()
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:xtream/model/user.dart';
 
 class MessageData {
 
-  late User _user;
-  late String _lastMessage;
-  late String _lastMessageDate;
-  late bool _messageRead;
+  late String _toUserName;
+  late String _message;
+  late Timestamp _date;
+  late bool _read;
 
-  User get user => _user;
-
-  set user(User value) {
-    _user = value;
+  Map<String, dynamic> toMap() {
+    return {
+      'message': message,
+      'date': date,
+      'read': read
+    };
   }
 
-  String get lastMessage => _lastMessage;
 
-  set lastMessage(String value) {
-    _lastMessage = value;
+  String get toUserName => _toUserName;
+
+  set toUserName(String value) {
+    _toUserName = value;
   }
 
-  String get lastMessageDate => _lastMessageDate;
+  String get message => _message;
 
-  set lastMessageDate(String value) {
-    _lastMessageDate = value;
+  set message(String value) {
+    _message = value;
   }
 
-  bool get messageRead => _messageRead;
 
-  set messageRead(bool value) {
-    _messageRead = value;
+  Timestamp get date => _date;
+
+  set date(Timestamp value) {
+    _date = value;
+  }
+
+  bool get read => _read;
+
+  set read(bool value) {
+    _read = value;
   }
 }

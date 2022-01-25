@@ -128,7 +128,7 @@ class _RunAppState extends State<RunApp> {
 
                 IconButton(
                   icon: Icon(Icons.messenger_rounded, color: PersonalizedColor.black,),
-                  onPressed:() => setContainer(Messages()),
+                  onPressed:() => setContainer(Messages(user: currentUser)),
                 ),
 
                 IconButton(

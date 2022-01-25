@@ -70,28 +70,28 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
-      child: GestureDetector(
-        onTap: editProfile,
-        child: Stack(
-          children: <Widget>[
-            Container(
-              width: Sizing.getScreenWidth(context), // MediaQuery.of(context).size.width * 0.50,
-              height: MediaQuery.of(context).size.height * 0.70,
-              margin: const EdgeInsets.all(15),
-              padding: const EdgeInsets.all(3),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: PersonalizedColor.black,
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: const Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                  image: (user.isAnonymous || profileImageUrl.isEmpty) ?
+        alignment: Alignment.center,
+        child: GestureDetector(
+          onTap: editProfile,
+          child: Stack(
+            children: <Widget>[
+              Container(
+                width: Sizing.getScreenWidth(context), // MediaQuery.of(context).size.width * 0.50,
+                height: MediaQuery.of(context).size.height * 0.70,
+                margin: const EdgeInsets.all(15),
+                padding: const EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: PersonalizedColor.black,
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: const Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                    image: (user.isAnonymous || profileImageUrl.isEmpty) ?
 
                     const DecorationImage(
                         image: AssetImage('assets/images/profile_avatar.png'),
@@ -99,79 +99,79 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
                     ) :
                     DecorationImage(
                         image: NetworkImage(profileImageUrl),
-                      fit: BoxFit.cover
+                        fit: BoxFit.cover
                     )
 
-              ),
-            ),
-
-
-            Positioned(
-              bottom: 0,
-              child: Container(
-                padding: const EdgeInsets.all(5),
-                decoration: const BoxDecoration(
-                  color: Colors.black38,
-                  borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(10),
-                      bottomLeft: Radius.circular(10)
-                  ),
                 ),
-                width: Sizing.getScreenWidth(context), // MediaQuery.of(context).size.width * 0.50,
-                margin: const EdgeInsets.all(15),
+              ),
+
+
+              Positioned(
+                bottom: 0,
                 child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
+                  padding: const EdgeInsets.all(5),
+                  decoration: const BoxDecoration(
+                    color: Colors.black38,
+                    borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10)
+                    ),
+                  ),
+                  width: Sizing.getScreenWidth(context), // MediaQuery.of(context).size.width * 0.50,
+                  margin: const EdgeInsets.all(15),
+                  child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
 
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
 
-                            Text(name + ", " + age.toString(), style: TextStyle(
-                              fontSize: Sizing.fontSize + 2,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold
-                            ),),
+                              Text(name + ", " + age.toString(), style: TextStyle(
+                                  fontSize: Sizing.fontSize + 2,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold
+                              ),),
 
-                            Text(country, style: TextStyle(
+                              Text(country, style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: Sizing.fontSize + 2,
+                                  fontWeight: FontWeight.bold
+                              ),)
+
+                            ],
+                          ),
+
+
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            padding: const EdgeInsets.only(top: 2),
+                            child: Text(evaluation.toInt().toString() + "%", style: TextStyle(
                                 color: Colors.white,
                                 fontSize: Sizing.fontSize + 2,
                                 fontWeight: FontWeight.bold
-                            ),)
-
-                          ],
-                        ),
+                            ),),
+                          ),
 
 
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(top: 2),
-                          child: Text(evaluation.toInt().toString() + "%", style: TextStyle(
-                            color: Colors.white,
-                            fontSize: Sizing.fontSize + 2,
-                            fontWeight: FontWeight.bold
-                          ),),
-                        ),
-
-
-                      ],
-                    )
+                        ],
+                      )
+                  ),
                 ),
               ),
-            ),
 
 
-            const Positioned(
-              top: 20,
-              right: 20,
-              child:  Icon(Icons.edit, color: Colors.white, size: 24,),
-            )
+              const Positioned(
+                top: 20,
+                right: 20,
+                child:  Icon(Icons.edit, color: Colors.white, size: 24,),
+              )
 
-          ],
-        ),
-      )
+            ],
+          ),
+        )
     );
   }
 }
