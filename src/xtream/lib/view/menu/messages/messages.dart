@@ -35,6 +35,18 @@ class _MessagesState extends State<Messages> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    MessageData data = MessageData();
+    data.message = "Ola Xinho";
+    data.date = Timestamp.now();
+    data.read = false;
+    data.toUserName = 'Luis';
+
+    // ver este link para criar nova forma de guardar mensagens
+    //   -> https://firebase.flutter.dev/docs/firestore/usage/#document--query-snapshots
+    //   -> scroll to: Stream documentStream = FirebaseFirestore.instance.collection('users').doc('ABC123').snapshots();
+
+    FirebaseFirestore.instance.collection('messages').doc('0bCVK2JyPZNaMq90e0roElpeVPM2').collection('to').doc('szF6dEhjLdUEd56CORYwaO2MW0n1').set(data.toMap());
+    FirebaseFirestore.instance.collection('messages').doc('szF6dEhjLdUEd56CORYwaO2MW0n1').collection('to').doc('0bCVK2JyPZNaMq90e0roElpeVPM2').set(data.toMap());
   }
 
 

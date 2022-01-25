@@ -15,7 +15,8 @@ class MessageData {
     return {
       'message': message,
       'date': date,
-      'read': read
+      'read': read,
+      'toUserName': toUserName
     };
   }
 

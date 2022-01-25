@@ -46,7 +46,7 @@ class FirestoreControllerApi {
 
   // get all conversations of current user
   static  Stream<QuerySnapshot> loadConversations(User user)   {
-    return messages.doc(user.uid).collection('to').snapshots();
+    return messages.doc(user.uid).collection('to').orderBy("date", descending: true).snapshots();
   }
 
 }
