@@ -1,13 +1,14 @@
 
 # Main goal:
     Allow users to interact with each other in an intimate way
-    Users will be inserted in charts with a random person. Once the call or chat is done,
+    Container(Widget) will showed to the user. The container, contains another user doing a live stream.
+    Once the call or chat is done,
     both users will be asked to evaluate theis companion.
     This evaluation will be used to connect more precisely people with same interests.
 
 
 # How to use the app:
-    Download it via play store or access it via browser
+    access it via browser
 
 
 ## How they do it:

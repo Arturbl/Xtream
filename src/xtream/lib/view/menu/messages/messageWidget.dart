@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:xtream/controller/main/firestoreApi.dart';
 import 'package:xtream/model/messageData.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:xtream/model/user.dart';
+import 'package:xtream/util/colors.dart';
 
 
 class MessageWidget extends StatefulWidget {
-  const MessageWidget({Key? key, required this.messageData}) : super(key: key);
+  const MessageWidget({Key? key, required this.messageData, required this.toUserId}) : super(key: key);
 
   final MessageData messageData;
+  final String toUserId;
 
   @override
   _MessageWidgetState createState() => _MessageWidgetState();
@@ -13,21 +18,24 @@ class MessageWidget extends StatefulWidget {
 
 class _MessageWidgetState extends State<MessageWidget> {
 
-  late DateTime date;
+  DateTime date = DateTime.now();
+  String profileImageUrl = '';
 
 
-  void initToUserData() async  {
-    // User toUserObject = await FirestoreControllerApi.getUserData(widget.toUserUid);;
-    if(mounted){
-      setState(() {
-        // toUser = toUserObject;
-        date = widget.messageData.date.toDate();
-      });
-    }
+  void initToUserData() {
+    FirestoreControllerApi.getUserData(widget.toUserId).then((User user){
+      if(mounted){
+        setState(() {
+          date = widget.messageData.date.toDate();
+          profileImageUrl = user.imagesUrls['profile'];
+        });
+      }
+    });
   }
 
-  void openChat() {
-    // Navigator.of(context).pushNamed('/chat', arguments: widget.toUser);
+  void openChat() async {
+    User toUser = await FirestoreControllerApi.getUserData(widget.toUserId);
+    Navigator.pushNamed(context, "/chat", arguments: toUser);
   }
 
   void showConversationOptions() {
@@ -60,9 +68,18 @@ class _MessageWidgetState extends State<MessageWidget> {
                 child: Row(
                   children: [
 
-                    const CircleAvatar(
-                      backgroundColor: Colors.black,
-                      radius: 30,
+                    CircleAvatar(
+                        radius: 35,
+                        backgroundColor: Colors.black,
+                        child: profileImageUrl.isEmpty ?
+                          const CircleAvatar(
+                            backgroundImage: AssetImage('assets/images/profile_avatar.png'),
+                            radius: 29,
+                          ) :
+                        CircleAvatar(
+                            backgroundImage:  NetworkImage(profileImageUrl) ,
+                            radius: 29,
+                          )
                     ),
 
                     const SizedBox(width: 16,),
@@ -77,7 +94,15 @@ class _MessageWidgetState extends State<MessageWidget> {
                             Row(
                               children: [
 
-                                Text(widget.messageData.toUserName, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+                                Flexible(
+                                  child: RichText(
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(
+                                        text: widget.messageData.toUserName,
+                                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: PersonalizedColor.black)),
+                                  ),
+                                ),
+
 
                                 const Padding(
                                   padding: EdgeInsets.only(left: 5),
@@ -91,7 +116,20 @@ class _MessageWidgetState extends State<MessageWidget> {
                             ),
                             const SizedBox(height: 10,),
 
-                            Text(widget.messageData.message,style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: FontWeight.bold))
+                            Flexible(
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: RichText(
+                                  overflow: TextOverflow.ellipsis,
+                                  text: TextSpan(
+                                    text: widget.messageData.message,
+                                    style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: FontWeight.bold),
+                                  ),
+                                )
+                              ),
+                            )
+
+
 
                           ],
                         ),
@@ -105,7 +143,7 @@ class _MessageWidgetState extends State<MessageWidget> {
               ),
               Padding(
                   padding: const EdgeInsets.only(top: 15),
-                  child: Text(date.toString().toString(), style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: FontWeight.bold))
+                  child: Text(timeago.format(date, locale: 'en_short'), style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: FontWeight.bold))
               ),
             ],
           )

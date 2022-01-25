@@ -2,7 +2,6 @@
 
 // this class will be used to display data from conversation in Messages()
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:xtream/model/user.dart';
 
 class MessageData {
 

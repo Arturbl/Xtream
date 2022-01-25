@@ -69,11 +69,22 @@ class _ProfileState extends State<Profile> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
 
-                        Text(widget.user.name + ", " + widget.user.age.toString(), style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: Sizing.fontSize + 2,
-                          color: Colors.white,
-                        ),),
+                        Flexible(
+                          child: Padding(
+                              padding: const EdgeInsets.only(right: 30),
+                              child: RichText(
+                                overflow: TextOverflow.ellipsis,
+                                text: TextSpan(
+                                    text: widget.user.name + ", " + widget.user.age.toString(),
+                                    style: TextStyle(
+                                        fontSize: Sizing.fontSize + 2,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold
+                                    )
+                                ),
+                              )
+                          ),
+                        ),
 
                         Text(widget.user.country, style: TextStyle(
                             color: Colors.white,

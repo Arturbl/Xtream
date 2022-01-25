@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:xtream/controller/main/firestoreApi.dart';
 import 'package:xtream/model/messageData.dart';
 import 'package:xtream/model/user.dart';
-import 'package:xtream/util/colors.dart';
 import 'package:xtream/util/sizing.dart';
 
 import 'messageWidget.dart';
@@ -19,15 +18,13 @@ class Messages extends StatefulWidget {
 
 class _MessagesState extends State<Messages> {
 
-  final List<Widget> conversations = [];
-
   Widget getMessageData(Map<String, dynamic> data, String toUserUid) {
     MessageData newData = MessageData();
     newData.message = data['message'];
     newData.date = data['date'];
     newData.read = data['read'];
     newData.toUserName = data['toUserName'];
-    return MessageWidget(messageData: newData);
+    return MessageWidget(messageData: newData, toUserId: toUserUid);
   }
 
 
@@ -35,18 +32,6 @@ class _MessagesState extends State<Messages> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    MessageData data = MessageData();
-    data.message = "Ola Xinho";
-    data.date = Timestamp.now();
-    data.read = false;
-    data.toUserName = 'Luis';
-
-    // ver este link para criar nova forma de guardar mensagens
-    //   -> https://firebase.flutter.dev/docs/firestore/usage/#document--query-snapshots
-    //   -> scroll to: Stream documentStream = FirebaseFirestore.instance.collection('users').doc('ABC123').snapshots();
-
-    FirebaseFirestore.instance.collection('messages').doc('0bCVK2JyPZNaMq90e0roElpeVPM2').collection('to').doc('szF6dEhjLdUEd56CORYwaO2MW0n1').set(data.toMap());
-    FirebaseFirestore.instance.collection('messages').doc('szF6dEhjLdUEd56CORYwaO2MW0n1').collection('to').doc('0bCVK2JyPZNaMq90e0roElpeVPM2').set(data.toMap());
   }
 
 
@@ -62,8 +47,8 @@ class _MessagesState extends State<Messages> {
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
             if(snapshot.hasError) {
-              return const Center(
-                  child: Text('Something went wrong.')
+              return Center(
+                  child: Text('Something went wrong, try again', style: TextStyle(fontSize: Sizing.fontSize, color: Colors.white),)
               );
             }
 

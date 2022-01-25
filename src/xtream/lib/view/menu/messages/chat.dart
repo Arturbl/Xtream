@@ -41,9 +41,13 @@ class _ChatState extends State<Chat> {
                 child: Column(
                   children: [
 
-                    Text(widget.user.name, style: TextStyle(
-                        color: PersonalizedColor.black
-                    ),),
+                    Text(
+                      widget.user.name,
+                      style: TextStyle(
+                          color: PersonalizedColor.black
+                      ),
+                    ),
+
 
                     const Text("online now", style: TextStyle(
                         color: Colors.grey,

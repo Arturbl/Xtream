@@ -36,25 +36,27 @@ class _CreateAccountState extends State<CreateAccount> {
     String nome = _nomeController.text;
     String email = _emailController.text;
     if(nome.isNotEmpty && email.trim().isNotEmpty){
-      if(email.contains('@')) {
-        return true;
-      } else {
+      if(nome.length <= 10) {
+        if(email.contains('@')) {
+          return true;
+        }
         _setError('Enter a valid email');
+        return false;
       }
-    } else {
-      _setError('Check for missing fields');
+      _setError('Username length cannot be longer than 10 characters');
+      return false;
     }
+    _setError('Check for missing fields');
     return false;
   }
 
-  _setError(String error) {
+  void _setError(String error) {
     setState(() {
       _erro1 = error;
       _loading = false;
     });
     Timer(
-        const Duration(seconds: 5),
-            (){
+        const Duration(seconds: 5), (){
           setState(() {
             _erro1 = '';
           });
@@ -77,19 +79,15 @@ class _CreateAccountState extends State<CreateAccount> {
             String response = await Auth.registerNewUser(email, pass, name);
             if(response == "done") {
               Navigator.pop(context);
-            } else {
-              _setError(response);
             }
+            _setError(response);
           }
-        } else {
-          _setError('Password must have at least 6 characters');
         }
-      } else {
-        _setError('Passwords must match');
+        _setError('Password must have at least 6 characters');
       }
-    } else {
-      _setError('Check for missing fields');
+      _setError('Passwords must match');
     }
+    _setError('Check for missing fields');
   }
 
   @override
@@ -172,7 +170,7 @@ class _CreateAccountState extends State<CreateAccount> {
                             ),
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(color: Colors.grey)
+                                borderSide: const BorderSide(color: Colors.grey)
                             ),
                             prefixIcon: Icon(Icons.email, color: PersonalizedColor.black,)
                         ),

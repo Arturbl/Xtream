@@ -21,7 +21,7 @@ class RunApp extends StatefulWidget {
 
 class _RunAppState extends State<RunApp> {
 
-  late userClass.User currentUser;
+  late userClass.User? currentUser;
 
   late Widget _container;
   late Home home;
@@ -33,15 +33,15 @@ class _RunAppState extends State<RunApp> {
     });
   }
 
-  void initUserSession() async {
+  Future<void> initUserSession() async {
     userClass.User user = await Auth.getCurrentUser();
     if(user.isAnonymous) {
         await FirebaseAuth.instance.signInAnonymously();
         currentUser = await Auth.getCurrentUser();
-        print("Anonymous session generated with uid: " + currentUser.uid);
+        print("Anonymous session generated with uid: " + currentUser!.uid);
         return;
     }
-      print('anonymous: ' + user.isAnonymous.toString());
+      // print('anonymous: ' + user.isAnonymous.toString());
       print('Real account with uid: ' + user.uid.toString());
       currentUser = user;
   }
@@ -62,9 +62,9 @@ class _RunAppState extends State<RunApp> {
   @override
   void initState() {
     super.initState();
+    initUserSession();
     home = Home(filter: widget.filter);
     _container = home;
-    initUserSession();
   }
 
   @override
@@ -121,14 +121,14 @@ class _RunAppState extends State<RunApp> {
               children: [
 
                 IconButton(
-                  icon: Icon(Icons.home, color: PersonalizedColor.black, semanticLabel: 'teste',),
+                  icon: Icon(Icons.home, color: PersonalizedColor.black),
                   onPressed:() => setContainer(home),
                 ),
 
 
                 IconButton(
                   icon: Icon(Icons.messenger_rounded, color: PersonalizedColor.black,),
-                  onPressed:() => setContainer(Messages(user: currentUser)),
+                  onPressed:() => setContainer(Messages(user: currentUser!)),
                 ),
 
                 IconButton(
@@ -145,8 +145,8 @@ class _RunAppState extends State<RunApp> {
             height: MediaQuery.of(context).size.height,
             color: PersonalizedColor.black,
             child: Center(
-            child: _container
-          )
+              child: _container
+            )
         ),
         // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
         floatingActionButton: _container.runtimeType == Home ?

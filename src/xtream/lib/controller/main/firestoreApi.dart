@@ -1,7 +1,6 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:xtream/model/messageData.dart';
 import 'package:xtream/model/user.dart';
 
 class FirestoreControllerApi {
