@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:xtream/controller/main/firestoreApi.dart';
-import 'package:xtream/model/messageData.dart';
+import 'package:xtream/model/messages/messageData.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/sizing.dart';
 
@@ -20,9 +20,9 @@ class _MessagesState extends State<Messages> {
 
   Widget getMessageData(Map<String, dynamic> data, String toUserUid) {
     MessageData newData = MessageData();
-    newData.message = data['message'];
-    newData.date = data['date'];
+    newData.messages = data['messages'] as List<dynamic>;
     newData.read = data['read'];
+    newData.date = data['date'];
     newData.toUserName = data['toUserName'];
     return MessageWidget(messageData: newData, toUserId: toUserUid);
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xtream/controller/main/firestoreApi.dart';
-import 'package:xtream/model/messageData.dart';
+import 'package:xtream/model/messages/messageData.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
@@ -26,7 +26,7 @@ class _MessageWidgetState extends State<MessageWidget> {
     FirestoreControllerApi.getUserData(widget.toUserId).then((User user){
       if(mounted){
         setState(() {
-          date = widget.messageData.date.toDate();
+          date = widget.messageData.messages.first['date'].toDate();
           profileImageUrl = user.imagesUrls['profile'];
         });
       }
@@ -122,7 +122,7 @@ class _MessageWidgetState extends State<MessageWidget> {
                                 child: RichText(
                                   overflow: TextOverflow.ellipsis,
                                   text: TextSpan(
-                                    text: widget.messageData.message,
+                                    text: widget.messageData.messages.first['data'],
                                     style: TextStyle(fontSize: 13,color: Colors.grey.shade600, fontWeight: FontWeight.bold),
                                   ),
                                 )
