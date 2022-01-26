@@ -36,13 +36,15 @@ class _ProfileState extends State<Profile> {
                   offset: Offset(0, 3), // changes position of shadow
                 ),
               ],
-              image: const DecorationImage(
-                  image: AssetImage('assets/images/julia.jpg'),
-                  // image: NetworkImage(
-                  //     "https://cdn.vidas.pt/images/2020-10/img_975x650\$2020_10_10_19_14_32_155118.jpg"
-                  // ),
-                  fit: BoxFit.cover
-              )
+              image: widget.user.imagesUrls['profile'].isEmpty ?
+                  const DecorationImage(
+                    image: AssetImage('assets/images/profile_avatar.png'),
+                    fit: BoxFit.cover
+                  ) :
+                  DecorationImage(
+                    image: NetworkImage(widget.user.imagesUrls['profile']),
+                    fit: BoxFit.cover
+                  )
           ),
         ),
 

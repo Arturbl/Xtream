@@ -6,17 +6,17 @@ import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
 
 
-class MessageWidget extends StatefulWidget {
-  const MessageWidget({Key? key, required this.messageData, required this.toUserId}) : super(key: key);
+class ChatPreview extends StatefulWidget {
+  const ChatPreview({Key? key, required this.messageData, required this.toUserId}) : super(key: key);
 
   final MessageData messageData;
   final String toUserId;
 
   @override
-  _MessageWidgetState createState() => _MessageWidgetState();
+  _ChatPreviewState createState() => _ChatPreviewState();
 }
 
-class _MessageWidgetState extends State<MessageWidget> {
+class _ChatPreviewState extends State<ChatPreview> {
 
   DateTime date = DateTime.now();
   String profileImageUrl = '';

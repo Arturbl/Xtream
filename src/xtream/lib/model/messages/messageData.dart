@@ -32,7 +32,7 @@ class MessageData {
   }
 
   void addMessage(Message message){
-    if(_messages.length < 21) { // save only 20 messages for chat
+    if(_messages.length < 11) { // save only 20 messages for chat
       _messages.insert(0, message.toMap());
       return;
     }

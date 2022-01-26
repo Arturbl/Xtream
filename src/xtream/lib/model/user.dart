@@ -27,6 +27,20 @@ class User{
     };
   }
 
+  User fromMapToUser(Map<String, dynamic> map) {
+    uid = map['uid'];
+    name = map['name'];
+    gender = map['gender'];
+    ethnicity = map['ethnicity'];
+    email = map['email'];
+    age = map['age'];
+    setProfileImage(map['images']['profile']);
+    images = map['images']['other'];
+    country = map['country'];
+    evaluation = map['evaluation'];
+    return this;
+  }
+
   bool get isAnonymous => _isAnonymous;
 
   set isAnonymous(bool value) {

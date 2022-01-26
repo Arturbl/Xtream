@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:xtream/controller/main/auth.dart';
+import 'package:xtream/controller/main/firestoreApi.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/view/menu/home/profile.dart';
 
 
 class Home extends StatefulWidget {
-  Home({Key? key, required this.filter}) : super(key: key);
+  const Home({Key? key, required this.filter}) : super(key: key);
 
   final Filter filter;
 
@@ -15,32 +17,33 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  late List<Widget> profiles;
+  late List<Widget> profiles = [];
+  int profilesIndex = 0;
 
 
-  List<Widget> displayProfiles(List<String> names) {
-    List<Widget> profiles = [];
-    for(String name in names) {
-      User user = User();
-      user.name = name;
-      user.evaluation = 96.0;
-      user.country = "Portugal";
-      user.age = 21;
-      Widget profile = Profile(user: user);
-      profiles.add(profile);
+  void loadProfiles() async  {
+    User currentUser = await Auth.getCurrentUser();
+    List<User> users = await FirestoreControllerApi.loadProfiles(currentUser);
+    for(User user in users) {
+      if(mounted) {
+        setState(() => profiles.add( Profile(user: user) ));
+      }
     }
-    return profiles;
+  }
+
+  // update profiles index and reload new data if needed.
+  void updateData(int index) {
+    if(mounted && index < profiles.length - 1) {
+      setState(() => profilesIndex = index);
+      return;
+    }
+
   }
 
   @override
   void initState() {
     super.initState();
-    profiles = displayProfiles(['Julia', 'Laura', 'ana', 'Larissa']);
-    // print("Country: " + widget.filter.country);
-    // print("age: (min)" + widget.filter.ageRange.min.toString());
-    // print("age: (max)" + widget.filter.ageRange.max.toString());
-    // print("gender: " + widget.filter.gender);
-    // print("ethnicity: " + widget.filter.ethnicity);
+    loadProfiles();
   }
 
   @override
@@ -48,9 +51,16 @@ class _HomeState extends State<Home> {
     return ListView.builder(
       // physics: const PageScrollPhysics(),
       physics: const BouncingScrollPhysics(),
-      itemCount: 4,
+      itemCount: profiles.length,
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) {
+
+        updateData(index);
+
+        if(profiles.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
         return SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
@@ -58,6 +68,8 @@ class _HomeState extends State<Home> {
                 child: profiles[index]
             )
         );
+
+
       },
     );
   }

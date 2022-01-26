@@ -5,7 +5,7 @@ import 'package:xtream/model/messages/messageData.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/sizing.dart';
 
-import 'messageWidget.dart';
+import 'chatPreview.dart';
 
 class Messages extends StatefulWidget {
   const Messages({Key? key, required this.user}) : super(key: key);
@@ -24,9 +24,8 @@ class _MessagesState extends State<Messages> {
     newData.read = data['read'];
     newData.date = data['date'];
     newData.toUserName = data['toUserName'];
-    return MessageWidget(messageData: newData, toUserId: toUserUid);
+    return ChatPreview(messageData: newData, toUserId: toUserUid);
   }
-
 
   @override
   void initState() {

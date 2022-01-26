@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// this class will save a single message data
 class Message {
 
   late String _userUid;
