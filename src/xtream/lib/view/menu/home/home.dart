@@ -48,16 +48,8 @@ class _HomeState extends State<Home> {
       for(User user in users) {
         if(mounted) {
           setState(() {
-            do{
-              int random = Random().nextInt(users.length);
-              if(!(outNumbers.contains(random))){
-                profiles.add( Profile(user: users[random]) );
-                currentUsersUids.add(user.uid);
-                outNumbers.add(random);
-              }
-              print("Fora do if: ${users.length} - outNumbers: ${outNumbers.length}");
-            } while(outNumbers.length != users.length);
-
+            profiles.add( Profile(user: user) );
+            currentUsersUids.add(user.uid);
           });
         }
       }

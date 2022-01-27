@@ -49,16 +49,10 @@ class FirestoreControllerApi {
   static Future<List<User>> loadRandomProfiles(User currentUser, List<String> currentUids) async {
     print(currentUids);
     List<User> users = [];
-    QuerySnapshot querySnapshot;
-    var query = _usersCol;
-    if(currentUids.isNotEmpty) {
-      print("passei no where not");
-      querySnapshot = await query.where('uid', whereNotIn: currentUids).get();
-    } else {
-      querySnapshot = await query.get();
-      print("nao passei");
-    }
-
+    QuerySnapshot querySnapshot = await _usersCol
+        .where('uid',isNotEqualTo: currentUser.uid)
+        .limit(2)
+        .get();
     for(DocumentSnapshot doc in querySnapshot.docs) {
       if( !(currentUids.contains(doc.id)) ) { // doc.id == user.uid
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -69,20 +63,7 @@ class FirestoreControllerApi {
     }
     return users;
   }
-
 }
-
-
-// HashMap<String, User > users = {
-//   '0bCVK2JyPZNaMq90e0roElpeVPM2': User(),
-//   '6TIFrwX3yqN6idHHYhacCoTjwL73': User(),
-//   'DTxo63z6fgMl3ZWj5pgRXMMK1RO2': User(),
-//   'bahYxDcisDQoAPI0TM7Wa9JvkxQ2': User(),
-//   'mN2f56h73lf8CxX0Js7dEf2FrrX2': User(),
-//   'szF6dEhjLdUEd56CORYwaO2MW0n1': User(),
-// };
-
-
 
 
 
