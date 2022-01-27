@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:xtream/controller/main/auth.dart';
@@ -8,6 +8,7 @@ import 'package:xtream/controller/main/firestoreApi.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
+import 'package:xtream/util/tuple.dart';
 import 'package:xtream/view/menu/home/profile.dart';
 
 
@@ -27,35 +28,38 @@ class _HomeState extends State<Home> {
 
   late User currentUser;
   List<Widget> profiles = [];
-  List<String> currentUsersUids = [];  // initializing the list with a string prevents the app to break in the following test: list.contains in an empty list
+  List<String> currentUsersUids = [];
+  late DocumentSnapshot lastDocument; //  this DocumentSnapshot will be used in firestoreApi to prevent iterating at index 0
 
   int profilesIndex = 0;
   bool showLoadingIcon = false;
 
   void updateScrollPhysics(ScrollPhysics physics) {
-    if(mounted) { setState(() => scrollPhysics = physics );};
+    if(mounted) { setState(() => scrollPhysics = physics );}
   }
 
   void updateLoadingIconStatus(bool value) {
-    if(mounted) { setState(() => showLoadingIcon = value );};
+    if(mounted) { setState(() => showLoadingIcon = value );}
   }
 
 
   Future<void> loadNewData() async  {
     updateLoadingIconStatus(true);
-    await FirestoreControllerApi.loadRandomProfiles(currentUser, currentUsersUids).then((List<User> users) {
-      List<int> outNumbers = [];
+    await FirestoreControllerApi.loadRandomProfiles(lastDocument, currentUsersUids).then((Tuple<List<User>, DocumentSnapshot> tuple) {
+      List<User> users = tuple.x;
       for(User user in users) {
         if(mounted) {
           setState(() {
             profiles.add( Profile(user: user) );
             currentUsersUids.add(user.uid);
+            lastDocument = tuple.y;
           });
         }
       }
       updateScrollPhysics(const BouncingScrollPhysics());
       updateLoadingIconStatus(false);
       print("Array size: " + profiles.length.toString());
+      print("last document: ${lastDocument.id}");
     });
   }
 
@@ -73,9 +77,10 @@ class _HomeState extends State<Home> {
   }
 
   void initUserData() async {
-    await Auth.getCurrentUser().then((User user){
+    await Auth.getCurrentUser().then((User user) async {
       currentUsersUids.add(user.uid);
       currentUser = user;
+      lastDocument = await FirestoreControllerApi.usersCol.doc(user.uid).get();
       loadNewData();
       updateData();
     });

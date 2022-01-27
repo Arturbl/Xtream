@@ -12,6 +12,9 @@ class FirestoreControllerApi {
   static final CollectionReference _usersCol = _firestore.collection("users");
   static final CollectionReference _messagesCol = _firestore.collection('messages');
 
+
+  static CollectionReference get usersCol => _usersCol;
+
   static void addUser(User user) {
     _usersCol.doc(user.uid).set(user.toMap());
   }
@@ -44,24 +47,28 @@ class FirestoreControllerApi {
 
 
   // load profiles to home page (can only load 30 at a time)
-  // reloads when user is on last profile - 5;
   // List<String> currentIds receives a list with all userUid's in the currentUser fyp
-  static Future<List<User>> loadRandomProfiles(User currentUser, List<String> currentUids) async {
-    print(currentUids);
+  static Future<Tuple<List<User>, DocumentSnapshot>> loadRandomProfiles(DocumentSnapshot lastDocument, List<String> currentUids) async {
+    print("(Loading data) Current id: $currentUids");
+    print("(Loading data) last document: ${lastDocument.id}");
     List<User> users = [];
-    QuerySnapshot querySnapshot = await _usersCol
-        .where('uid',isNotEqualTo: currentUser.uid)
-        .limit(2)
-        .get();
+    QuerySnapshot querySnapshot;
+    if(lastDocument.exists) {
+      querySnapshot = await _usersCol.startAfterDocument(lastDocument).limit(1).get();
+    } else {
+      querySnapshot = await _usersCol.limit(1).get();
+    }
     for(DocumentSnapshot doc in querySnapshot.docs) {
       if( !(currentUids.contains(doc.id)) ) { // doc.id == user.uid
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        print(data['name']);
         User user = User();
         user.fromMapToUser(data);
         users.add(user);
+        lastDocument = doc;
       }
     }
-    return users;
+    return Tuple(users, lastDocument);
   }
 }
 
