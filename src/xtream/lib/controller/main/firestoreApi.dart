@@ -50,8 +50,7 @@ class FirestoreControllerApi {
     print(currentUids);
     List<User> users = [];
     QuerySnapshot querySnapshot;
-    var query = await _usersCol
-        .limit(1);
+    var query = _usersCol;
     if(currentUids.isNotEmpty) {
       print("passei no where not");
       querySnapshot = await query.where('uid', whereNotIn: currentUids).get();

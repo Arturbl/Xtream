@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -43,11 +44,20 @@ class _HomeState extends State<Home> {
   Future<void> loadNewData() async  {
     updateLoadingIconStatus(true);
     await FirestoreControllerApi.loadRandomProfiles(currentUser, currentUsersUids).then((List<User> users) {
+      List<int> outNumbers = [];
       for(User user in users) {
         if(mounted) {
           setState(() {
-            profiles.add( Profile(user: user) );
-            currentUsersUids.add(user.uid);
+            do{
+              int random = Random().nextInt(users.length);
+              if(!(outNumbers.contains(random))){
+                profiles.add( Profile(user: users[random]) );
+                currentUsersUids.add(user.uid);
+                outNumbers.add(random);
+              }
+              print("Fora do if: ${users.length} - outNumbers: ${outNumbers.length}");
+            } while(outNumbers.length != users.length);
+
           });
         }
       }

@@ -73,7 +73,6 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-    - assets/images/julia.jpg
     - assets/images/eu.jpeg
     - assets/images/futebol.jpeg
     - assets/images/profile_avatar.png
