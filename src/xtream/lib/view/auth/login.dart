@@ -63,11 +63,12 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios, color: PersonalizedColor.black,),
-        onPressed: () => Navigator.pop(context),
-        ),
-        titleSpacing: 0,
+        // leading: IconButton(
+        // icon: Icon(Icons.arrow_back_ios, color: PersonalizedColor.black,),
+        // onPressed: () => Navigator.pop(context),
+        // ),
+        // titleSpacing: 0,
+        automaticallyImplyLeading: false,
         title: Text('Login', style: TextStyle(
         color: PersonalizedColor.black
         ),),

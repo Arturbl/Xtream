@@ -29,7 +29,6 @@ class _HomeState extends State<Home> {
   late User currentUser;
   List<Widget> profiles = [];
   List<String> currentUsersUids = [];
-  late DocumentSnapshot lastDocument; //  this DocumentSnapshot will be used in firestoreApi to prevent iterating at index 0
 
   int profilesIndex = 0;
   bool showLoadingIcon = false;
@@ -45,21 +44,17 @@ class _HomeState extends State<Home> {
 
   Future<void> loadNewData() async  {
     updateLoadingIconStatus(true);
-    await FirestoreControllerApi.loadRandomProfiles(lastDocument, currentUsersUids).then((Tuple<List<User>, DocumentSnapshot> tuple) {
-      List<User> users = tuple.x;
+    await FirestoreControllerApi.loadRandomProfiles(currentUsersUids).then((List<User> users) {
       for(User user in users) {
         if(mounted) {
           setState(() {
             profiles.add( Profile(user: user) );
             currentUsersUids.add(user.uid);
-            lastDocument = tuple.y;
           });
         }
       }
       updateScrollPhysics(const BouncingScrollPhysics());
       updateLoadingIconStatus(false);
-      print("Array size: " + profiles.length.toString());
-      print("last document: ${lastDocument.id}");
     });
   }
 
@@ -80,7 +75,6 @@ class _HomeState extends State<Home> {
     await Auth.getCurrentUser().then((User user) async {
       currentUsersUids.add(user.uid);
       currentUser = user;
-      lastDocument = await FirestoreControllerApi.usersCol.doc(user.uid).get();
       loadNewData();
       updateData();
     });
@@ -89,6 +83,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    updateLoadingIconStatus(true);
     initUserData();
   }
 

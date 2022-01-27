@@ -28,17 +28,14 @@ class _RunAppState extends State<RunApp> {
 
 
   void setContainer(Widget newContainer) {
-    setState(() {
-      _container = newContainer;
-    });
+    if(mounted) { setState(() => _container = newContainer);}
   }
 
   Future<void> initUserSession() async {
     userClass.User user = await Auth.getCurrentUser();
     if(user.isAnonymous) {
-        await FirebaseAuth.instance.signInAnonymously();
-        currentUser = await Auth.getCurrentUser();
-        print("\nAnonymous session generated with uid: " + currentUser!.uid);
+        await Navigator.pushNamed(context, '/login');
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RunApp(filter: Filter())));
         return;
     }
       // print('anonymous: ' + user.isAnonymous.toString());

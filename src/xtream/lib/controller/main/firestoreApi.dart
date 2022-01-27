@@ -68,29 +68,23 @@ class FirestoreControllerApi {
   }
 
 
-  static Future<Tuple<List<User>, DocumentSnapshot>> loadRandomProfiles(DocumentSnapshot lastDocument, List<String> currentUids) async {
+  static Future<List<User>> loadRandomProfiles(List<String> currentUids) async {
+    int totalAppUsers = await getAppTotalUsers() - 1;
     List<User> users = [];
-    QuerySnapshot querySnapshot;
-    // without the  condition (currentUids.length != 1), whenever the data would be reloaded, only users after it would be displayed
-    if(lastDocument.exists || currentUids.length != 1) {
-      querySnapshot = await _usersCol.startAfterDocument(lastDocument).limit(1).get();
-    } else {
-      // select a random starting point at the collection
-      DocumentSnapshot startingPointDocument = await _getRandomStartingPointAtCollection();
-      // querySnapshot = await _usersCol.limit(1).get();
-      querySnapshot = await _usersCol.startAfterDocument(startingPointDocument).limit(1).get();
-    }
+    // select a random starting point at the collection
+    DocumentSnapshot startingPointDocument = await _getRandomStartingPointAtCollection();
+    QuerySnapshot querySnapshot = await _usersCol.startAfterDocument(startingPointDocument).limit(2).get();
     for(DocumentSnapshot doc in querySnapshot.docs) {
       if( !(currentUids.contains(doc.id)) ) { // doc.id == user.uid
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         User user = User();
         user.fromMapToUser(data);
-        users.length > 1 ? users.insert(users.length - 1, user) : users.add(user);
-        lastDocument = doc;
+        users.add(user);
+      } else if(currentUids.length < totalAppUsers) {
+        return loadRandomProfiles(currentUids);
       }
     }
-    users.shuffle(); // shuffle list to avoid displaying same results to different users
-    return Tuple(users, lastDocument);
+    return users;
   }
 }
 
