@@ -5,12 +5,15 @@ import 'package:xtream/model/user.dart' as userClass;
 class Auth {
 
 
-  static void _saveUserDataIntoCloudFirestore(String name, User firebaseUser) {
-    final newUser = userClass.User();
-    newUser.uid = firebaseUser.uid;
-    newUser.name = name;
-    newUser.email = firebaseUser.email!;
-    FirestoreControllerApi.addUser(newUser);
+  static void _saveUserDataIntoCloudFirestore(String name, User firebaseUser) async {
+    await FirestoreControllerApi.getAppTotalUsers().then((int totalUsers){
+      final newUser = userClass.User();
+      newUser.uid = firebaseUser.uid;
+      newUser.id = totalUsers + 1;
+      newUser.name = name;
+      newUser.email = firebaseUser.email!;
+      FirestoreControllerApi.addUser(newUser);
+    });
   }
 
   static Future<String> registerNewUser(String email, String password, String name) async {

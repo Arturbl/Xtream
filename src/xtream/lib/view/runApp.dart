@@ -38,11 +38,11 @@ class _RunAppState extends State<RunApp> {
     if(user.isAnonymous) {
         await FirebaseAuth.instance.signInAnonymously();
         currentUser = await Auth.getCurrentUser();
-        print("Anonymous session generated with uid: " + currentUser!.uid);
+        print("\nAnonymous session generated with uid: " + currentUser!.uid);
         return;
     }
       // print('anonymous: ' + user.isAnonymous.toString());
-      print('Real account with uid: ' + user.uid.toString());
+      print('\nReal account with uid: ' + user.uid.toString());
       currentUser = user;
   }
 
