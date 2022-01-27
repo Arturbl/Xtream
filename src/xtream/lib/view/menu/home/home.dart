@@ -24,8 +24,9 @@ class _HomeState extends State<Home> {
   final ScrollController listViewController = ScrollController();
   ScrollPhysics scrollPhysics = const BouncingScrollPhysics();
 
+  late User currentUser;
   List<Widget> profiles = [];
-  List<String> currentUsersUids = [''];  // initializing the list with a string prevents the app to break in the following test: list.contains in an empty list
+  List<String> currentUsersUids = [];  // initializing the list with a string prevents the app to break in the following test: list.contains in an empty list
 
   int profilesIndex = 0;
   bool showLoadingIcon = false;
@@ -41,7 +42,6 @@ class _HomeState extends State<Home> {
 
   Future<void> loadNewData() async  {
     updateLoadingIconStatus(true);
-    User currentUser = await Auth.getCurrentUser();
     await FirestoreControllerApi.loadRandomProfiles(currentUser, currentUsersUids).then((List<User> users) {
       for(User user in users) {
         if(mounted) {
@@ -70,11 +70,19 @@ class _HomeState extends State<Home> {
     });
   }
 
+  void initUserData() async {
+    await Auth.getCurrentUser().then((User user){
+      currentUsersUids.add(user.uid);
+      currentUser = user;
+      loadNewData();
+      updateData();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    loadNewData();
-    updateData();
+    initUserData();
   }
 
   @override

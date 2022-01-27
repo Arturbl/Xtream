@@ -49,10 +49,17 @@ class FirestoreControllerApi {
   static Future<List<User>> loadRandomProfiles(User currentUser, List<String> currentUids) async {
     print(currentUids);
     List<User> users = [];
-    QuerySnapshot querySnapshot = await _usersCol
-        .where("uid", isNotEqualTo: currentUser.uid)
-        .limit(1)
-        .get();
+    QuerySnapshot querySnapshot;
+    var query = await _usersCol
+        .limit(1);
+    if(currentUids.isNotEmpty) {
+      print("passei no where not");
+      querySnapshot = await query.where('uid', whereNotIn: currentUids).get();
+    } else {
+      querySnapshot = await query.get();
+      print("nao passei");
+    }
+
     for(DocumentSnapshot doc in querySnapshot.docs) {
       if( !(currentUids.contains(doc.id)) ) { // doc.id == user.uid
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
