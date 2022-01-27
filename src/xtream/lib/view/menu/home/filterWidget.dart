@@ -25,7 +25,7 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   void initFilter() {
     setState(() {
-      _ageRange = RangeValues(widget.filter.ageRange.min.toDouble(), widget.filter.ageRange.max.toDouble());
+      _ageRange = RangeValues(widget.filter.ageRange.x.toDouble(), widget.filter.ageRange.y.toDouble());
       _gender = widget.filter.gender;
       _country = widget.filter.country;
       _ethnicity = widget.filter.ethnicity;
@@ -195,8 +195,8 @@ class _FilterWidgetState extends State<FilterWidget> {
                         child: const Text("Reset"),
                         onPressed: () {
                           widget.filter.has_changed = false;
-                          widget.filter.ageRange.min = 18;
-                          widget.filter.ageRange.max = 80;
+                          widget.filter.ageRange.x = 18;
+                          widget.filter.ageRange.y = 80;
                           widget.filter.country = "Country";
                           widget.filter.ethnicity = "Ethnicity";
                           widget.filter.gender = "Gender";
@@ -211,8 +211,8 @@ class _FilterWidgetState extends State<FilterWidget> {
                         child: const Text("Apply filters"),
                         onPressed: () {
                           widget.filter.has_changed = true;
-                          widget.filter.ageRange.min = _ageRange.start.toInt();
-                          widget.filter.ageRange.max = _ageRange.end.toInt();
+                          widget.filter.ageRange.x = _ageRange.start.toInt();
+                          widget.filter.ageRange.y = _ageRange.end.toInt();
                           widget.filter.country = _country;
                           widget.filter.ethnicity = _ethnicity;
                           widget.filter.gender = _gender;

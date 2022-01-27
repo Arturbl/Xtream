@@ -2,23 +2,23 @@
 
 class Tuple<T1, T2> {
 
-  late T1 _min;
-  late T2 _max;
+  late T1 _x;
+  late T2 _y;
 
-  Tuple(T1 min, T2 max) {
-    _min = min;
-    _max = max;
+  Tuple(T1 x, T2 y) {
+    _x = x;
+    _y = y;
   }
 
-  T2 get max => _max;
+  T2 get y => _y;
 
-  set max(T2 value) {
-    _max = value;
+  set y(T2 value) {
+    _y = value;
   }
 
-  T1 get min => _min;
+  T1 get x => _x;
 
-  set min(T1 value) {
-    _min = value;
+  set x(T1 value) {
+    _x = value;
   }
 }

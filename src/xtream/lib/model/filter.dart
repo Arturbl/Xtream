@@ -35,8 +35,8 @@ class Filter {
   Tuple get ageRange => _ageRange;
 
   set ageRange(Tuple range) {
-    _ageRange.min = range.min;
-    _ageRange.max = range.max;
+    _ageRange.x = range.x;
+    _ageRange.y = range.y;
   }
 
   String get ethnicity => _ethnicity;

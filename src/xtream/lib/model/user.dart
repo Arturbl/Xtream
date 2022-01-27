@@ -23,7 +23,7 @@ class User{
       'images': imagesUrls,
       'ethnicity': ethnicity,
       'gender': gender,
-      'email': email
+      'email': email,
     };
   }
 

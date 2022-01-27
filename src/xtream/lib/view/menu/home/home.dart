@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:xtream/controller/main/auth.dart';
 import 'package:xtream/controller/main/firestoreApi.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart';
+import 'package:xtream/util/colors.dart';
 import 'package:xtream/view/menu/home/profile.dart';
 
 
@@ -17,60 +21,100 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  late List<Widget> profiles = [];
+  final ScrollController listViewController = ScrollController();
+  ScrollPhysics scrollPhysics = const BouncingScrollPhysics();
+
+  List<Widget> profiles = [];
+  List<String> currentUsersUids = [''];  // initializing the list with a string prevents the app to break in the following test: list.contains in an empty list
+
   int profilesIndex = 0;
+  bool showLoadingIcon = false;
+
+  void updateScrollPhysics(ScrollPhysics physics) {
+    if(mounted) { setState(() => scrollPhysics = physics );};
+  }
+
+  void updateLoadingIconStatus(bool value) {
+    if(mounted) { setState(() => showLoadingIcon = value );};
+  }
 
 
-  void loadProfiles() async  {
+  Future<void> loadNewData() async  {
+    updateLoadingIconStatus(true);
     User currentUser = await Auth.getCurrentUser();
-    List<User> users = await FirestoreControllerApi.loadProfiles(currentUser);
-    for(User user in users) {
-      if(mounted) {
-        setState(() => profiles.add( Profile(user: user) ));
+    await FirestoreControllerApi.loadRandomProfiles(currentUser, currentUsersUids).then((List<User> users) {
+      for(User user in users) {
+        if(mounted) {
+          setState(() {
+            profiles.add( Profile(user: user) );
+            currentUsersUids.add(user.uid);
+          });
+        }
       }
-    }
+      updateScrollPhysics(const BouncingScrollPhysics());
+      updateLoadingIconStatus(false);
+      print("Array size: " + profiles.length.toString());
+    });
   }
 
   // update profiles index and reload new data if needed.
-  void updateData(int index) {
-    if(mounted && index < profiles.length - 1) {
-      setState(() => profilesIndex = index);
-      return;
-    }
-
+  void updateData() {
+    listViewController.addListener(() async {
+      double currentExtent = listViewController.position.extentBefore;
+      double maxExtent = listViewController.position.maxScrollExtent;
+      ScrollDirection direction = listViewController.position.userScrollDirection;
+      if(direction == ScrollDirection.reverse &&  currentExtent == maxExtent) {
+        updateScrollPhysics(const NeverScrollableScrollPhysics());
+        await loadNewData();
+      }
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    loadProfiles();
+    loadNewData();
+    updateData();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      // physics: const PageScrollPhysics(),
-      physics: const BouncingScrollPhysics(),
-      itemCount: profiles.length,
-      scrollDirection: Axis.vertical,
-      itemBuilder: (context, index) {
+    return Scaffold(
+      backgroundColor: PersonalizedColor.black1,
+      body: ListView.builder(
+        physics: scrollPhysics,
+        itemCount: profiles.length,
+        scrollDirection: Axis.vertical,
+        controller: listViewController,
+        itemBuilder: (context, index) {
 
-        updateData(index);
+          if(profiles.isEmpty) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-        if(profiles.isEmpty) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        return SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: Center(
-                child: profiles[index]
-            )
-        );
+          return SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Center(
+                  child: profiles[index]
+              )
+          );
 
 
-      },
+        },
+      ),
+      bottomNavigationBar: showLoadingIcon ? Container(
+        height: 30,
+        color: Colors.transparent,
+        child: const Center(
+          child: SizedBox(
+            height: 15,
+            width: 15,
+            child: CircularProgressIndicator(),
+          )
+        )
+      ) :
+      null
     );
   }
 }
