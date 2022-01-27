@@ -55,7 +55,7 @@ class _HomeState extends State<Home> {
                 currentUsersUids.add(user.uid);
                 outNumbers.add(random);
               }
-              print("Fora do if: ${users.length} - outNumbers: ${outNumbers.length}");
+              // print("Fora do if: ${users.length} - outNumbers: ${outNumbers.length}");
             } while(outNumbers.length != users.length);
 
           });
