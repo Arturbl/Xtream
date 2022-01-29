@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:xtream/controller/main/auth.dart';
@@ -8,7 +7,6 @@ import 'package:xtream/controller/main/firestoreApi.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
-import 'package:xtream/util/tuple.dart';
 import 'package:xtream/view/menu/home/profile.dart';
 
 
@@ -48,7 +46,7 @@ class _HomeState extends State<Home> {
       for(User user in users) {
         if(mounted) {
           setState(() {
-            profiles.add( Profile(user: user) );
+            profiles.add( Profile(currentUser: currentUser, toUser: user) );
             currentUsersUids.add(user.uid);
           });
         }

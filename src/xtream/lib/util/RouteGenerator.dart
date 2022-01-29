@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
+import 'package:xtream/util/tuple.dart';
 import 'package:xtream/view/auth/createAccount.dart';
 import 'package:xtream/view/auth/login.dart';
 import 'package:xtream/view/menu/messages/chat.dart';
@@ -21,7 +22,7 @@ class RouteGenerator{
 
     switch(settings.name) {
       case '/chat':
-        return MaterialPageRoute(builder: (context) => Chat(toUser(args)));
+        return MaterialPageRoute(builder: (context) => Chat(args as Tuple<User, User>));
       case '/editProfile':
         return MaterialPageRoute(builder: (context) => EditProfile(user: toUser(args)));
       case '/createAccount':

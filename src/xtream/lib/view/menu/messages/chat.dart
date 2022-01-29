@@ -1,14 +1,21 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:xtream/controller/main/firestoreApi.dart';
+import 'package:xtream/model/messages/message.dart';
+import 'package:xtream/model/messages/messageData.dart';
 import 'package:xtream/model/user.dart';
+import 'package:xtream/util/chatUtils.dart';
 import 'package:xtream/util/colors.dart';
 import 'package:xtream/util/sizing.dart';
+import 'package:xtream/util/tuple.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class Chat extends StatefulWidget {
 
-  final User user;
+  Chat(this.tuple);
 
-  Chat(this.user);
+  final Tuple<User, User> tuple;
 
   @override
   _ChatState createState() => _ChatState();
@@ -17,7 +24,36 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
 
-  TextEditingController _controllerMensagem = new TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
+  late final User currentUser;
+  late final User toUser;
+  final MessageData messageData = MessageData();
+
+
+  void sendMessage() {
+    String message = _messageController.text;
+    if(message.trim().isNotEmpty) {
+      messageData.date = Timestamp.fromDate(DateTime.now());
+      messageData.read = false;
+      Message msg = Message(
+          currentUser.uid,
+          message,
+          Timestamp.fromDate(DateTime.now())
+      );
+      messageData.addMessage(msg);
+      FirestoreControllerApi.sendMessage(currentUser.uid, toUser.uid, messageData);
+      _messageController.clear();
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    currentUser = widget.tuple.x;
+    toUser = widget.tuple.y;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +68,16 @@ class _ChatState extends State<Chat> {
           backgroundColor: PersonalizedColor.red,
           title: Row(
             children: [
-              const CircleAvatar(
+              CircleAvatar(
+                radius: 27,
                 backgroundColor: Colors.grey,
-                radius: 25,
+                child: CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.grey,
+                  backgroundImage: toUser.imagesUrls['profile'].isNotEmpty ?
+                  NetworkImage(toUser.imagesUrls['profile']) :
+                  null,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8),
@@ -42,7 +85,7 @@ class _ChatState extends State<Chat> {
                   children: [
 
                     Text(
-                      widget.user.name,
+                      toUser.name,
                       style: TextStyle(
                           color: PersonalizedColor.black
                       ),
@@ -64,6 +107,7 @@ class _ChatState extends State<Chat> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
               child: IconButton(
+                tooltip: "Video call ${toUser.name}",
                 icon: const Icon(Icons.videocam, color: Colors.black),
                 onPressed: () {
 
@@ -74,7 +118,20 @@ class _ChatState extends State<Chat> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: IconButton(
+                tooltip: "Voice ${toUser.name}",
                 icon: const Icon(Icons.call, color: Colors.black),
+                onPressed: () {
+
+                },
+              ),
+            ),
+
+
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+              child: IconButton(
+                tooltip: "Gift ${toUser.name}",
+                icon: const Icon(Icons.wallet_giftcard_sharp, color: Colors.black),
                 onPressed: () {
 
                 },
@@ -85,68 +142,118 @@ class _ChatState extends State<Chat> {
         ),
         body: Container(
           width: MediaQuery.of(context).size.width,
-          color: PersonalizedColor.black,
+          // color: PersonalizedColor.black,
+            decoration: BoxDecoration(
+                color: toUser.imagesUrls['profile'].isEmpty ? PersonalizedColor.black : null,
+                image: toUser.imagesUrls['profile'].isEmpty ?
+                null :
+                DecorationImage(
+                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.darken),
+                  image: NetworkImage(toUser.imagesUrls['profile']),
+                  fit: BoxFit.cover
+                )
+            ),
           child: Center(
             child: SafeArea(
-              child: Container(
+              child: SizedBox(
                   width: Sizing.getScreenWidth(context),
-                  // decoration: BoxDecoration(
-                    // image: DecorationImage(
-                    //     image: AssetImage('assets/images/eu.jpeg'),
-                    //     fit: BoxFit.cover
-                    // )
-                  // ),
                   child: Column(
                     children: [
 
                       Expanded(
-                        child: ListView.builder(
-                            itemCount: 2,
-                            itemBuilder: (context, indice) {
+                        child: StreamBuilder(
+                          stream: FirestoreControllerApi.loadChatMessages(currentUser.uid, toUser.uid),
+                          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
 
-                              //Define cores e alinhamentos
-                              Alignment alinhamento = Alignment.centerRight;
 
-                              return Align(
-                                alignment: alinhamento,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 6),
-                                  child: Container(
-                                    constraints: BoxConstraints(
-                                        maxWidth: Sizing.getScreenWidth(context) * 0.65, //MediaQuery.of(context).size.width * 0.65
-                                    ),
-                                    // width: larguraContainer,
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: const BoxDecoration(
-                                        color: Colors.white70,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8)
-                                        )
-                                    ),
-                                    child: Column(
-                                      children: [
 
-                                        Text(
-                                          "Hello, " + widget.user.name +
-                                              "AADASASAS AHSA I dsa dsd asdsads9gds u9 sga 9d"
-                                                  "dsadasdadd dsada  htis is my me" + widget.user.name,
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-
-                                        const Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Text(
-                                            "21:06",
-                                            style: TextStyle(fontSize: 12, color: Colors.grey),
-                                          ),
-                                        )
-
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                            if(snapshot.hasError) {
+                              return Center(
+                                  child: Text('Something went wrong, try again', style: TextStyle(fontSize: Sizing.fontSize, color: Colors.white),)
                               );
-                            }),
+                            }
+
+                            if(snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator()
+                              );
+                            }
+
+                            if(snapshot.data!.docs.isEmpty) {
+                              return Center(
+                                  child: Text('Start a conversation with ${toUser.name}.', style: TextStyle(fontSize: Sizing.fontSize, color: Colors.white),)
+                              );
+                            }
+
+
+                            Map<String, dynamic> response = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+                            messageData.fromMapToMessageData(response);
+
+
+                            return ListView.builder(
+                                reverse: true,
+                                itemCount: messageData.messages.length,
+                                itemBuilder: (context, index) {
+
+                                  Map<String, dynamic> message = messageData.messages[index];
+                                  String data = message['data'];
+                                  DateTime date = message['date'].toDate();
+                                  String userId = message['userUid'];
+
+
+                                  //Define colors and alignments
+                                  Alignment alignment = userId == currentUser.uid ? Alignment.centerRight : Alignment.centerLeft;
+                                  Color messageColor = userId == currentUser.uid ?  Colors.white : Colors.grey;
+                                  Color textColor = userId == currentUser.uid ?  Colors.black : Colors.white;
+                                  Color dateColor = userId == currentUser.uid ?  Colors.grey : Colors.white54;
+
+                                  return Align(
+                                    alignment: alignment,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 6),
+                                      child: Container(
+                                        constraints: BoxConstraints(
+                                          maxWidth: Sizing.getScreenWidth(context) * 0.65, //MediaQuery.of(context).size.width * 0.65
+                                        ),
+                                        // width: larguraContainer,
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                            color: messageColor,
+                                            borderRadius: const BorderRadius.all(
+                                                Radius.circular(8)
+                                            )
+                                        ),
+                                        child: Column(
+                                          children: [
+
+                                            Text(
+                                              data,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: textColor
+                                              ),
+                                            ),
+
+                                            Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Text(
+                                                timeago.format(date, locale: 'en_short'),
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: dateColor
+                                                ),
+                                              ),
+                                            )
+
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                });
+
+                          },
+                        ),
                       ),
 
                       Padding(
@@ -159,7 +266,7 @@ class _ChatState extends State<Chat> {
                                       maxHeight: 300.0
                                   ),
                                   child: TextField(
-                                    controller: _controllerMensagem,
+                                    controller: _messageController,
                                     autofocus: true,
                                     minLines: 1,
                                     maxLines: 8,
@@ -186,9 +293,7 @@ class _ChatState extends State<Chat> {
                             FloatingActionButton(
                               child: const Icon(Icons.send, color: Colors.white),
                               backgroundColor: PersonalizedColor.red, //Color(0xff25D366),
-                              onPressed: (){
-
-                              },
+                              onPressed: sendMessage,
                             )
                           ],
                         )

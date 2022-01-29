@@ -119,17 +119,20 @@ class _RunAppState extends State<RunApp> {
 
                 IconButton(
                   icon: Icon(Icons.home, color: PersonalizedColor.black),
+                  tooltip: "Home",
                   onPressed:() => setContainer(home),
                 ),
 
 
                 IconButton(
                   icon: Icon(Icons.messenger_rounded, color: PersonalizedColor.black,),
+                  tooltip: "Messages",
                   onPressed:() => setContainer(Messages(user: currentUser!)),
                 ),
 
                 IconButton(
                   icon: Icon(Icons.person, color: PersonalizedColor.black,),
+                  tooltip: "My Profile",
                   onPressed:() => setContainer(Profile()),
                 ),
 

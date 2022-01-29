@@ -6,10 +6,10 @@ import 'package:xtream/model/messages/message.dart';
 
 class MessageData {
 
-  late String _toUserName;
-  late List<dynamic> _messages; // List<<Map<String, String>>>
-  late Timestamp _date; // keep record of the last message date
-  late bool _read;
+  String _toUserName = '';
+  List<dynamic> _messages = []; // List<<Map<String, String>>>
+  Timestamp _date = Timestamp.now(); // keep record of the last message date
+  bool _read = false;
 
   Map<String, dynamic> toMap() {
     return {
@@ -20,12 +20,21 @@ class MessageData {
     };
   }
 
+  MessageData fromMapToMessageData(Map<String, dynamic> map) {
+    read = map['read'];
+    date = map['date'];
+    toUserName = map['toUserName'];
+    messages = map['messages'];
+    return this;
+  }
+
+
   Message fromMapToMessageObj(dynamic message) {
     return Message(message['userUid']!, message['data']!, message['date']!);
   }
 
 
-  List<dynamic> get messages => _messages;
+  List<dynamic> get messages => _messages; //.reversed.toList();
 
   set messages(List<dynamic> value) {
     _messages = value;

@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:xtream/model/messages/message.dart';
+import 'package:xtream/model/messages/messageData.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/tuple.dart';
 
@@ -58,6 +59,15 @@ class FirestoreControllerApi {
   // get all conversations of current user
   static  Stream<QuerySnapshot> loadConversations(User user)   {
     return _messagesCol.doc(user.uid).collection('to').orderBy("date", descending: true).snapshots();
+  }
+
+  static Stream<QuerySnapshot> loadChatMessages(String currentUserUid, String toUserUid) {
+    return _messagesCol.doc(currentUserUid).collection('to').orderBy("toUserName").snapshots();
+  }
+
+  static void sendMessage(String currentUserUid, String toUserUid, MessageData messageData) {
+    _messagesCol.doc(currentUserUid).collection('to').doc(toUserUid).set(messageData.toMap());
+    _messagesCol.doc(toUserUid).collection('to').doc(currentUserUid).set(messageData.toMap());
   }
 
   static Future<DocumentSnapshot> _getRandomStartingPointAtCollection() async {

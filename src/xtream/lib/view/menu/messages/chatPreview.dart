@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:xtream/controller/main/auth.dart';
 import 'package:xtream/controller/main/firestoreApi.dart';
 import 'package:xtream/model/messages/messageData.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
+import 'package:xtream/util/tuple.dart';
 
 
 class ChatPreview extends StatefulWidget {
@@ -34,8 +36,9 @@ class _ChatPreviewState extends State<ChatPreview> {
   }
 
   void openChat() async {
+    User currentUser = await Auth.getCurrentUser();
     User toUser = await FirestoreControllerApi.getUserData(widget.toUserId);
-    Navigator.pushNamed(context, "/chat", arguments: toUser);
+    Navigator.pushNamed(context, "/chat", arguments: Tuple<User, User>(currentUser, toUser));
   }
 
   void showConversationOptions() {
