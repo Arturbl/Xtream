@@ -24,6 +24,7 @@ class _MessagesState extends State<Messages> {
     newData.read = data['read'];
     newData.date = data['date'];
     newData.toUserName = data['toUserName'];
+    newData.toUserUid = data['toUserUid'];
     return ChatPreview(messageData: newData, toUserId: toUserUid);
   }
 

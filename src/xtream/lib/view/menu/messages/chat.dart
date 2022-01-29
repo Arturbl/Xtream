@@ -35,6 +35,8 @@ class _ChatState extends State<Chat> {
     if(message.trim().isNotEmpty) {
       messageData.date = Timestamp.fromDate(DateTime.now());
       messageData.read = false;
+      messageData.toUserName = toUser.name;
+      messageData.toUserUid = toUser.uid;
       Message msg = Message(
           currentUser.uid,
           message,

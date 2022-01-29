@@ -7,6 +7,7 @@ import 'package:xtream/model/messages/message.dart';
 class MessageData {
 
   String _toUserName = '';
+  String _toUserUid = '';
   List<dynamic> _messages = []; // List<<Map<String, String>>>
   Timestamp _date = Timestamp.now(); // keep record of the last message date
   bool _read = false;
@@ -16,7 +17,8 @@ class MessageData {
       'messages': _messages,
       'date': date,
       'read': read,
-      'toUserName': toUserName
+      'toUserName': toUserName,
+      'toUserUid': toUserUid
     };
   }
 
@@ -55,6 +57,12 @@ class MessageData {
     _toUserName = value;
   }
 
+
+  String get toUserUid => _toUserUid;
+
+  set toUserUid(String value) {
+    _toUserUid = value;
+  }
 
   Timestamp get date => _date;
 
