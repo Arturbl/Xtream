@@ -61,8 +61,8 @@ class FirestoreControllerApi {
     return _messagesCol.doc(user.uid).collection('to').orderBy("date", descending: true).snapshots();
   }
 
-  static Stream<QuerySnapshot> loadChatMessages(String currentUserUid, String toUserUid) {
-    return _messagesCol.doc(currentUserUid).collection('to').orderBy("toUserName").snapshots();
+  static Stream<DocumentSnapshot> loadChatMessages(String currentUserUid, String toUserUid) {
+    return _messagesCol.doc(currentUserUid).collection('to').doc(toUserUid).snapshots();
   }
 
   static void sendMessage(String currentUserUid, String toUserUid, MessageData messageData) {

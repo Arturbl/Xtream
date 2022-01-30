@@ -6,7 +6,6 @@ import 'package:xtream/controller/main/firestoreApi.dart';
 import 'package:xtream/model/messages/message.dart';
 import 'package:xtream/model/messages/messageData.dart';
 import 'package:xtream/model/user.dart';
-import 'package:xtream/util/chatUtils.dart';
 import 'package:xtream/util/colors.dart';
 import 'package:xtream/util/sizing.dart';
 import 'package:xtream/util/tuple.dart';
@@ -60,6 +59,7 @@ class _ChatState extends State<Chat> {
     super.initState();
     currentUser = widget.tuple.x;
     toUser = widget.tuple.y;
+    print("Current user: ${currentUser.name} - ToUser: ${toUser.name}");
   }
 
 
@@ -178,7 +178,7 @@ class _ChatState extends State<Chat> {
                             Expanded(
                               child: StreamBuilder(
                                 stream: FirestoreControllerApi.loadChatMessages(currentUser.uid, toUser.uid),
-                                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
 
 
@@ -194,14 +194,14 @@ class _ChatState extends State<Chat> {
                                     );
                                   }
 
-                                  if(snapshot.data!.docs.isEmpty) {
+                                  if(snapshot.data!.data() == null) {
                                     return Center(
                                         child: Text('Start a conversation with ${toUser.name}.', style: TextStyle(fontSize: Sizing.fontSize, color: Colors.white),)
                                     );
                                   }
 
 
-                                  Map<String, dynamic> response = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+                                  Map<String, dynamic> response = snapshot.data!.data() as Map<String, dynamic>;
                                   messageData.fromMapToMessageData(response);
 
 
