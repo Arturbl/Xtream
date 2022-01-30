@@ -45,7 +45,7 @@ class _ChatState extends State<Chat> {
           Timestamp.fromDate(DateTime.now())
       );
       messageData.addMessage(msg);
-      FirestoreControllerApi.sendMessage(currentUser.uid, toUser.uid, messageData);
+      FirestoreControllerApi.sendMessage(currentUser.uid, currentUser.name, toUser.uid, messageData);
       focusNode.requestFocus();
       _messageController.clear();
     }
@@ -59,7 +59,6 @@ class _ChatState extends State<Chat> {
     super.initState();
     currentUser = widget.tuple.x;
     toUser = widget.tuple.y;
-    print("Current user: ${currentUser.name} - ToUser: ${toUser.name}");
   }
 
 
@@ -94,26 +93,48 @@ class _ChatState extends State<Chat> {
                     null,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: Column(
-                    children: [
+                StreamBuilder(
+                  stream:   FirestoreControllerApi.listenToUser(toUser.uid),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
 
-                      Text(
-                        toUser.name,
-                        style: TextStyle(
-                            color: PersonalizedColor.black
-                        ),
+                    if(snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator()
+                      );
+                    }
+
+                    Map<String, dynamic> response = snapshot.data!.data() as Map<String, dynamic>;
+
+                    // define variables
+                    String online = response['online'] == true ? 'Online now' : "17mins ago";
+                    String toUsername = response['name'];
+
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          children: [
+
+                            Text(
+                              toUsername,
+                              style: TextStyle(
+                                  color: PersonalizedColor.black
+                              ),
+                            ),
+
+
+                            Text(online, style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12
+                            ),)
+
+                          ],
+                        )
                       ),
+                    );
 
-
-                      const Text("online now", style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12
-                      ),)
-
-                    ],
-                  ),
+                  },
                 )
               ],
             ),

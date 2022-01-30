@@ -34,7 +34,6 @@ class _RunAppState extends State<RunApp> {
 
   Future<void> initUserSession() async {
     dynamic user = await Auth.getCurrentUser();
-    print("Current user: ${user.name} - UID: ${user.uid}");
     if(user == null) {
         await Navigator.pushNamed(context, '/login');
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RunApp(filter: Filter())));
@@ -42,6 +41,7 @@ class _RunAppState extends State<RunApp> {
     }
     // print('anonymous: ' + user.isAnonymous.toString());
     currentUser = user;
+    print("Current user: ${user.name} - UID: ${user.uid}");
     setState(() => isCurrentUserInitialized = true);
   }
 
@@ -49,7 +49,8 @@ class _RunAppState extends State<RunApp> {
 
   void addWindowListener() {
     html.window.onBeforeUnload.listen((event) async {
-      await Auth.signOut();
+      print('onload');
+      Auth.signOut();
       print("\nClosed session for ${currentUser!.name}");
     });
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:xtream/model/user.dart';
@@ -18,15 +19,26 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
 
+  bool showButtons = false;
+  int messageButtonSize = 40;
+  int donateButtonSize = 40;
+
   void openChat() {
     Navigator.pushNamed(context, "/chat", arguments: Tuple<User, User>(widget.currentUser, widget.toUser));
   }
 
+  void updateShowButtonsStatus(bool value) {
+    if(mounted) { setState(() { showButtons = value; }); }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: openChat,
+      onTap: () => print("Set live to full screen"),
       child: MouseRegion(
+        onEnter: (PointerEnterEvent event) => updateShowButtonsStatus(true),
+        onExit: (PointerExitEvent event) => updateShowButtonsStatus(false),
         cursor: SystemMouseCursors.click,
         child: Stack(
           children: <Widget>[
@@ -57,6 +69,45 @@ class _ProfileState extends State<Profile> {
                       fit: BoxFit.cover
                   )
               ),
+              child: showButtons ?
+                Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+
+                        MouseRegion(
+                          onEnter: (PointerEnterEvent event) => setState(() => messageButtonSize = 45),
+                          onExit: (PointerExitEvent event) =>  setState(() => messageButtonSize = 40),
+                          child: GestureDetector(
+                            onTap: openChat,
+                            child: CircleAvatar(
+                              radius: messageButtonSize.toDouble(),
+                              backgroundColor: Colors.black54,
+                              child: const Icon(Icons.messenger),
+                            ),
+                          ),
+                        ),
+
+
+                        MouseRegion(
+                          onEnter: (PointerEnterEvent event) => setState(() => donateButtonSize = 45),
+                          onExit: (PointerExitEvent event) =>  setState(() => donateButtonSize = 40),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 25),
+                            child: CircleAvatar(
+                              radius: donateButtonSize.toDouble(),
+                              backgroundColor: Colors.black54,
+                              child: const Icon(Icons.wallet_giftcard_sharp),
+                            )
+                          ),
+                        ),
+
+
+
+                      ],
+                    )
+                ) :
+                null,
             ),
 
             Positioned(

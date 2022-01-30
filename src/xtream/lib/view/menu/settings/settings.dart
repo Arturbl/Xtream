@@ -29,8 +29,13 @@ class _SettingsState extends State<Settings> {
   }
 
   void initUser() async {
-    user = await Auth.getCurrentUser();
-    userIsAnonymous = user.isAnonymous;
+    // user = await Auth.getCurrentUser();
+    dynamic currentUser = await Auth.getCurrentUser();
+    if(currentUser == null) {
+      userIsAnonymous = user.isAnonymous;
+      return;
+    }
+    user = currentUser;
   }
 
   void closeSettingsWidget(dynamic action) async {

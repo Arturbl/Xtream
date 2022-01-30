@@ -3,12 +3,8 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:xtream/model/messages/message.dart';
 import 'package:xtream/model/messages/messageData.dart';
 import 'package:xtream/model/user.dart';
-import 'package:xtream/util/tuple.dart';
-
-import 'auth.dart';
 
 class FirestoreControllerApi {
 
@@ -57,11 +53,15 @@ class FirestoreControllerApi {
     return user;
   }
 
+  static Stream<DocumentSnapshot> listenToUser(String userUid) {
+    return _usersCol.doc(userUid).snapshots();
+  }
 
   // get all conversations of current user
   static  Stream<QuerySnapshot> loadConversations(User user)   {
     return _messagesCol.doc(user.uid).collection('to').orderBy("date", descending: true).snapshots();
   }
+
 
   static Stream<DocumentSnapshot> loadChatMessages(String currentUserUid, String toUserUid) {
     return _messagesCol.doc(currentUserUid).collection('to').doc(toUserUid).snapshots();
@@ -73,9 +73,11 @@ class FirestoreControllerApi {
     updateUser(user);
   }
 
-  static void sendMessage(String currentUserUid, String toUserUid, MessageData messageData) {
-    _messagesCol.doc(currentUserUid).collection('to').doc(toUserUid).set(messageData.toMap());
-    _messagesCol.doc(toUserUid).collection('to').doc(currentUserUid).set(messageData.toMap());
+  static void sendMessage(String currentUserUid, String currentUserName, String toUserUid, MessageData messageData) {
+    _messagesCol.doc(currentUserUid).collection('to').doc(toUserUid).set(messageData.toMap()); // save conversation  to current user
+    messageData.toUserUid = currentUserUid;
+    messageData.toUserName = currentUserName;
+    _messagesCol.doc(toUserUid).collection('to').doc(currentUserUid).set(messageData.toMap()); // save conversation to another user
   }
 
   static Future<DocumentSnapshot> _getRandomStartingPointAtCollection() async {

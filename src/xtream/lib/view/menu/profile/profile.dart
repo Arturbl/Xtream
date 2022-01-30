@@ -2,11 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:xtream/controller/main/auth.dart';
-import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
 import 'package:xtream/util/sizing.dart';
-import 'package:xtream/view/runApp.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -38,11 +36,6 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
   }
 
   void editProfile() async {
-    if(user.isAnonymous) {
-      await Navigator.pushNamed(context, '/login', arguments: user);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RunApp(filter: Filter())));
-      return;
-    }
     Navigator.pushNamed(context, '/editProfile', arguments: user);
   }
 
@@ -84,16 +77,16 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
                         offset: const Offset(0, 3), // changes position of shadow
                       ),
                     ],
-                    image: (user.isAnonymous || profileImageUrl.isEmpty) ?
+                    image: (profileImageUrl.isEmpty) ?
 
-                    const DecorationImage(
-                        image: AssetImage('assets/images/profile_avatar.png'),
-                        fit: BoxFit.cover
-                    ) :
-                    DecorationImage(
-                        image: NetworkImage(profileImageUrl),
-                        fit: BoxFit.cover
-                    )
+                      const DecorationImage(
+                          image: AssetImage('assets/images/profile_avatar.png'),
+                          fit: BoxFit.cover
+                      ) :
+                      DecorationImage(
+                          image: NetworkImage(profileImageUrl),
+                          fit: BoxFit.cover
+                      )
 
                 ),
               ),
