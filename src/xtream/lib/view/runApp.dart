@@ -32,9 +32,9 @@ class _RunAppState extends State<RunApp> {
   }
 
   Future<void> initUserSession() async {
-    userClass.User user = await Auth.getCurrentUser();
+    dynamic user = await Auth.getCurrentUser();
     print("Current user: ${user.name} - UID: ${user.uid}");
-    if(user.isAnonymous) {
+    if(user == null) {
         await Navigator.pushNamed(context, '/login');
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RunApp(filter: Filter())));
         return;

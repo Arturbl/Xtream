@@ -70,11 +70,13 @@ class _HomeState extends State<Home> {
   }
 
   void initUserData() async {
-    await Auth.getCurrentUser().then((User user) async {
-      currentUsersUids.add(user.uid);
-      currentUser = user;
-      loadNewData();
-      updateData();
+    await Auth.getCurrentUser().then((dynamic user) async {
+      if(user != null) {
+        currentUsersUids.add(user!.uid);
+        currentUser = user!;
+        loadNewData();
+        updateData();
+      }
     });
   }
 

@@ -23,25 +23,18 @@ class _ProfileState extends State<Profile> with TickerProviderStateMixin{
   String country = '';
   String profileImageUrl = '';
 
-  void setData(User u) {
-    if(mounted) {
-      setState(() {
-        if(u.isAnonymous) {
-          name = u.uid;
-          return;
-        }
-        name = u.name;
-        age = u.age;
-        evaluation = u.evaluation;
-        country = u.country;
-        profileImageUrl = u.imagesUrls['profile'];
-      });
-    }
-  }
 
   void getCurrentUser() async {
     user = await Auth.getCurrentUser();
-    setData(user);
+    if(mounted) {
+      setState(() {
+        name = user.name;
+        age = user.age;
+        evaluation = user.evaluation;
+        country = user.country;
+        profileImageUrl = user.imagesUrls['profile'];
+      });
+    }
   }
 
   void editProfile() async {
