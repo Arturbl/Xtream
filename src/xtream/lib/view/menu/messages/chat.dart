@@ -210,10 +210,10 @@ class _ChatState extends State<Chat> {
                                       itemCount: messageData.messages.length,
                                       itemBuilder: (context, index) {
 
-                                        Map<String, dynamic> message = messageData.messages[index];
-                                        String data = message['data'];
-                                        DateTime date = message['date'].toDate();
-                                        String userId = message['userUid'];
+                                        Map<String, dynamic> data = messageData.messages[index];
+                                        String message = data['data'];
+                                        DateTime date = data['date'].toDate();
+                                        String userId = data['userUid'];
 
 
                                         //Define colors and alignments
@@ -242,7 +242,7 @@ class _ChatState extends State<Chat> {
                                                 children: [
 
                                                   Text(
-                                                    data,
+                                                    message,
                                                     style: TextStyle(
                                                         fontSize: 16,
                                                         color: textColor

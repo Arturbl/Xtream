@@ -13,6 +13,7 @@ class User{
   String _ethnicity = '';
   String _gender = '';
   String _email = '';
+  bool _online = false;
 
   Map<String, dynamic> toMap() {
     return {
@@ -26,6 +27,7 @@ class User{
       'ethnicity': ethnicity,
       'gender': gender,
       'email': email,
+      'online': online
     };
   }
 
@@ -41,6 +43,7 @@ class User{
     images = map['images']['other'];
     country = map['country'];
     evaluation = map['evaluation'];
+    online  = map['online'];
     return this;
   }
 
@@ -48,6 +51,13 @@ class User{
 
   set isAnonymous(bool value) {
     _isAnonymous = value;
+  }
+
+
+  bool get online => _online;
+
+  set online(bool value) {
+    _online = value;
   }
 
   void setProfileImage(String url) {

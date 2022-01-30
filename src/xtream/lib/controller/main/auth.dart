@@ -16,6 +16,8 @@ class Auth {
     });
   }
 
+
+
   static Future<String> registerNewUser(String email, String password, String name) async {
     try {
 
@@ -30,12 +32,6 @@ class Auth {
     return "done";
   }
 
-  static void deleteCurrentAnonymousSession() async {
-    User? firebaseUser =  FirebaseAuth.instance.currentUser;
-    if(firebaseUser != null && firebaseUser.isAnonymous) {
-      await firebaseUser.delete();
-    }
-  }
 
 
   static Future<String> signIn(String email, String password) async {
@@ -43,7 +39,7 @@ class Auth {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
           password: password
-      );
+      ).then((UserCredential userCredential) => FirestoreControllerApi.updateUserOnlineStatus(userCredential.user!.uid, true));
     } on FirebaseAuthException catch (e) {
       return e.code;
     }
@@ -51,7 +47,8 @@ class Auth {
   }
 
   static Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
+    userClass.User user = await Auth.getCurrentUser();
+    await FirebaseAuth.instance.signOut().then((value) => FirestoreControllerApi.updateUserOnlineStatus(user.uid, false));
   }
 
   static Future<userClass.User> getCurrentUser() async {

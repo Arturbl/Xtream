@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:xtream/controller/main/auth.dart';
 import 'package:xtream/model/filter.dart';
 import 'package:xtream/model/user.dart' as userClass;
 import 'package:xtream/util/colors.dart';
+import 'dart:html' as html;
 
 import 'menu/home/filterWidget.dart';
 import 'menu/home/home.dart';
@@ -33,14 +33,32 @@ class _RunAppState extends State<RunApp> {
 
   Future<void> initUserSession() async {
     userClass.User user = await Auth.getCurrentUser();
+    print("Current user: ${user.name} - UID: ${user.uid}");
     if(user.isAnonymous) {
         await Navigator.pushNamed(context, '/login');
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => RunApp(filter: Filter())));
         return;
     }
-      // print('anonymous: ' + user.isAnonymous.toString());
-      print('\nReal account with uid: ' + user.uid.toString());
-      currentUser = user;
+    // print('anonymous: ' + user.isAnonymous.toString());
+    currentUser = user;
+  }
+
+
+
+  void addWindowListener() {
+    html.window.onBeforeUnload.listen((event) async {
+      await Auth.signOut();
+      print("\nClosed session for ${currentUser!.name}");
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initUserSession();
+    home = Home(filter: widget.filter);
+    _container = home;
+    addWindowListener();
   }
 
 
@@ -54,21 +72,6 @@ class _RunAppState extends State<RunApp> {
           return widget;
         }
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    initUserSession();
-    home = Home(filter: widget.filter);
-    _container = home;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _container;
-    Auth.deleteCurrentAnonymousSession();
   }
 
   Widget setFloatingActionButton(String widgetType) {

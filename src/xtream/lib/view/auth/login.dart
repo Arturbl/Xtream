@@ -27,8 +27,6 @@ class _LoginState extends State<Login> {
     String password = _passwordController.text;
     if(email.isNotEmpty && password.isNotEmpty) {
       if(email.contains('@')) {
-        // delete current anonymous session
-        Auth.deleteCurrentAnonymousSession();
         String response = await Auth.signIn(email, password);
         if(response == "done") {
           Navigator.pop(context);

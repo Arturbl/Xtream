@@ -8,6 +8,8 @@ import 'package:xtream/model/messages/messageData.dart';
 import 'package:xtream/model/user.dart';
 import 'package:xtream/util/tuple.dart';
 
+import 'auth.dart';
+
 class FirestoreControllerApi {
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -63,6 +65,12 @@ class FirestoreControllerApi {
 
   static Stream<DocumentSnapshot> loadChatMessages(String currentUserUid, String toUserUid) {
     return _messagesCol.doc(currentUserUid).collection('to').doc(toUserUid).snapshots();
+  }
+
+  static Future<void> updateUserOnlineStatus(String userUid, bool value) async {
+    User user = await getUserData(userUid);
+    user.online = value;
+    updateUser(user);
   }
 
   static void sendMessage(String currentUserUid, String toUserUid, MessageData messageData) {
