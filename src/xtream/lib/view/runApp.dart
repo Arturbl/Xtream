@@ -22,6 +22,7 @@ class RunApp extends StatefulWidget {
 class _RunAppState extends State<RunApp> {
 
   late userClass.User? currentUser;
+  bool isCurrentUserInitialized = false;
 
   late Widget _container;
   late Home home;
@@ -41,6 +42,7 @@ class _RunAppState extends State<RunApp> {
     }
     // print('anonymous: ' + user.isAnonymous.toString());
     currentUser = user;
+    setState(() => isCurrentUserInitialized = true);
   }
 
 
@@ -111,38 +113,40 @@ class _RunAppState extends State<RunApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: PersonalizedColor.red,
-          automaticallyImplyLeading: false,
-          title: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+        appBar: isCurrentUserInitialized ?
+          AppBar(
+            backgroundColor: PersonalizedColor.red,
+            automaticallyImplyLeading: false,
+            title: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
 
-                IconButton(
-                  icon: Icon(Icons.home, color: PersonalizedColor.black),
-                  tooltip: "Home",
-                  onPressed:() => setContainer(home),
-                ),
+                  IconButton(
+                    icon: Icon(Icons.home, color: PersonalizedColor.black),
+                    tooltip: "Home",
+                    onPressed:() => setContainer(home),
+                  ),
 
 
-                IconButton(
-                  icon: Icon(Icons.messenger_rounded, color: PersonalizedColor.black,),
-                  tooltip: "Messages",
-                  onPressed:() => setContainer(Messages(user: currentUser!)),
-                ),
+                  IconButton(
+                    icon: Icon(Icons.messenger_rounded, color: PersonalizedColor.black,),
+                    tooltip: "Messages",
+                    onPressed:() => setContainer(Messages(user: currentUser!)),
+                  ),
 
-                IconButton(
-                  icon: Icon(Icons.person, color: PersonalizedColor.black,),
-                  tooltip: "My Profile",
-                  onPressed:() => setContainer(Profile()),
-                ),
+                  IconButton(
+                    icon: Icon(Icons.person, color: PersonalizedColor.black,),
+                    tooltip: "My Profile",
+                    onPressed:() => setContainer(Profile()),
+                  ),
 
-              ],
+                ],
+              ),
             ),
-          ),
-        ),
+          ) :
+          null,
         body: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
@@ -152,8 +156,8 @@ class _RunAppState extends State<RunApp> {
             )
         ),
         // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-        floatingActionButton: _container.runtimeType == Home ?
-        setFloatingActionButton("Home") : _container.runtimeType == Profile ?
+        floatingActionButton: _container.runtimeType == Home && isCurrentUserInitialized ?
+        setFloatingActionButton("Home") : _container.runtimeType == Profile && isCurrentUserInitialized ?
         setFloatingActionButton("Profile") : null,
     );
   }
