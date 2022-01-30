@@ -24,6 +24,8 @@ class Chat extends StatefulWidget {
 
 class _ChatState extends State<Chat> {
 
+  FocusNode focusNode = FocusNode();
+
   final TextEditingController _messageController = TextEditingController();
   late final User currentUser;
   late final User toUser;
@@ -45,8 +47,10 @@ class _ChatState extends State<Chat> {
       messageData.addMessage(msg);
       FirestoreControllerApi.sendMessage(currentUser.uid, toUser.uid, messageData);
       _messageController.clear();
+      focusNode.requestFocus();
     }
   }
+
 
   @override
   void initState() {
@@ -268,6 +272,7 @@ class _ChatState extends State<Chat> {
                                       maxHeight: 300.0
                                   ),
                                   child: TextField(
+                                    focusNode: focusNode,
                                     controller: _messageController,
                                     autofocus: true,
                                     minLines: 1,
