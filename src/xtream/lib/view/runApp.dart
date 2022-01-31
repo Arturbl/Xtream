@@ -82,8 +82,9 @@ class _RunAppState extends State<RunApp> {
       case "Home":
         return Builder(
           builder: (context) => Padding(
-              padding: const EdgeInsets.only(bottom: 10, right: 10),
+              padding: const EdgeInsets.only(top: 65, right: 10),
               child: FloatingActionButton.extended(
+                heroTag: "FiltersBtn",
                 elevation: 10,
                 backgroundColor: PersonalizedColor.black1,
                 icon: const Icon(Icons.menu, size: 22),
@@ -97,8 +98,9 @@ class _RunAppState extends State<RunApp> {
       case "Profile":
         return Builder(
           builder: (context) => Padding(
-              padding: const EdgeInsets.only(bottom: 10, right: 10),
+              padding: const EdgeInsets.only(top: 65, right: 10),
               child: FloatingActionButton.extended(
+                  heroTag: "SettingsBtn",
                   elevation: 10,
                   backgroundColor: PersonalizedColor.black1,
                   label: const Text("Settings"), // Filter
@@ -156,7 +158,7 @@ class _RunAppState extends State<RunApp> {
               child: _container
             )
         ),
-        // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
         floatingActionButton: _container.runtimeType == Home && isCurrentUserInitialized ?
         setFloatingActionButton("Home") : _container.runtimeType == Profile && isCurrentUserInitialized ?
         setFloatingActionButton("Profile") : null,

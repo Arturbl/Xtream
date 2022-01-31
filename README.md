@@ -48,7 +48,7 @@
         -> Firebase Messaging (https://pub.dev/packages/firebase_messaging)
 
     * Video call:
-        -> agora_rtc_engine (https://pub.dev/packages/agora_rtc_engine/versions/4.1.0-alpha.2)
+        -> dart_webrtc 
 
     * Donations:
         -> Paypal api (https://www.youtube.com/watch?v=E05uXmUh9t4)

@@ -31,7 +31,7 @@ class RouteGenerator{
       case '/login':
         return MaterialPageRoute(builder: (context) => Login());
       case '/settings':
-        return MaterialPageRoute(builder: (context) => Settings());
+        return MaterialPageRoute(builder: (context) => const Settings());
       default:
         return _errorRoute();
     }

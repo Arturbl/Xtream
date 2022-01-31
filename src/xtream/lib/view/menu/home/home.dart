@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -124,7 +125,20 @@ class _HomeState extends State<Home> {
           )
         )
       ) :
-      null
+      null,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: "BroadcastBtn",
+        elevation: 10,
+        backgroundColor: Colors.blue,
+        icon: const Icon(Icons.videocam, size: 22),
+        label: const Text("Stream"),
+        onPressed: () {
+          window.navigator.getUserMedia(audio: true, video: true).then((value){
+
+          });
+        },
+      ),
     );
   }
 }
