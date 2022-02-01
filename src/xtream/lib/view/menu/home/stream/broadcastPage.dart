@@ -1,10 +1,14 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:xtream/controller/main/auth.dart';
+import 'package:xtream/controller/main/firestoreApi.dart';
 import 'package:xtream/controller/main/webrtcApi.dart';
+import 'package:xtream/model/user.dart';
 import 'package:xtream/util/colors.dart';
 import 'dart:html' as html;
 
@@ -21,6 +25,8 @@ class BroadcastPage extends StatefulWidget {
 
 class _BroadcastPageState extends State<BroadcastPage> {
 
+  late User currentUser;
+
   bool isStreaming = true;
   bool isMicOn = true;
   bool isCamOn = true;
@@ -33,39 +39,63 @@ class _BroadcastPageState extends State<BroadcastPage> {
 
 
   Future<void> createRoom() async{
-    String roomId = await webRtcApi.createRoom(_remoteRenderer);
-    print("Room id: ${roomId}");
+    await webRtcApi.createRoom(_remoteRenderer, currentUser.uid).then((value) async {
+      await FirestoreControllerApi.updateStreamsCounter(true);
+    });
+  }
+
+  void leaveRoom() async {
+    await webRtcApi.leaveRoom(_localRenderer);
+    await FirestoreControllerApi.updateStreamsCounter(false);
+    // delete current room
+    await FirestoreControllerApi.rooms.doc(currentUser.uid).delete();
+    _localRenderer.dispose();
+    _remoteRenderer.dispose();
+    window.navigator.getUserMedia(audio: true, video: true).then((value){
+      Navigator.pushNamed(context, "/broadcast");
+    });
+    webRtcApi.updateMic(false);
+    webRtcApi.updateVideo(_localRenderer, false);
+    Navigator.pop(context);
+  }
+
+  void initUserData() async {
+    await Auth.getCurrentUser().then((dynamic user) {
+      if(user != null) {
+        currentUser = user;
+        _localRenderer.initialize();
+        _remoteRenderer.initialize();
+        webRtcApi.onAddRemoteStream = ((stream){
+          _remoteRenderer.srcObject = stream;
+        });
+        webRtcApi.openUserMedia(_localRenderer, _remoteRenderer, isMicOn, isCamOn); // open use mic and camera
+        createRoom();
+      }
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    _localRenderer.initialize();
-    _remoteRenderer.initialize();
-    webRtcApi.onAddRemoteStream = ((stream){
-      _remoteRenderer.srcObject = stream;
-      setState(() { });
-    });
-    webRtcApi.openUserMedia(_localRenderer, _remoteRenderer, isMicOn, isCamOn);
-    createRoom();
+    initUserData();
   }
 
   @override
   void dispose() {
-    _localRenderer.dispose();
-    _remoteRenderer.dispose();
     super.dispose();
+    leaveRoom();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: PersonalizedColor.black,),
-          onPressed: () => Navigator.pop(context)
-        ),
-        titleSpacing: 0,
+        automaticallyImplyLeading: false,
+        // leading: IconButton(
+        //   icon: Icon(Icons.arrow_back_ios, color: PersonalizedColor.black,),
+        //   onPressed: () => Navigator.pop(context)
+        // ),
+        // titleSpacing: 0,
         backgroundColor: PersonalizedColor.red,
         title: Text(
           "Streaming",
@@ -179,7 +209,7 @@ class _BroadcastPageState extends State<BroadcastPage> {
 
 
                         RawMaterialButton(
-                          onPressed: (){},
+                          onPressed: leaveRoom,
                           child: const Icon(
                             Icons.call_end,
                             color: Colors.white,

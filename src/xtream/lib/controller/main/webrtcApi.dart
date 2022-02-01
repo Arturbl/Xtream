@@ -26,8 +26,8 @@ class WebRtcApi {
   String? currentRoomId;
   StreamStateCallback? onAddRemoteStream;
 
-  Future<String> createRoom(RTCVideoRenderer remoteRenderer) async  {
-    DocumentReference roomRef = FirestoreControllerApi.rooms.doc();
+  Future<String> createRoom(RTCVideoRenderer remoteRenderer, String currentUserUid) async  {
+    DocumentReference roomRef = FirestoreControllerApi.rooms.doc(currentUserUid);
     print("Created peer connection with configuration: $configuration");
     peerConnection = await createPeerConnection(configuration);
     _registerPeerConnectionListeners();
@@ -195,7 +195,7 @@ class WebRtcApi {
     }
   }
 
-  Future<void> hangUp(RTCVideoRenderer localVideo) async {
+  Future<void> leaveRoom(RTCVideoRenderer localVideo) async {
     List<MediaStreamTrack> tracks = localVideo.srcObject!.getTracks();
     tracks.forEach((track) {
       track.stop();

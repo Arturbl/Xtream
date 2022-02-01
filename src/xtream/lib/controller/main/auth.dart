@@ -6,10 +6,10 @@ class Auth {
 
 
   static void _saveUserDataIntoCloudFirestore(String name, User firebaseUser) async {
-    await FirestoreControllerApi.getAppTotalUsers().then((int totalUsers){
+    await FirestoreControllerApi.getAppStats().then((Map<String, dynamic> data){
       final newUser = userClass.User();
       newUser.uid = firebaseUser.uid;
-      newUser.id = totalUsers + 1;
+      newUser.id = data['totalUsers'] + 1;
       newUser.name = name;
       newUser.email = firebaseUser.email!;
       FirestoreControllerApi.addUser(newUser);

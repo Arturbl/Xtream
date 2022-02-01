@@ -51,17 +51,19 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   void _setError(String error) {
-    setState(() {
-      _erro1 = error;
-      _loading = false;
-    });
-    Timer(
-        const Duration(seconds: 5), (){
-          setState(() {
-            _erro1 = '';
-          });
-        }
-    );
+    if(mounted) {
+      setState(() {
+        _erro1 = error;
+        _loading = false;
+      });
+      Timer(
+          const Duration(seconds: 5), (){
+        setState(() {
+          _erro1 = '';
+        });
+      }
+      );
+    }
   }
 
   void _verifyPasswordsMatch() async {

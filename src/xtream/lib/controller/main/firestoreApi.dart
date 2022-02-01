@@ -10,28 +10,31 @@ class FirestoreControllerApi {
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  static final CollectionReference _usersCol = _firestore.collection("users"); // manage users
-  static final CollectionReference _appInfo = _firestore.collection('data'); // mensage private app stats
   static final CollectionReference _messagesCol = _firestore.collection('messages'); // manage messages data
   static final CollectionReference rooms = _firestore.collection('rooms'); // menage users stream
+  static final CollectionReference _usersCol = _firestore.collection("users"); // manage users
+  static final CollectionReference appInfo = _firestore.collection('data'); // mensage private app stats
 
 
   static CollectionReference get usersCol => _usersCol;
 
-  static Future<int> getAppTotalUsers() async {
-    DocumentSnapshot documentSnapshot = await _appInfo.doc('statistics').get();
-    if(documentSnapshot != null) {
-      Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
-      return data['totalUsers'];
-    }
-    return 0;
+  static Future<Map<String, dynamic>> getAppStats() async {
+    DocumentSnapshot documentSnapshot = await appInfo.doc('statistics').get();
+    Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+    return data;
+  }
+
+  static Future<void> updateStreamsCounter(bool increase) async  {
+    Map<String, dynamic> data = await FirestoreControllerApi.getAppStats();
+    int counter = increase ? data['streams'] + 1 : data['streams'] - 1;
+    FirestoreControllerApi.appInfo.doc('statistics').update({'streams': counter}); // update app stats in firebase
   }
 
   static Future<void> addUser(User user) async {
-    await getAppTotalUsers().then((int totalUsers) {
-      int newTotalUsers = totalUsers + 1;
+    await getAppStats().then((Map<String, dynamic> stats) {
+      int newTotalUsers = stats['totalUsers'] + 1;
       _usersCol.doc(user.uid).set(user.toMap()); // add user
-      _appInfo.doc('statistics').set({'totalUsers': newTotalUsers}); // increment users
+      appInfo.doc('statistics').update({'totalUsers': newTotalUsers}); // increment users
     });
   }
 
@@ -82,15 +85,17 @@ class FirestoreControllerApi {
   }
 
   static Future<DocumentSnapshot> _getRandomStartingPointAtCollection() async {
-    int totalUsers = await getAppTotalUsers();
-    int randomId = Random().nextInt( (totalUsers * 0.80).toInt() ); // prevent from going to the end of the array
+    Map<String, dynamic> data = await getAppStats();
+    int randomId = Random().nextInt( (data['totalUsers'] * 0.80).toInt() ); // prevent from going to the end of the array
     QuerySnapshot snapshot = await _usersCol.where('id', isEqualTo: randomId).get();
     return snapshot.docs.first;
   }
 
 
+  // this method can be used if in home, we decide to display profiles
   static Future<List<User>> loadRandomProfiles(List<String> currentUids) async {
-    int totalAppUsers = await getAppTotalUsers() - 1;
+    Map<String, dynamic> data = await getAppStats();
+    int totalAppUsers = data['totalUsers'] - 1;
     List<User> users = [];
     // select a random starting point at the collection
     DocumentSnapshot startingPointDocument = await _getRandomStartingPointAtCollection();
