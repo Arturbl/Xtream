@@ -10,9 +10,10 @@ class FirestoreControllerApi {
 
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  static final CollectionReference _usersCol = _firestore.collection("users");
-  static final CollectionReference _appInfo = _firestore.collection('data');
-  static final CollectionReference _messagesCol = _firestore.collection('messages');
+  static final CollectionReference _usersCol = _firestore.collection("users"); // manage users
+  static final CollectionReference _appInfo = _firestore.collection('data'); // mensage private app stats
+  static final CollectionReference _messagesCol = _firestore.collection('messages'); // manage messages data
+  static final CollectionReference rooms = _firestore.collection('rooms'); // menage users stream
 
 
   static CollectionReference get usersCol => _usersCol;

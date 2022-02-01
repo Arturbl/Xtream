@@ -5,6 +5,7 @@ import 'package:xtream/util/colors.dart';
 import 'package:xtream/util/tuple.dart';
 import 'package:xtream/view/auth/createAccount.dart';
 import 'package:xtream/view/auth/login.dart';
+import 'package:xtream/view/menu/home/stream/broadcastPage.dart';
 import 'package:xtream/view/menu/messages/chat.dart';
 import 'package:xtream/view/menu/profile/editProfile.dart';
 import 'package:xtream/view/menu/settings/settings.dart';
@@ -32,6 +33,8 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (context) => Login());
       case '/settings':
         return MaterialPageRoute(builder: (context) => const Settings());
+      case '/broadcast':
+        return MaterialPageRoute(builder: (context) => const BroadcastPage());
       default:
         return _errorRoute();
     }

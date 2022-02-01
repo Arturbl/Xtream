@@ -6,7 +6,7 @@
     both users will be asked to evaluate theis companion.
     This evaluation will be used to connect more precisely people with same interests.
 
-
+º
 # How to use the app:
     access it via browser
 
@@ -34,9 +34,6 @@
 
 # external modules:
 
-    * Client without account:
-        -> Shared preferences -> https://youtu.be/kLJ43S9vBv4
-
     * Cloud messaging:
         -> Background and foreground notifications  (https://www.youtube.com/watch?v=4Cwp1iA8BaQ)
     
@@ -48,9 +45,12 @@
         -> Firebase Messaging (https://pub.dev/packages/firebase_messaging)
 
     * Video call:
-        -> dart_webrtc 
+        -> dart_webrtc  -> github repo
+        https://github.com/md-weber/webrtc_tutorial
+
 
     * Donations:
         -> Paypal api (https://www.youtube.com/watch?v=E05uXmUh9t4)
+        -> stripe
     
             
